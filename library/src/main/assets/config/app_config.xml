@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <item title="应用信息" info="查看应用渠道,版本..." clazz=""/>
+    <item title="调试信息" info="查看应用渠道,版本..." clazz=""/>
+    <item title="配置信息" info="查看应用渠道,版本..." clazz=""/>
+    <item title="其他操作" info="查看应用渠道,版本..." clazz=""/>
+</project>

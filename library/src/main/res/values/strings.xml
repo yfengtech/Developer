@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_info">应用信息:</string>
+    <string name="model_info">机器信息:</string>
+
+    <string name="os_version_value">系统版本号:%1$s</string>
+    <string name="os_api_value">系统版本值:%1$s</string>
+    <string name="device_model_value">手机型号:%1$s</string>
+    <string name="iid_value">IID:%1$s</string>
+    <string name="line_devide_value">线上DeviceID:%1$s</string>
+    <string name="imei_value">手机IMEI:%1$s</string>
+    <string name="android_id_value">AndroidID:%1$s</string>
+    <string name="uuid_value">UUID:%1$s</string>
+    <string name="device_brand_value">手机品牌:%1$s</string>
+
+    <string name="debug_url">调试地址</string>
+    <string name="server_url">服务器地址:</string>
+    <string name="old_server_url">原服务器地址:%1$s</string>
+    <string name="default_url">默认地址</string>
+    <string name="use_url">应用地址</string>
+    <string name="clear_app_cache">清空应用信息</string>
+    <string name="error_url_info">异常URL信息</string>
+    <string name="run_info">运行信息</string>
+    <string name="article_cache">文章信息</string>
+    <string name="debug_info">调试信息</string>
+
+    <string name="channel_value">渠道号:%1$s</string>
+    <string name="app_version_value">应用版本:%1$s</string>
+    <string name="app_code_value">应用版本号:%1$s</string>
+    <string name="debug_mode">调试模式</string>
+</resources>

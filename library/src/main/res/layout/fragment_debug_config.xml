@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:auto="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <com.cz.library.widget.DivideTextView
+        android:id="@+id/tv_old_url"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:padding="12dp"
+        android:text="@string/old_server_url"
+        android:textColor="@color/textColor"
+        android:textSize="15sp"
+        auto:dl_divideDrawable="@color/divide"
+        auto:dl_divideGravity="bottom"
+        auto:dl_dividePadding="12dp" />
+
+    <com.cz.library.widget.DivideLinearLayout
+        android:id="@+id/dl_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_old_url"
+        auto:dl_divideDrawable="@color/divide"
+        auto:dl_divideGravity="bottom"
+        auto:dl_dividePadding="12dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:padding="12dp"
+            android:text="@string/server_url"
+            android:textColor="@color/textColor"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/et_server_url"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColor"
+            android:textSize="15sp" />
+
+    </com.cz.library.widget.DivideLinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_btn_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white"
+        android:gravity="right"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_default"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="@string/default_url" />
+
+        <Button
+            android:id="@+id/btn_debug_url"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="@string/debug_url" />
+
+        <Button
+            android:id="@+id/btn_use"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="@string/use_url" />
+    </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:auto="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <com.cz.library.widget.DivideLinearLayout
+        android:id="@+id/dl_debug"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/itemHeight"
+        android:background="@drawable/white_item_selector"
+        android:orientation="horizontal"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        auto:dl_divideDrawable="@color/divide"
+        auto:dl_divideGravity="bottom"
+        auto:dl_dividePadding="12dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/imageview_usercenter_item_leftimage"
+            android:layout_weight="1"
+            android:gravity="left|center_vertical"
+            android:text="@string/debug_info"
+            android:textColor="@color/textColor"
+            android:textSize="14sp" />
+
+        <Switch
+            android:id="@+id/sv_debug_mode"
+            android:layout_width="42dp"
+            android:layout_height="24dp"
+            />
+    </com.cz.library.widget.DivideLinearLayout>
+
+    <com.cz.library.widget.DivideLinearLayout
+        android:id="@+id/dl_cache"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/itemHeight"
+        android:background="@drawable/white_item_selector"
+        android:orientation="horizontal"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        auto:dl_divideDrawable="@color/divide"
+        auto:dl_divideGravity="bottom"
+        auto:dl_dividePadding="12dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_weight="1"
+            android:gravity="left|center_vertical"
+            android:text="@string/article_cache"
+            android:textColor="@color/textColor"
+            android:textSize="14sp" />
+
+        <Switch
+            android:id="@+id/sv_cache_mode"
+            android:layout_width="42dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical" />
+    </com.cz.library.widget.DivideLinearLayout>
+
+    <com.cz.library.widget.DivideLinearLayout
+        android:id="@+id/dl_run_info"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/itemHeight"
+        android:background="@drawable/white_item_selector"
+        android:orientation="horizontal"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        auto:dl_divideDrawable="@color/divide"
+        auto:dl_divideGravity="bottom"
+        auto:dl_dividePadding="12dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_weight="1"
+            android:gravity="left|center_vertical"
+            android:text="@string/run_info"
+            android:textColor="@color/textColor"
+            android:textSize="14sp" />
+
+        <Switch
+            android:id="@+id/sv_run_info"
+            android:layout_width="42dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical"
+            />
+    </com.cz.library.widget.DivideLinearLayout>
+
+    <com.cz.library.widget.DivideLinearLayout
+        android:id="@+id/dl_error_url"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/itemHeight"
+        android:background="@drawable/white_item_selector"
+        android:orientation="horizontal"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        auto:dl_divideDrawable="@color/divide"
+        auto:dl_divideGravity="bottom"
+        auto:dl_dividePadding="12dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_weight="1"
+            android:gravity="left|center_vertical"
+            android:text="@string/error_url_info"
+            android:textColor="@color/textColor"
+            android:textSize="14sp" />
+
+        <SwitchView
+            android:id="@+id/sv_error_info"
+            android:layout_width="42dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical" />
+    </com.cz.library.widget.DivideLinearLayout>
+
+</LinearLayout>
