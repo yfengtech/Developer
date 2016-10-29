@@ -27,4 +27,5 @@
     <string name="app_version_value">应用版本:%1$s</string>
     <string name="app_code_value">应用版本号:%1$s</string>
     <string name="debug_mode">调试模式</string>
+    <string name="debug_list">调试功能列表</string>
 </resources>

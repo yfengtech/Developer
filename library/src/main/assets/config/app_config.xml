@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
-    <item title="应用信息" info="查看应用渠道,版本..." clazz=""/>
-    <item title="调试信息" info="查看应用渠道,版本..." clazz=""/>
-    <item title="配置信息" info="查看应用渠道,版本..." clazz=""/>
-    <item title="其他操作" info="查看应用渠道,版本..." clazz=""/>
+    <item title="应用信息" info="查看应用渠道,版本..." clazz=".DebugAppInfoFragment"/>
+    <item title="调试信息" info="动态开启,应用调试模块开关" clazz=".DebugInfoFragment"/>
+    <item title="网络调试" info="动态修改单个,所有接口服务器" clazz=".DebugNetworkFragment"/>
+    <item title="图片调试" info="动态查看图片比例,以及缩放情况" clazz=".ImageFragment"/>
+    <item title="其他操作" info="清空应用,本地信息" clazz=".DebugOtherFragment"/>
 </project>

@@ -3,7 +3,7 @@ apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'me.leolin.gradle-android-aspectj'
 android {
     compileSdkVersion 24
-    buildToolsVersion "23.0.1"
+    buildToolsVersion '24.0.2'
 
     defaultConfig {
         applicationId "cz.developer.sample"
@@ -31,6 +31,7 @@ tasks.withType(JavaCompile) {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:23.2.0'
     testCompile 'junit:junit:4.12'
     compile project(':library')
 }

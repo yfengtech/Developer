@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cz.developer.library.R;
+import cz.developer.library.mode.DebugItem;
 
 
 /**
@@ -56,17 +57,6 @@ public class DebugListAdapter extends BaseAdapter {
         holder.title.setText(item.title);
         holder.subInfo.setText(item.subInfo);
         return view;
-    }
-
-    public static class DebugItem{
-        public String title;
-        public String subInfo;
-        public String clazz;
-
-        public DebugItem(String title, String subInfo) {
-            this.title = title;
-            this.subInfo = subInfo;
-        }
     }
 
     /**
