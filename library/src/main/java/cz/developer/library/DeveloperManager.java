@@ -1,13 +1,12 @@
 package cz.developer.library;
 
 import android.app.Activity;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.ViewGroup;
-
-import xyqb.library.config.PrefsManager;
 
 /**
  * Created by czz on 2016/10/29.
@@ -18,12 +17,16 @@ import xyqb.library.config.PrefsManager;
 public class DeveloperManager {
 
     public static void toDeveloper(FragmentActivity activity){
+        toFragment(activity,DeveloperFragment.newInstance());
+    }
+
+    public static void toFragment(FragmentActivity activity,Fragment fragment){
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
         View contentView = getContentView(activity);
         contentView.setId(R.id.activity_container);
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.pop_in, R.anim.pop_out, R.anim.pop_in, R.anim.pop_out);
-        fragmentTransaction.addToBackStack(null).add(R.id.activity_container,DeveloperFragment.newInstance()).commit();
+        fragmentTransaction.addToBackStack(null).add(R.id.activity_container,fragment).commit();
     }
 
     private static View getContentView(Activity activity) {

@@ -9,7 +9,6 @@ import android.provider.Settings;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import android.support.v4.app.Fragment;
 import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,13 +24,6 @@ import com.quant.titlebar.TitleBarFragment;
 public class DebugAppInfoFragment extends TitleBarFragment {
     private String title;
 
-    public static Fragment newFragment(String title){
-        Fragment fragment=new DebugAppInfoFragment();
-        Bundle args=new Bundle();
-        args.putString("title",title);
-        fragment.setArguments(args);
-        return fragment;
-    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +43,7 @@ public class DebugAppInfoFragment extends TitleBarFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setTitleText(title);
+        setOnBackClickListener(v->getFragmentManager().popBackStack());
         //软件信息
         setText(view,R.id.tv_channel,R.string.channel_value, getStringMataData("UMENG_CHANNEL"));
         setText(view,R.id.tv_version,R.string.app_version_value, getAppVersionName());
@@ -61,7 +54,7 @@ public class DebugAppInfoFragment extends TitleBarFragment {
         setText(view,R.id.tv_os_api,R.string.os_api_value, Build.VERSION.SDK_INT);
         setText(view,R.id.tv_device_model,R.string.device_model_value, Build.MODEL);
         setText(view,R.id.tv_device_brand,R.string.device_brand_value, Build.BRAND);
-        setText(view,R.id.tv_device_id,R.string.imei_value, getImeiValue());
+        setText(view,R.id.tv_imei,R.string.imei_value, getImeiValue());
         setText(view,R.id.tv_android_id,R.string.android_id_value, getAndroidId());
     }
 
@@ -125,7 +118,7 @@ public class DebugAppInfoFragment extends TitleBarFragment {
     private String getStringMataData(String key) {
         ApplicationInfo appInfo = getAppInfo();
         String value = null;
-        if (null != appInfo) {
+        if (null != appInfo&&null!=appInfo.metaData) {
             value = appInfo.metaData.getString(key);
         }
         return value;

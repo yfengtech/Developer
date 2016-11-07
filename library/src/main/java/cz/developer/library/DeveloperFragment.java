@@ -1,11 +1,10 @@
 package cz.developer.library;
 
 import android.content.Context;
-import android.media.JetPlayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,7 @@ import cz.developer.library.xml.ListConfigReader;
 import xyqb.library.config.PrefsManager;
 
 public class DeveloperFragment extends TitleBarFragment {
-    private static final String TAG = "DeveloperFragment";
+    private static final String PACKAGE_NAME = "cz.developer.library";
     private ListView listView;
     public static Fragment newInstance(){
         return new DeveloperFragment();
@@ -41,8 +40,32 @@ public class DeveloperFragment extends TitleBarFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setTitleText(R.string.debug_list);
-        List<DebugItem> debugItems = PrefsManager.readConfig(ListConfigReader.class);
+        setOnBackClickListener(v->getFragmentManager().popBackStack());
+        final List<DebugItem> debugItems = PrefsManager.readConfig(ListConfigReader.class);
         listView.setAdapter(new DebugListAdapter(getContext(),debugItems));
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            DebugItem item = debugItems.get(position);
+            String className=item.clazz;
+            if(!TextUtils.isEmpty(className)){
+                if(className.startsWith(".")){
+                    className=PACKAGE_NAME+item.clazz;
+                }
+                try {
+                    Class<?> clazz = Class.forName(className);
+                    Fragment fragment= (Fragment) clazz.newInstance();
+                    Bundle args=new Bundle();
+                    args.putString("title",item.title);
+                    fragment.setArguments(args);
+                    DeveloperManager.toFragment(getActivity(),fragment);
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                } catch (java.lang.InstantiationException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
     }
 }

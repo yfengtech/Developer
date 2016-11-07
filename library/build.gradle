@@ -101,6 +101,6 @@ tasks.withType(JavaCompile) {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.cz.titlebar:titlebar:1.1.7'
-    compile 'com.cz.widget:library:1.3.3'
+    compile 'com.cz.widget:library:1.4.4'
     compile 'com.cz.xml:library:1.0.5'
 }
