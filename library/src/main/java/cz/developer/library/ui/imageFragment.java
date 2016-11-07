@@ -1,4 +1,4 @@
-package cz.developer.library;
+package cz.developer.library.ui;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.quant.titlebar.TitleBarFragment;
+
+import cz.developer.library.R;
 
 public class imageFragment extends TitleBarFragment {
     private ListView listView;

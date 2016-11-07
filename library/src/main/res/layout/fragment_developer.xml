@@ -5,9 +5,9 @@
     android:layout_height="match_parent"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:background="@color/lightWhite"
+    android:background="@color/white"
     android:clickable="true"
-    tools:context=".DeveloperFragment">
+    tools:context=".ui.DeveloperFragment">
 
     <ListView
         android:id="@+id/list"

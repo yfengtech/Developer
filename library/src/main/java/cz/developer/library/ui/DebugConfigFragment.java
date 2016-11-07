@@ -1,4 +1,4 @@
-package cz.developer.library;
+package cz.developer.library.ui;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +17,8 @@ import android.widget.TextView;
 import com.quant.titlebar.TitleBarFragment;
 
 import java.io.File;
+
+import cz.developer.library.R;
 
 
 /**

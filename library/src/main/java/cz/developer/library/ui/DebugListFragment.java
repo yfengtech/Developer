@@ -1,4 +1,4 @@
-package cz.developer.library;
+package cz.developer.library.ui;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import android.widget.ListView;
 
 
 import com.quant.titlebar.TitleBarFragment;
+
+import cz.developer.library.R;
 
 
 /**
@@ -41,7 +43,7 @@ public class DebugListFragment extends TitleBarFragment {
 //                    DebugAppInfoFragment.class, extras;
                     break;
                 case 1:
-//                    DebugInfoFragment.class, extras);
+//                    DebugSwitchFragment.class, extras);
                     break;
                 case 2:
 //                    DebugConfigFragment.class, extras);

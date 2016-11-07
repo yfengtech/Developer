@@ -1,4 +1,4 @@
-package cz.developer.library;
+package cz.developer.library.ui;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -14,6 +14,8 @@ import com.quant.titlebar.TitleBarFragment;
 
 import java.util.List;
 
+import cz.developer.library.DeveloperManager;
+import cz.developer.library.R;
 import cz.developer.library.adapter.DebugListAdapter;
 import cz.developer.library.mode.DebugItem;
 import cz.developer.library.xml.ListConfigReader;

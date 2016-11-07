@@ -8,6 +8,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.ViewGroup;
 
+import cz.developer.library.ui.DeveloperFragment;
+import cz.developer.library.ui.switchs.ISwitchInterface;
+
 /**
  * Created by czz on 2016/10/29.
  * 1:提供单独设定域名方法
@@ -16,8 +19,15 @@ import android.view.ViewGroup;
  */
 public class DeveloperManager {
 
+    public static final DeveloperManager instances=new DeveloperManager();
+    private DeveloperConfig config;
+
+    public static DeveloperManager getInstances(){
+        return instances;
+    }
+
     public static void toDeveloper(FragmentActivity activity){
-        toFragment(activity,DeveloperFragment.newInstance());
+        toFragment(activity, DeveloperFragment.newInstance());
     }
 
     public static void toFragment(FragmentActivity activity,Fragment fragment){
@@ -45,5 +55,13 @@ public class DeveloperManager {
             }
         }
         return contentView;
+    }
+
+    public void setDeveloperConfig(DeveloperConfig config){
+        this.config=config;
+    }
+
+    public ISwitchInterface getSwitchInterface(){
+        return this.config.switchConfig;
     }
 }

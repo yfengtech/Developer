@@ -5,7 +5,7 @@ apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 version = "1.0.0"
 android {
-    compileSdkVersion 23
+    compileSdkVersion 24
     buildToolsVersion '24.0.2'
     defaultConfig {
         minSdkVersion 14
@@ -99,7 +99,7 @@ tasks.withType(JavaCompile) {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.cz.titlebar:titlebar:1.1.7'
     compile 'com.cz.widget:library:1.4.4'
     compile 'com.cz.xml:library:1.0.5'

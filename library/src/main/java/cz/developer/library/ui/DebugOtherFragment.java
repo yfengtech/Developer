@@ -1,4 +1,4 @@
-package cz.developer.library;
+package cz.developer.library.ui;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import com.quant.titlebar.TitleBarFragment;
 
 import java.io.IOException;
+
+import cz.developer.library.R;
 
 /**
  * Created by cz on 15/11/30.

@@ -1,0 +1,78 @@
+package cz.developer.library.ui.switchs;
+
+import android.content.Context;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.util.TypedValue;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.Switch;
+
+import com.cz.library.util.Utils;
+import com.cz.library.widget.DivideLinearLayout;
+import com.quant.titlebar.TitleBarFragment;
+
+import java.util.Map;
+
+import cz.developer.library.DeveloperManager;
+import cz.developer.library.R;
+import cz.developer.library.prefs.DeveloperPrefs;
+import cz.developer.library.prefs.PrefsSetting;
+
+
+/**
+ * Created by cz on 15/12/1.
+ * debug信息
+ */
+public class DebugSwitchFragment extends TitleBarFragment {
+    private DivideLinearLayout container;
+    private String title;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle arguments = getArguments();
+        if (null != arguments) {
+            title = arguments.getString("title");
+        }
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(Context context, LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_debug_switch, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setTitleText(title);
+        setOnBackClickListener(v->getFragmentManager().popBackStack());
+
+        container= (DivideLinearLayout) view.findViewById(R.id.ll_container);
+
+        Switch switchView1= (Switch) view.findViewById(R.id.sc_view1);
+        switchView1.setChecked(DeveloperPrefs.getBoolean(PrefsSetting.LOG));
+        switchView1.setOnCheckedChangeListener((buttonView, isChecked) -> DeveloperPrefs.setBoolean(PrefsSetting.LOG,isChecked));
+
+        //添加附加选项
+        ISwitchInterface switchInterface = DeveloperManager.getInstances().getSwitchInterface();
+        if(null!=switchInterface){
+            Map<String, String> extrasItems = switchInterface.getExtrasItems();
+            if(null!=extrasItems){
+                int padding = Utils.dip2px(12);
+                for(Map.Entry<String,String> entry:extrasItems.entrySet()){
+                    Switch switchView=new Switch(getContext());
+                    switchView.setText(entry.getKey());
+                    switchView.setPadding(padding,padding,padding,padding);
+                    switchView.setChecked(switchInterface.itemIsChecked(entry.getValue()));
+                    switchView.setBackgroundResource(R.drawable.white_item_selector);
+                    switchView.setOnCheckedChangeListener((buttonView, isChecked) ->switchInterface.onSwitchItemCheckedChanged(entry.getValue(),isChecked));
+                    container.addView(switchView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                }
+            }
+        }
+    }
+}

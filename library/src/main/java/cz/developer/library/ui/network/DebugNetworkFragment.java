@@ -1,4 +1,4 @@
-package cz.developer.library;
+package cz.developer.library.ui.network;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
