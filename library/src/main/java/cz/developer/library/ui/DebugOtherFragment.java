@@ -28,7 +28,6 @@ public class DebugOtherFragment extends TitleBarFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         view.findViewById(R.id.tv_clear_cache).setOnClickListener(v -> clearAppData());
-
     }
 
     @Override
@@ -39,12 +38,10 @@ public class DebugOtherFragment extends TitleBarFragment {
 
     private void clearAppData() {
         String appPackage = getContext().getPackageName();
-        String cmd1 = "pm clear " + appPackage;
-        String cmd2 = "pm clear " + appPackage + " HERE";
+        String cmd = "pm clear " + appPackage + " HERE";
         Runtime runtime = Runtime.getRuntime();
         try {
-            runtime.exec(cmd1);
-            runtime.exec(cmd2);
+            runtime.exec(cmd);
         } catch (IOException e) {
         }
     }

@@ -29,4 +29,12 @@
     <string name="debug_mode">调试模式</string>
     <string name="debug_list">调试功能列表</string>
     <string name="log_switch">Log日志</string>
+    <string name="network_desc_value">事件:%1$s</string>
+    <string name="path_value">路径:%1$s</string>
+    <string name="url_value">Url:%1$s</string>
+    <string name="empty_info">信息不能为空</string>
+    <string name="changed_net_url">修改Url</string>
+    <string name="changed">更变</string>
+    <string name="input_url_hint">请输入url</string>
+    <string name="server_url_message">选择或编辑一个url地址赋予接口,此接口将使用这个编辑后的服务器地址.</string>
 </resources>

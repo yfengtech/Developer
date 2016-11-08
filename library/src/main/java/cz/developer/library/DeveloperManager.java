@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import cz.developer.library.ui.DeveloperFragment;
+import cz.developer.library.ui.network.INetworkAdapter;
 import cz.developer.library.ui.switchs.ISwitchInterface;
 
 /**
@@ -63,5 +64,9 @@ public class DeveloperManager {
 
     public ISwitchInterface getSwitchInterface(){
         return this.config.switchConfig;
+    }
+
+    public INetworkAdapter getNetworkAdapter(){
+        return this.config.networkAdapter;
     }
 }

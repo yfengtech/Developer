@@ -102,5 +102,5 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.cz.titlebar:titlebar:1.1.7'
     compile 'com.cz.widget:library:1.4.4'
-    compile 'com.cz.xml:library:1.0.5'
+    compile 'com.cz.xml:library:1.0.6'
 }

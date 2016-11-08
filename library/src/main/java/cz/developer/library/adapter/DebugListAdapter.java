@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cz.developer.library.R;
-import cz.developer.library.mode.DebugItem;
+import cz.developer.library.model.DebugItem;
 
 
 /**

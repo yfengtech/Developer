@@ -1,5 +1,6 @@
 package cz.developer.library;
 
+import cz.developer.library.ui.network.INetworkAdapter;
 import cz.developer.library.ui.switchs.ISwitchInterface;
 
 /**
@@ -8,6 +9,7 @@ import cz.developer.library.ui.switchs.ISwitchInterface;
 
 public class DeveloperConfig {
     public ISwitchInterface switchConfig;
+    public INetworkAdapter networkAdapter;
     private DeveloperConfig(){
     }
 
@@ -20,6 +22,11 @@ public class DeveloperConfig {
 
         public Builder setSwitchInterface(ISwitchInterface switchConfig){
             this.config.switchConfig =switchConfig;
+            return this;
+        }
+
+        public Builder setNetworkAdapter(INetworkAdapter adapter){
+            this.config.networkAdapter=adapter;
             return this;
         }
 

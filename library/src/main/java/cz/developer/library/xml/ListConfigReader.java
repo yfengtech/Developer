@@ -1,12 +1,9 @@
 package cz.developer.library.xml;
 
-import android.os.Debug;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import cz.developer.library.mode.DebugItem;
+import cz.developer.library.model.DebugItem;
 import xyqb.library.XmlElement;
 import xyqb.library.config.Config;
 import xyqb.library.config.XmlReaderBase;

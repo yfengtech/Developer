@@ -17,7 +17,7 @@ import java.util.List;
 import cz.developer.library.DeveloperManager;
 import cz.developer.library.R;
 import cz.developer.library.adapter.DebugListAdapter;
-import cz.developer.library.mode.DebugItem;
+import cz.developer.library.model.DebugItem;
 import cz.developer.library.xml.ListConfigReader;
 import xyqb.library.config.PrefsManager;
 

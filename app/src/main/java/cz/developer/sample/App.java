@@ -4,6 +4,7 @@ import android.app.Application;
 
 import cz.developer.library.DeveloperConfig;
 import cz.developer.library.DeveloperManager;
+import cz.developer.sample.impl.NetworkAdapter;
 import cz.developer.sample.impl.SwitchImpl;
 
 /**
@@ -16,7 +17,8 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         DeveloperConfig.Builder builder=new DeveloperConfig.Builder();
-        builder.setSwitchInterface(new SwitchImpl());
+        builder.setSwitchInterface(new SwitchImpl());//开关
+        builder.setNetworkAdapter(new NetworkAdapter());//网络
         DeveloperManager.getInstances().setDeveloperConfig(builder.build());
     }
 }

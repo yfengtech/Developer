@@ -1,4 +1,4 @@
-package cz.developer.library.mode;
+package cz.developer.library.model;
 
 public class DebugItem{
     public String title;
