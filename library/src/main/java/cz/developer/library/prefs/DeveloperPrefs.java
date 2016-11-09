@@ -22,7 +22,7 @@ public class DeveloperPrefs {
         appContext = getAppContext();
     }
 
-    private static SharedPreferences getSharedPreferences() {
+    public static SharedPreferences getSharedPreferences() {
         Context appContext = getAppContext();
         return appContext.getSharedPreferences(DEFAULT_PREFERENCE, Context.MODE_PRIVATE);
     }
@@ -43,7 +43,7 @@ public class DeveloperPrefs {
         return appContext;
     }
 
-    private static SharedPreferences.Editor getPreferenceEditor() {
+    public static SharedPreferences.Editor getPreferenceEditor() {
         SharedPreferences sharedPreferences = getSharedPreferences();
         return sharedPreferences.edit();
     }

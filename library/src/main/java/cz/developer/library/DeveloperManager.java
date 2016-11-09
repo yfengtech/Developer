@@ -37,7 +37,7 @@ public class DeveloperManager {
         contentView.setId(R.id.activity_container);
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.pop_in, R.anim.pop_out, R.anim.pop_in, R.anim.pop_out);
-        fragmentTransaction.addToBackStack(null).add(R.id.activity_container,fragment).commit();
+        fragmentTransaction.addToBackStack(fragment.getClass().getName()).add(R.id.activity_container,fragment).commit();
     }
 
     private static View getContentView(Activity activity) {
@@ -64,6 +64,10 @@ public class DeveloperManager {
 
     public ISwitchInterface getSwitchInterface(){
         return this.config.switchConfig;
+    }
+
+    public DeveloperConfig getDeveloperConfig(){
+        return this.config;
     }
 
     public INetworkAdapter getNetworkAdapter(){

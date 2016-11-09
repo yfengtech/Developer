@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -27,7 +28,7 @@ import cz.developer.library.ui.dialog.EditDialog;
  * Created by czz on 2016/10/29.
  */
 
-public class DebugNetworkFragment extends TitleBarFragment {
+public class DebugNetworkFragment extends TitleBarFragment implements FragmentManager.OnBackStackChangedListener {
     private ListView listView;
     private NetworkItemAdapter adapter;
     private String title;
@@ -55,12 +56,13 @@ public class DebugNetworkFragment extends TitleBarFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        initTitleBar();
-        initAdapter();
-
+        INetworkAdapter networkAdapter = DeveloperManager.getInstances().getNetworkAdapter();
+        initTitleBar(networkAdapter);
+        initAdapter(networkAdapter);
+        getFragmentManager().addOnBackStackChangedListener(this);
     }
 
-    private void initTitleBar() {
+    private void initTitleBar(INetworkAdapter networkAdapter) {
         setTitleText(title);
         setOnBackClickListener(v -> getFragmentManager().popBackStack());
         SearchView searchView=new SearchView(getContext());
@@ -76,10 +78,29 @@ public class DebugNetworkFragment extends TitleBarFragment {
             }
         });
         addImageMenuItem(R.drawable.abc_ic_search_white,searchView);
+        addImageMenuItem(R.drawable.ic_settings_white);
+        setOnMenuItemClickListener((v, index) -> {
+            if(null!=networkAdapter){
+                String serverUrl = networkAdapter.getServerUrl();
+                List<NetItem> networkItems = networkAdapter.getNetworkItems();
+                List<String> items = networkAdapter.getSelectUrl();
+                String[] actionItems=null;
+                if(null!=networkItems){
+                    actionItems=new String[networkItems.size()];
+                    for(int i=0;i<networkItems.size();i++){
+                        actionItems[i]=networkItems.get(i).action;
+                    }
+                }
+                String[] selectItems=null;
+                if(null!=items){
+                    items.toArray(selectItems=new String[items.size()]);
+                }
+                DeveloperManager.toFragment(getActivity(),NetworkSettingFragment.newInstance(actionItems,selectItems,serverUrl));
+            }
+        });
     }
 
-    private void initAdapter() {
-        INetworkAdapter networkAdapter = DeveloperManager.getInstances().getNetworkAdapter();
+    private void initAdapter(INetworkAdapter networkAdapter) {
         String serverUrl=null;
         List<NetItem> networkItems=null;
         final ArrayList<String> selectItems=new ArrayList<>();
@@ -93,7 +114,7 @@ public class DebugNetworkFragment extends TitleBarFragment {
         }
         final String finalUrl=serverUrl;
         listView.setAdapter(adapter=new NetworkItemAdapter(getContext(),networkItems,serverUrl));
-        listView.setOnItemLongClickListener((adapterView, view, i, l) -> {
+        listView.setOnItemClickListener((adapterView, view, i, l) -> {
             NetItem item = adapter.getItem(i);
             final String url = DeveloperPrefs.getString(item.action);
             EditDialog editDialog = EditDialog.newInstance(selectItems, !TextUtils.isEmpty(url)?url:finalUrl);
@@ -105,7 +126,20 @@ public class DebugNetworkFragment extends TitleBarFragment {
                 }
             });
             editDialog.show(getFragmentManager(),null);
-            return true;
         });
+    }
+
+    @Override
+    public void onDestroyView() {
+        getFragmentManager().removeOnBackStackChangedListener(this);
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onBackStackChanged() {
+        if(null!=adapter){
+            adapter.clearUrlItems();
+            adapter.notifyDataSetChanged();
+        }
     }
 }

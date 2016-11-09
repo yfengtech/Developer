@@ -1,4 +1,4 @@
-package cz.developer.library.ui;
+package cz.developer.library.ui.operation;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -17,7 +17,7 @@ import cz.developer.library.R;
  * Created by cz on 15/11/30.
  * debug其他设置界面
  */
-public class DebugOtherFragment extends TitleBarFragment {
+public class DebugOperationFragment extends TitleBarFragment {
     @Nullable
     @Override
     public View onCreateView(Context context, LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,6 +34,7 @@ public class DebugOtherFragment extends TitleBarFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setTitleText(R.string.debug_info);
+        setOnBackClickListener(v->getFragmentManager().popBackStack());
     }
 
     private void clearAppData() {

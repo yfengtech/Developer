@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="12dp">
+
+    <TextView
+        android:id="@+id/tv_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        tools:layout_editor_absoluteX="8dp"
+        android:textSize="16sp"
+        android:textColor="@color/textColor"/>
+
+    <TextView
+        android:id="@+id/tv_item_count"
+        android:text="ItemCount:3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:textSize="14sp"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/darkTextColor"
+        app:layout_constraintTop_toBottomOf="@+id/tv_info"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/tv_aspect_ratio" />
+
+    <TextView
+        android:id="@+id/tv_aspect_ratio"
+        android:text="Aspect Ratio:3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="14sp"
+        android:textColor="@color/darkTextColor"
+        app:layout_constraintTop_toBottomOf="@+id/tv_info"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_padding"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textSize="14sp"
+        android:textColor="@color/darkTextColor"
+        app:layout_constraintTop_toBottomOf="@+id/tv_item_count"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="Padding:12" />
+
+    <TextView
+        android:id="@+id/tv_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textSize="14sp"
+        android:textColor="@color/darkTextColor"
+        app:layout_constraintTop_toBottomOf="@+id/tv_padding"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <cz.developer.library.widget.ThumbView
+        android:id="@+id/tv_thumb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        app:layout_constraintTop_toBottomOf="@+id/tv_type"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

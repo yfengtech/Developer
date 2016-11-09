@@ -3,6 +3,7 @@ package cz.developer.library.ui.network;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.StringRes;
+import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -35,9 +36,11 @@ public class NetworkItemAdapter extends BaseAdapter implements Filterable {
     private CharSequence filterText;
     private ItemFilter filter;
     private String serverUrl;
+    private int textColor;
 
     public NetworkItemAdapter(Context context,List<NetItem> items,String url) {
         this.context=context;
+        this.textColor= ContextCompat.getColor(context,R.color.textColor);
         this.inflater=LayoutInflater.from(context);
         this.items=new ArrayList<>();
         this.serverUrl=url;
@@ -82,6 +85,7 @@ public class NetworkItemAdapter extends BaseAdapter implements Filterable {
             url=TextUtils.isEmpty(dynamicUrl)?"":dynamicUrl;
             urlItems.put(i,url);
         }
+        holder.urlView.setTextColor(TextUtils.isEmpty(url)?textColor:Color.RED);
         holder.urlView.setText(getString(R.string.url_value,TextUtils.isEmpty(url)?serverUrl:url));
         setColorSpan(holder.actionView, Color.GREEN,filterText);
         setColorSpan(holder.pathView, Color.GREEN,filterText);
@@ -91,6 +95,10 @@ public class NetworkItemAdapter extends BaseAdapter implements Filterable {
 
     public void removeUrlItem(int i){
         urlItems.remove(i);
+    }
+
+    public void clearUrlItems(){
+        urlItems.clear();
     }
 
     public String getString(@StringRes int res,Object... params){
