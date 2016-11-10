@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/log_switch"
-        android:textColor="?textColor"
+        android:textColor="?attr/developerTextColor"
         android:background="@drawable/white_item_selector"
         android:padding="12dp"/>
 

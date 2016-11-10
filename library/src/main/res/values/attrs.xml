@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="colorPrimary" format="color"/>
-    <attr name="colorPrimaryDark" format="color"/>
-    <attr name="colorAccent" format="color"/>
-    <attr name="textColor" format="color"/>
-    <attr name="darkTextColor" format="color"/>
+    <attr name="developerColorPrimary" format="color"/>
+    <attr name="developerColorPrimaryDark" format="color"/>
+    <attr name="developerColorAccent" format="color"/>
+    <attr name="developerTextColor" format="color"/>
+    <attr name="developerDarkTextColor" format="color"/>
 </resources>
