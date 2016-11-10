@@ -9,16 +9,4 @@
     auto:dl_divideGravity="item_divide"
     auto:dl_itemDivideDrawable="@color/divide"
     auto:dl_itemDividePadding="12dp"
-    auto:dl_itemDivideSize="@dimen/divideSize">
-
-    <Switch
-        android:id="@+id/sc_view1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/log_switch"
-        android:textColor="?attr/developerTextColor"
-        android:background="@drawable/white_item_selector"
-        android:padding="12dp"/>
-
-
-</com.cz.library.widget.DivideLinearLayout>
+    auto:dl_itemDivideSize="@dimen/divideSize"/>

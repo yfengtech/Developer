@@ -10,6 +10,7 @@ import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,8 @@ import android.widget.TextView;
 
 import com.quant.titlebar.TitleBarFragment;
 
+import cz.developer.library.DeveloperConfig;
+import cz.developer.library.DeveloperManager;
 import cz.developer.library.R;
 
 
@@ -24,6 +27,7 @@ import cz.developer.library.R;
  * Created by cz on 15/12/1.
  */
 public class DebugAppInfoFragment extends TitleBarFragment {
+    private static final String CHANNEL_VALUE="UMENG_CHANNEL";
     private String title;
 
     @Override
@@ -46,8 +50,9 @@ public class DebugAppInfoFragment extends TitleBarFragment {
         super.onViewCreated(view, savedInstanceState);
         setTitleText(title);
         setOnBackClickListener(v->getFragmentManager().popBackStack());
+        DeveloperConfig developerConfig = DeveloperManager.getInstances().getDeveloperConfig();
         //软件信息
-        setText(view,R.id.tv_channel,R.string.channel_value, getStringMataData("UMENG_CHANNEL"));
+        setText(view,R.id.tv_channel,R.string.channel_value, getStringMataData(!TextUtils.isEmpty(developerConfig.channel)?developerConfig.channel:CHANNEL_VALUE));
         setText(view,R.id.tv_version,R.string.app_version_value, getAppVersionName());
         setText(view,R.id.tv_version_code,R.string.app_code_value, getAppVertionCode());
 

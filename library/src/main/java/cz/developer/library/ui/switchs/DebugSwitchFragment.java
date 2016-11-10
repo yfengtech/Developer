@@ -3,7 +3,6 @@ package cz.developer.library.ui.switchs;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +17,6 @@ import java.util.Map;
 
 import cz.developer.library.DeveloperManager;
 import cz.developer.library.R;
-import cz.developer.library.prefs.DeveloperPrefs;
-import cz.developer.library.prefs.PrefsSetting;
 
 
 /**
@@ -52,11 +49,6 @@ public class DebugSwitchFragment extends TitleBarFragment {
         setOnBackClickListener(v->getFragmentManager().popBackStack());
 
         container= (DivideLinearLayout) view.findViewById(R.id.ll_container);
-
-        Switch switchView1= (Switch) view.findViewById(R.id.sc_view1);
-        switchView1.setChecked(DeveloperPrefs.getBoolean(PrefsSetting.LOG));
-        switchView1.setOnCheckedChangeListener((buttonView, isChecked) -> DeveloperPrefs.setBoolean(PrefsSetting.LOG,isChecked));
-
         //添加附加选项
         ISwitchInterface switchInterface = DeveloperManager.getInstances().getSwitchInterface();
         if(null!=switchInterface){

@@ -12,6 +12,7 @@ public class DeveloperConfig {
     public ISwitchInterface switchConfig;
     public INetworkAdapter networkAdapter;
     public ImageAdapter imageAdapter;
+    public String channel;
     private DeveloperConfig(){
     }
 
@@ -34,6 +35,11 @@ public class DeveloperConfig {
 
         public Builder setImageAdapter(ImageAdapter adapter){
             this.config.imageAdapter=adapter;
+            return this;
+        }
+
+        public Builder setChannel(String channel){
+            this.config.channel=channel;
             return this;
         }
 

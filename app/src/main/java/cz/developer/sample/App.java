@@ -20,6 +20,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         DeveloperConfig.Builder builder=new DeveloperConfig.Builder();
+        builder.setChannel("Channel");
         builder.setSwitchInterface(new SwitchImpl());//开关
         builder.setNetworkAdapter(new NetworkAdapter());//网络
         builder.setImageAdapter(new ImageAdapterImpl());//图片调试
