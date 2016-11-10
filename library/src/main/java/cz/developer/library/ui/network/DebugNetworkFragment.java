@@ -58,7 +58,7 @@ public class DebugNetworkFragment extends TitleBarFragment implements FragmentMa
         super.onActivityCreated(savedInstanceState);
         INetworkAdapter networkAdapter = DeveloperManager.getInstances().getNetworkAdapter();
         initTitleBar(networkAdapter);
-        initAdapter(networkAdapter);
+        listView.postDelayed(()->initAdapter(networkAdapter),300);
         getFragmentManager().addOnBackStackChangedListener(this);
     }
 

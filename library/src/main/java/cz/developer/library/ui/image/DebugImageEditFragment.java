@@ -172,20 +172,22 @@ public class DebugImageEditFragment extends TitleBarFragment {
         final List<String> finaItems=new ArrayList<>(item.imageItems);
         TextView valueView= (TextView) view.findViewById(R.id.tv_value);
         valueView.setText(String.valueOf(finaItems.size()));
-        view.findViewById(R.id.iv_remove_value).setOnClickListener(v->{
-            if(1<item.imageItems.size()){
-                item.imageItems.remove(item.imageItems.size()-1);
-                valueView.setText(String.valueOf(item.imageItems.size()));
-                thumbView.setItemCount(item.imageItems.size());
-            }
-        });
-        view.findViewById(R.id.iv_add_value).setOnClickListener(v->{
-            if(item.imageItems.size()<finaItems.size()){
-                item.imageItems.add(finaItems.get(item.imageItems.size()));
-                valueView.setText(String.valueOf(item.imageItems.size()));
-                thumbView.setItemCount(item.imageItems.size());
-            }
-        });
+        if(ImageItem.LIST_ITEM==item.imageType){
+            view.findViewById(R.id.iv_remove_value).setOnClickListener(v->{
+                if(1<item.imageItems.size()){
+                    item.imageItems.remove(item.imageItems.size()-1);
+                    valueView.setText(String.valueOf(item.imageItems.size()));
+                    thumbView.setItemCount(item.imageItems.size());
+                }
+            });
+            view.findViewById(R.id.iv_add_value).setOnClickListener(v->{
+                if(item.imageItems.size()<finaItems.size()){
+                    item.imageItems.add(finaItems.get(item.imageItems.size()));
+                    valueView.setText(String.valueOf(item.imageItems.size()));
+                    thumbView.setItemCount(item.imageItems.size());
+                }
+            });
+        }
     }
 
     private float convertPixelToDp(float px){

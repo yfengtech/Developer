@@ -3,18 +3,20 @@ package cz.developer.library.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 /**
  * Created by cz on 11/9/16.
  */
 
-public class ImageItem implements Parcelable {
+public class ImageItem<T extends Parcelable> implements Parcelable {
     public static final int BANNER_ITEM=0;
     public static final int LIST_ITEM=1;
     public static final String BANNER_VALUE="BANNER";
     public static final String LIST_VALUE="LIST";
-    public final ArrayList<String> imageItems;
+    public ArrayList<String> imageItems;
+    private Class<T> itemClazz;
     public float aspectRatio;
     public int horizontalPadding;
     public int verticalPadding;
@@ -22,11 +24,16 @@ public class ImageItem implements Parcelable {
     public String info;
     public int itemType;
     public int imageType;
-    public Parcelable obj;
+    public T obj;
+    public ArrayList<T> objItems;
 
     public ImageItem() {
         imageType=LIST_ITEM;
         imageItems=new ArrayList<>();
+    }
+
+    public ImageItem(Class<T> clazz){
+        this.itemClazz=clazz;
     }
 
 
@@ -45,7 +52,8 @@ public class ImageItem implements Parcelable {
         dest.writeString(this.info);
         dest.writeInt(this.itemType);
         dest.writeInt(this.imageType);
-        dest.writeParcelable(this.obj, 0);
+        dest.writeParcelable(this.obj, flags);
+        dest.writeTypedList(this.objItems);
     }
 
     protected ImageItem(Parcel in) {
@@ -58,13 +66,24 @@ public class ImageItem implements Parcelable {
         this.itemType = in.readInt();
         this.imageType = in.readInt();
         this.obj = in.readParcelable(Parcelable.class.getClassLoader());
+        if(null!=itemClazz){
+            try {
+                Field field = itemClazz.getDeclaredField("CREATOR");
+                Parcelable.Creator<T> creator= (Creator<T>) field.get(null);
+                this.objItems = in.createTypedArrayList(creator);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
-    public static final Creator<ImageItem> CREATOR = new Creator<ImageItem>() {
+    public static final Parcelable.Creator<ImageItem> CREATOR = new Parcelable.Creator<ImageItem>() {
+        @Override
         public ImageItem createFromParcel(Parcel source) {
             return new ImageItem(source);
         }
 
+        @Override
         public ImageItem[] newArray(int size) {
             return new ImageItem[size];
         }

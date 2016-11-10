@@ -39,10 +39,11 @@ public class DebugImageFragment extends TitleBarFragment {
         super.onActivityCreated(savedInstanceState);
         setTitleText(R.string.debug_image);
         setOnBackClickListener(v -> getFragmentManager().popBackStack());
-        listView.setAdapter(adapter = new DebugImageItemAdapter(getContext(), DeveloperManager.getInstances().getDeveloperConfig().imageAdapter));
-        listView.setOnItemClickListener((adapterView, view, i, l) ->
-                DeveloperManager.toFragment(getActivity(), DebugImageEditFragment.newInstance(adapter.getItem(i), i)));
-
+        listView.postDelayed(()->{
+            listView.setAdapter(adapter = new DebugImageItemAdapter(getContext(), DeveloperManager.getInstances().getDeveloperConfig().imageAdapter));
+            listView.setOnItemClickListener((adapterView, view, i, l) ->
+                    DeveloperManager.toFragment(getActivity(), DebugImageEditFragment.newInstance(adapter.getItem(i), i)));
+        },300);
         DeveloperBus.subscribe(OnChangedImageItemEvent.class, item -> {
             if (null != adapter) {
                 adapter.setItem(item.index, item.item);

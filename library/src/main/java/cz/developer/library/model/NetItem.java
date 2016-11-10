@@ -3,6 +3,8 @@ package cz.developer.library.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+
 /**
  * Created by cz on 11/8/16.
  */
@@ -11,6 +13,7 @@ public class NetItem implements Parcelable {
     public String action;
     public String info;
     public String url;
+    public ArrayList<Parcelable> items;
 
     @Override
     public int describeContents() {
