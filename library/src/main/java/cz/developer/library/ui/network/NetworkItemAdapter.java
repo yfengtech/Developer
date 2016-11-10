@@ -91,7 +91,6 @@ public class NetworkItemAdapter extends BaseAdapter implements Filterable {
         holder.urlView.setText(getString(R.string.url_value,TextUtils.isEmpty(url)?serverUrl:url));
         setColorSpan(holder.actionView, Color.GREEN,filterText);
         setColorSpan(holder.pathView, Color.GREEN,filterText);
-        setColorSpan(holder.urlView, Color.GREEN,filterText);
         return view;
     }
 
@@ -166,9 +165,8 @@ public class NetworkItemAdapter extends BaseAdapter implements Filterable {
             List<NetItem> filterItems=new ArrayList<>();
             for(int i=0;i<finalItems.size();i++){
                 NetItem entity = finalItems.get(i);
-                if(!TextUtils.isEmpty(entity.action)&&entity.action.contains(constraint)||
-                        !TextUtils.isEmpty(entity.info)&&entity.info.contains(constraint)||
-                        !TextUtils.isEmpty(entity.url)&&entity.url.contains(constraint)){
+                if((!TextUtils.isEmpty(entity.info)&&entity.info.contains(constraint))||
+                        (!TextUtils.isEmpty(entity.url)&&entity.url.contains(constraint))){
                     filterItems.add(entity);
                 }
             }

@@ -27,7 +27,6 @@ import cz.developer.library.R;
  * Created by cz on 15/12/1.
  */
 public class DebugAppInfoFragment extends TitleBarFragment {
-    private static final String CHANNEL_VALUE="UMENG_CHANNEL";
     private String title;
 
     @Override
@@ -52,9 +51,9 @@ public class DebugAppInfoFragment extends TitleBarFragment {
         setOnBackClickListener(v->getFragmentManager().popBackStack());
         DeveloperConfig developerConfig = DeveloperManager.getInstances().getDeveloperConfig();
         //软件信息
-        setText(view,R.id.tv_channel,R.string.channel_value, getStringMataData(!TextUtils.isEmpty(developerConfig.channel)?developerConfig.channel:CHANNEL_VALUE));
+        setText(view,R.id.tv_channel,R.string.channel_value, TextUtils.isEmpty(developerConfig.channel)?"":developerConfig.channel);
         setText(view,R.id.tv_version,R.string.app_version_value, getAppVersionName());
-        setText(view,R.id.tv_version_code,R.string.app_code_value, getAppVertionCode());
+        setText(view,R.id.tv_version_code,R.string.app_code_value, getAppVersionCode());
 
         //机器信息
         setText(view,R.id.tv_os_version,R.string.os_version_value, Build.DISPLAY);
@@ -91,7 +90,7 @@ public class DebugAppInfoFragment extends TitleBarFragment {
      *
      * @return
      */
-    private int getAppVertionCode() {
+    private int getAppVersionCode() {
         int appCode = -1;
         try {
             Context context = getContext();
@@ -115,21 +114,6 @@ public class DebugAppInfoFragment extends TitleBarFragment {
         return appInfo;
     }
 
-
-    /**
-     * 获得string mataData数据
-     *
-     * @param key
-     * @return
-     */
-    private String getStringMataData(String key) {
-        ApplicationInfo appInfo = getAppInfo();
-        String value = null;
-        if (null != appInfo&&null!=appInfo.metaData) {
-            value = appInfo.metaData.getString(key);
-        }
-        return value;
-    }
 
     /**
      * 获得android设备id
