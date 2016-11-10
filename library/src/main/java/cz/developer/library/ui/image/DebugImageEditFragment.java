@@ -160,7 +160,7 @@ public class DebugImageEditFragment extends TitleBarFragment {
         RadioButton button= (RadioButton) view.findViewById(ImageItem.BANNER_ITEM==item.imageType?R.id.rb_banner:R.id.rb_list);
         button.setChecked(true);
 
-        final View container=view.findViewById(R.id.ll_container);
+        final View container=view.findViewById(R.id.sv_container);
         drawerLayout= (DrawerLayout) view.findViewById(R.id.drawer_layout);
         Switch switchView= (Switch) view.findViewById(R.id.st_translation);
         switchView.setChecked(true);

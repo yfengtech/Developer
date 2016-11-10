@@ -145,7 +145,7 @@ public class DebugAppInfoFragment extends TitleBarFragment {
                 value="获取imei码失败了~";
             }
         } else {
-            value="Need READ_PHONE_STATE Permission~";
+            value="Need READ_PHONE_STATE Permission";
         }
         return value;
     }

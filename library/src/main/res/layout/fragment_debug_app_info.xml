@@ -28,7 +28,6 @@
             android:paddingRight="8dp"
             android:paddingTop="4dp"
             android:text="@string/app_info"
-            android:background="@color/gray"
             android:textColor="?attr/developerTextColor"
             android:textSize="12sp" />
 
@@ -69,7 +68,6 @@
             android:paddingTop="4dp"
             android:text="@string/model_info"
             android:textColor="?attr/developerTextColor"
-            android:background="@color/gray"
             android:textSize="12sp" />
 
         <TextView
