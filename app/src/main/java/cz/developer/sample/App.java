@@ -27,6 +27,7 @@ public class App extends Application {
         DeveloperManager.getInstances().setDeveloperConfig(builder.build());
 
         Fresco.initialize(getApplicationContext());
+
     }
 
 }
