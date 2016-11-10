@@ -104,5 +104,4 @@ dependencies {
     compile 'com.cz.xml:library:1.0.6'
     compile 'io.reactivex:rxjava:1.1.6'
     compile 'io.reactivex:rxandroid:0.24.0'
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha8'
 }
