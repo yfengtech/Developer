@@ -15,8 +15,7 @@
             android:id="@+id/tv_thumb"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:background="@color/colorPrimary" />
+            android:background="?colorPrimary" />
     </ScrollView>
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -38,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
                 android:layout_marginTop="12dp"
-                android:textColor="@color/textColor"/>
+                android:textColor="?textColor"/>
 
             <TextView
                 android:id="@+id/tv_aspect_ratio"
@@ -147,7 +146,7 @@
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:background="@color/colorPrimary"/>
+                    android:background="?colorPrimary"/>
 
                 <ImageView
                     android:id="@+id/iv_add_value"
@@ -164,7 +163,7 @@
                 android:id="@+id/st_translation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/textColor"
+                android:textColor="?textColor"
                 android:text="@string/set_background_transparent" />
         </LinearLayout>
     </ScrollView>

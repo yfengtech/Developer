@@ -69,7 +69,8 @@ public class DebugImageEditFragment extends TitleBarFragment {
         thumbView.setItemPadding((int) item.itemPadding);
         thumbView.setPadding(item.horizontalPadding,item.verticalPadding,item.horizontalPadding,item.verticalPadding);
         thumbView.setAspectRatio(item.aspectRatio);
-        thumbView.setItemCount(ImageItem.BANNER_ITEM!=item.type?item.imageItems.size():1);
+        thumbView.setItemCount(item.imageItems.size());
+        thumbView.setItemType(item.imageType);
         thumbView.setColor(ContextCompat.getColor(getContext(),R.color.alphaGray));
 
 
@@ -156,10 +157,10 @@ public class DebugImageEditFragment extends TitleBarFragment {
             }
         });
 
-        RadioButton button= (RadioButton) view.findViewById(ImageItem.BANNER_ITEM==item.type?R.id.rb_banner:R.id.rb_list);
+        RadioButton button= (RadioButton) view.findViewById(ImageItem.BANNER_ITEM==item.imageType?R.id.rb_banner:R.id.rb_list);
         button.setChecked(true);
 
-        final View container=view.findViewById(R.id.sv_container);
+        final View container=view.findViewById(R.id.ll_container);
         drawerLayout= (DrawerLayout) view.findViewById(R.id.drawer_layout);
         Switch switchView= (Switch) view.findViewById(R.id.st_translation);
         switchView.setChecked(true);

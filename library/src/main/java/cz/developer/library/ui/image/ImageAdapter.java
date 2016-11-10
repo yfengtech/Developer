@@ -18,6 +18,8 @@ public interface ImageAdapter {
 
     View getView(Context context, ViewGroup parent,ImageItem item);
 
+    int getItemCount();
+
     List<ImageItem> getImageItems();
 
 }

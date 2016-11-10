@@ -6,6 +6,8 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 
+import cz.developer.library.model.ImageItem;
+
 /**
  * Created by cz on 11/9/16.
  */
@@ -15,6 +17,7 @@ public class ThumbView extends View {
     private float aspectRatio;
     private int itemPadding;
     private int itemCount;
+    private int itemType;
 
     public ThumbView(Context context) {
         this(context,null,0);
@@ -50,12 +53,21 @@ public class ThumbView extends View {
         invalidate();
     }
 
+    public void setItemType(int type){
+        this.itemType=type;
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int measuredWidth = getMeasuredWidth();
-        int itemWidth = (measuredWidth - getPaddingLeft() - getPaddingRight() - (itemCount - 1) * itemPadding) / itemCount;
-        int height= (int) (itemWidth*aspectRatio)+getPaddingTop()+getPaddingBottom();
+        int itemWidth = (measuredWidth - getPaddingLeft() - getPaddingRight() - itemCount * itemPadding*2) / itemCount;
+        int height;
+        if(ImageItem.BANNER_ITEM==itemType){
+            height= (int) (measuredWidth*aspectRatio)+getPaddingTop()+getPaddingBottom();
+        } else {
+            height= (int) (itemWidth/aspectRatio)+getPaddingTop()+getPaddingBottom();
+        }
         setMeasuredDimension(measuredWidth,height);
     }
 
@@ -67,12 +79,16 @@ public class ThumbView extends View {
 
         int paddingTop = getPaddingTop();
         int paddingBottom = getPaddingBottom();
-        int itemWidth = (width - getPaddingLeft() - getPaddingRight() - (itemCount - 1) * itemPadding) / itemCount;
+        int itemCount=1;
+        if(ImageItem.LIST_ITEM==itemType){
+            itemCount=this.itemCount;
+        }
+        int itemWidth = (width - getPaddingLeft() - getPaddingRight() - itemCount * itemPadding*2) / itemCount;
 
-        int left=getPaddingLeft();
+        int left=getPaddingLeft()+itemPadding;
         for(int i=0;i<itemCount;i++){
             canvas.drawRect(left,paddingTop,left+itemWidth,height-paddingBottom,paint);
-            left+=itemWidth+itemPadding;
+            left+=itemWidth+itemPadding*2;
         }
     }
 }

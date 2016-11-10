@@ -14,7 +14,7 @@
         android:layout_marginBottom="2dp"
         android:layout_marginLeft="8dp"
         android:lines="1"
-        android:textColor="@color/textColor"
+        android:textColor="?textColor"
         android:textSize="16sp" />
 
     <TextView
@@ -23,6 +23,6 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:lines="1"
-        android:textColor="@color/darkTextColor"
+        android:textColor="?darkTextColor"
         android:textSize="13sp" />
 </LinearLayout>

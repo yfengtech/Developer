@@ -20,7 +20,7 @@ import cz.developer.library.event.OnChangedImageItemEvent;
  */
 public class DebugImageFragment extends TitleBarFragment {
     private ListView listView;
-    private DebugImageAdapter adapter;
+    private DebugImageItemAdapter adapter;
 
     @Override
     public View onCreateView(Context context, LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -31,7 +31,7 @@ public class DebugImageFragment extends TitleBarFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         listView = (ListView) view.findViewById(R.id.list_view);
-        view.findViewById(R.id.iv_start).setOnClickListener(v -> DeveloperManager.toFragment(getActivity(), new DebugImageListFragment()));
+        view.findViewById(R.id.iv_start).setOnClickListener(v -> DeveloperManager.toFragment(getActivity(),DebugImageListFragment.newInstance(adapter.getItems())));
     }
 
     @Override
@@ -39,7 +39,7 @@ public class DebugImageFragment extends TitleBarFragment {
         super.onActivityCreated(savedInstanceState);
         setTitleText(R.string.debug_image);
         setOnBackClickListener(v -> getFragmentManager().popBackStack());
-        listView.setAdapter(adapter = new DebugImageAdapter(getContext(), DeveloperManager.getInstances().getDeveloperConfig().imageAdapter));
+        listView.setAdapter(adapter = new DebugImageItemAdapter(getContext(), DeveloperManager.getInstances().getDeveloperConfig().imageAdapter));
         listView.setOnItemClickListener((adapterView, view, i, l) ->
                 DeveloperManager.toFragment(getActivity(), DebugImageEditFragment.newInstance(adapter.getItem(i), i)));
 

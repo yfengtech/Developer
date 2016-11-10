@@ -23,7 +23,7 @@
             android:gravity="center_vertical"
             android:padding="12dp"
             android:text="@string/clear_app_cache"
-            android:textColor="@color/textColor"
+            android:textColor="?textColor"
             android:textSize="15sp"
             />
 

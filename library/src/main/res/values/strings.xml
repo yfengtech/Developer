@@ -51,7 +51,7 @@
     <string name="aspect_ratio_value">宽高比:%1$s</string>
     <string name="padding_value">横向边距:%1$s 纵向边距:%2$s 条目边距:%3$s</string>
     <string name="image_type_value">展示类型:%1$s</string>
-    <string name="aspect_ratio">宽高比</string>
+    <string name="aspect_ratio">高宽比</string>
     <string name="horizontal_padding">横向边距</string>
     <string name="vertical_padding">纵向边距</string>
     <string name="item_padding">条目边距</string>
@@ -63,4 +63,6 @@
     <string name="edit_image_format">编辑图片格式</string>
     <string name="list">List</string>
     <string name="set_background_transparent">设置背景透明</string>
+    <string name="debug_image_list">预览图片列表</string>
+    <string name="debug_item">条目设定</string>
 </resources>

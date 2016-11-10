@@ -2,6 +2,8 @@ package cz.developer.sample;
 
 import android.app.Application;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+
 import cz.developer.library.DeveloperConfig;
 import cz.developer.library.DeveloperManager;
 import cz.developer.sample.impl.ImageAdapterImpl;
@@ -22,5 +24,8 @@ public class App extends Application {
         builder.setNetworkAdapter(new NetworkAdapter());//网络
         builder.setImageAdapter(new ImageAdapterImpl());//图片调试
         DeveloperManager.getInstances().setDeveloperConfig(builder.build());
+
+        Fresco.initialize(getApplicationContext());
     }
+
 }

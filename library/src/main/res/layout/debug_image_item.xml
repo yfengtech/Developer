@@ -15,7 +15,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         tools:layout_editor_absoluteX="8dp"
         android:textSize="16sp"
-        android:textColor="@color/textColor"/>
+        android:textColor="?textColor"/>
 
     <TextView
         android:id="@+id/tv_item_count"
@@ -25,7 +25,7 @@
         android:gravity="left"
         android:textSize="14sp"
         android:layout_marginTop="4dp"
-        android:textColor="@color/darkTextColor"
+        android:textColor="?darkTextColor"
         app:layout_constraintTop_toBottomOf="@+id/tv_info"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/tv_aspect_ratio" />
@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textSize="14sp"
-        android:textColor="@color/darkTextColor"
+        android:textColor="?darkTextColor"
         app:layout_constraintTop_toBottomOf="@+id/tv_info"
         app:layout_constraintRight_toRightOf="parent" />
 
@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:textSize="14sp"
-        android:textColor="@color/darkTextColor"
+        android:textColor="?darkTextColor"
         app:layout_constraintTop_toBottomOf="@+id/tv_item_count"
         app:layout_constraintLeft_toLeftOf="parent"
         android:text="Padding:12" />
@@ -58,7 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:textSize="14sp"
-        android:textColor="@color/darkTextColor"
+        android:textColor="?darkTextColor"
         app:layout_constraintTop_toBottomOf="@+id/tv_padding"
         app:layout_constraintLeft_toLeftOf="parent" />
 

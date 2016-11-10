@@ -2,9 +2,13 @@
 
     <!-- Customize your theme here. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!--此处5个attr必须配置,library依赖此处5种颜色做初始化-->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorPrimary</item>
+        <item name="textColor">@color/textColor</item>
+        <item name="darkTextColor">@color/darkTextColor</item>
+        <!-- end -->
 
         <item name="android:windowIsTranslucent">false</item>
         <item name="titleBarBackgroundColor">@color/colorPrimary</item>

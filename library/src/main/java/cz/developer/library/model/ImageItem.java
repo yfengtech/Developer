@@ -20,10 +20,12 @@ public class ImageItem implements Parcelable {
     public int verticalPadding;
     public float itemPadding;
     public String info;
-    public int type;
+    public int itemType;
+    public int imageType;
+    public Parcelable obj;
 
     public ImageItem() {
-        type=LIST_ITEM;
+        imageType=LIST_ITEM;
         imageItems=new ArrayList<>();
     }
 
@@ -41,7 +43,9 @@ public class ImageItem implements Parcelable {
         dest.writeInt(this.verticalPadding);
         dest.writeFloat(this.itemPadding);
         dest.writeString(this.info);
-        dest.writeInt(this.type);
+        dest.writeInt(this.itemType);
+        dest.writeInt(this.imageType);
+        dest.writeParcelable(this.obj, 0);
     }
 
     protected ImageItem(Parcel in) {
@@ -51,7 +55,9 @@ public class ImageItem implements Parcelable {
         this.verticalPadding = in.readInt();
         this.itemPadding = in.readFloat();
         this.info = in.readString();
-        this.type = in.readInt();
+        this.itemType = in.readInt();
+        this.imageType = in.readInt();
+        this.obj = in.readParcelable(Parcelable.class.getClassLoader());
     }
 
     public static final Creator<ImageItem> CREATOR = new Creator<ImageItem>() {

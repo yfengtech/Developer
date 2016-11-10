@@ -13,7 +13,7 @@
         android:gravity="center_vertical"
         android:padding="12dp"
         android:text="@string/old_server_url"
-        android:textColor="@color/textColor"
+        android:textColor="?textColor"
         android:textSize="15sp"
         auto:dl_divideDrawable="@color/divide"
         auto:dl_divideGravity="bottom"
@@ -34,14 +34,14 @@
             android:gravity="center_vertical"
             android:padding="12dp"
             android:text="@string/server_url"
-            android:textColor="@color/textColor"
+            android:textColor="?textColor"
             android:textSize="15sp" />
 
         <EditText
             android:id="@+id/et_server_url"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/textColor"
+            android:textColor="?textColor"
             android:textSize="15sp" />
 
     </com.cz.library.widget.DivideLinearLayout>

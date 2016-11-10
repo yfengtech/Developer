@@ -3,12 +3,12 @@ package cz.developer.library.ui.network;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.StringRes;
-import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.util.SparseArray;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,8 +39,10 @@ public class NetworkItemAdapter extends BaseAdapter implements Filterable {
     private int textColor;
 
     public NetworkItemAdapter(Context context,List<NetItem> items,String url) {
+        TypedValue typedValue = new TypedValue();
+        context.getTheme().resolveAttribute(R.attr.textColor, typedValue, true);
         this.context=context;
-        this.textColor= ContextCompat.getColor(context,R.color.textColor);
+        this.textColor=typedValue.data;
         this.inflater=LayoutInflater.from(context);
         this.items=new ArrayList<>();
         this.serverUrl=url;

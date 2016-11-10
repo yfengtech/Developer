@@ -1,9 +1,8 @@
 apply plugin: 'com.android.library'
 apply plugin: 'me.tatarka.retrolambda'
-apply plugin: 'me.leolin.gradle-android-aspectj'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
-version = "1.0.0"
+version = "1.0.1"
 android {
     compileSdkVersion 24
     buildToolsVersion '24.0.2'
