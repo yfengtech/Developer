@@ -18,6 +18,5 @@
         android:src="@drawable/ic_dashboard_white"
         android:layout_gravity="right|bottom"
         android:layout_margin="8dp"
-        android:padding="16dp"
-        android:background="@drawable/primary_circle_selector"/>
+        android:padding="16dp" />
 </FrameLayout>

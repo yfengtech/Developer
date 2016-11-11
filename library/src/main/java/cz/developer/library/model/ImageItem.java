@@ -33,6 +33,8 @@ public class ImageItem<T extends Parcelable> implements Parcelable {
     }
 
     public ImageItem(Class<T> clazz){
+        imageType=LIST_ITEM;
+        imageItems=new ArrayList<>();
         this.itemClazz=clazz;
     }
 

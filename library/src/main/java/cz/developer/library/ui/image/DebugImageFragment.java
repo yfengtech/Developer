@@ -1,8 +1,13 @@
 package cz.developer.library.ui.image;
 
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.StateListDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.AttrRes;
 import android.support.annotation.Nullable;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +25,7 @@ import cz.developer.library.event.OnChangedImageItemEvent;
  */
 public class DebugImageFragment extends TitleBarFragment {
     private ListView listView;
+    private View imageView;
     private DebugImageItemAdapter adapter;
 
     @Override
@@ -31,7 +37,28 @@ public class DebugImageFragment extends TitleBarFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         listView = (ListView) view.findViewById(R.id.list_view);
-        view.findViewById(R.id.iv_start).setOnClickListener(v -> DeveloperManager.toFragment(getActivity(),DebugImageListFragment.newInstance(adapter.getItems())));
+        imageView= view.findViewById(R.id.iv_start);
+        imageView.setOnClickListener(v -> DeveloperManager.toFragment(getActivity(),DebugImageListFragment.newInstance(adapter.getItems())));
+        StateListDrawable stateListDrawable=new StateListDrawable();
+        GradientDrawable drawable=new GradientDrawable();
+        drawable.setShape(GradientDrawable.OVAL);
+        drawable.setColor(getAttrColor(R.attr.developerColorPrimary));
+        stateListDrawable.addState(new int[]{android.R.attr.state_pressed},drawable);
+        drawable=new GradientDrawable();
+        drawable.setShape(GradientDrawable.OVAL);
+        drawable.setColor(getAttrColor(R.attr.developerColorPrimaryDark));
+        stateListDrawable.addState(new int[]{},drawable);
+        if(Build.VERSION.SDK_INT<Build.VERSION_CODES.JELLY_BEAN){
+            imageView.setBackgroundDrawable(stateListDrawable);
+        } else {
+            imageView.setBackground(stateListDrawable);
+        }
+    }
+
+    public int getAttrColor(@AttrRes int attr) {
+        TypedValue typedValue = new TypedValue();
+        getContext().getTheme().resolveAttribute(attr, typedValue, true);
+        return typedValue.data;
     }
 
     @Override

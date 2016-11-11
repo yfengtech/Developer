@@ -2,7 +2,11 @@ package cz.developer.library.ui.image;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.StateListDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.AttrRes;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -11,6 +15,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -173,14 +179,23 @@ public class DebugImageEditFragment extends TitleBarFragment {
         TextView valueView= (TextView) view.findViewById(R.id.tv_value);
         valueView.setText(String.valueOf(finaItems.size()));
         if(ImageItem.LIST_ITEM==item.imageType){
-            view.findViewById(R.id.iv_remove_value).setOnClickListener(v->{
+            View removeView=view.findViewById(R.id.iv_remove_value);
+            View addView = view.findViewById(R.id.iv_add_value);
+            if(Build.VERSION.SDK_INT<Build.VERSION_CODES.JELLY_BEAN){
+                removeView.setBackgroundDrawable(getItemSelector(Gravity.LEFT));
+                addView.setBackgroundDrawable(getItemSelector(Gravity.RIGHT));
+            } else {
+                removeView.setBackgroundDrawable(getItemSelector(Gravity.LEFT));
+                addView.setBackgroundDrawable(getItemSelector(Gravity.RIGHT));
+            }
+            removeView.setOnClickListener(v->{
                 if(1<item.imageItems.size()){
                     item.imageItems.remove(item.imageItems.size()-1);
                     valueView.setText(String.valueOf(item.imageItems.size()));
                     thumbView.setItemCount(item.imageItems.size());
                 }
             });
-            view.findViewById(R.id.iv_add_value).setOnClickListener(v->{
+            addView.setOnClickListener(v->{
                 if(item.imageItems.size()<finaItems.size()){
                     item.imageItems.add(finaItems.get(item.imageItems.size()));
                     valueView.setText(String.valueOf(item.imageItems.size()));
@@ -188,6 +203,40 @@ public class DebugImageEditFragment extends TitleBarFragment {
                 }
             });
         }
+    }
+
+    /**
+     * 之所以动态生成,因为5.0以下不支持attr引用在drawable.xml内使用
+     * @param gravity
+     * @return
+     */
+    private StateListDrawable getItemSelector(int gravity){
+        StateListDrawable stateListDrawable=new StateListDrawable();
+        GradientDrawable drawable=new GradientDrawable();
+        float radius= TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,3,getResources().getDisplayMetrics());
+        if(Gravity.LEFT==gravity){
+            drawable.setCornerRadii(new float[]{radius, radius, 0, 0, 0, 0, radius, radius});
+        } else if(Gravity.RIGHT==gravity){
+            drawable.setCornerRadii(new float[]{ 0, 0,radius, radius,radius, radius, 0, 0});
+        }
+        drawable.setColor(getAttrColor(R.attr.developerColorPrimary));
+        stateListDrawable.addState(new int[]{android.R.attr.state_pressed},drawable);
+
+        drawable=new GradientDrawable();
+        if(Gravity.LEFT==gravity){
+            drawable.setCornerRadii(new float[]{radius, radius, 0, 0, 0, 0, radius, radius});
+        } else if(Gravity.RIGHT==gravity){
+            drawable.setCornerRadii(new float[]{ 0, 0,radius, radius,radius, radius, 0, 0});
+        }
+        drawable.setColor(getAttrColor(R.attr.developerColorPrimaryDark));
+        stateListDrawable.addState(new int[]{},drawable);
+        return stateListDrawable;
+    }
+
+    public int getAttrColor(@AttrRes int attr) {
+        TypedValue typedValue = new TypedValue();
+        getContext().getTheme().resolveAttribute(attr, typedValue, true);
+        return typedValue.data;
     }
 
     private float convertPixelToDp(float px){
