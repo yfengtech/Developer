@@ -2,6 +2,7 @@
 <project>
     <item title="应用信息" info="查看应用渠道,版本..." clazz=".ui.appinfo.DebugAppInfoFragment"/>
     <item title="调试信息" info="开启,应用调试模块开关" clazz=".ui.switchs.DebugSwitchFragment"/>
+    <item title="控件信息" info="开启,应用调试部分控件加载信息开关" clazz=".ui.view.DebugViewFragment"/>
     <item title="网络调试" info="修改单个,所有接口服务器" clazz=".ui.network.DebugNetworkFragment"/>
     <item title="图片调试" info="查看编辑图片比例,以及缩放情况" clazz=".ui.image.DebugImageFragment"/>
     <item title="其他操作" info="清空应用,本地信息" clazz=".ui.operation.DebugOperationFragment"/>

@@ -16,7 +16,6 @@ public class DeveloperConfig {
     private DeveloperConfig(){
     }
 
-
     public static class Builder{
         private DeveloperConfig config;
         public Builder() {
@@ -42,6 +41,7 @@ public class DeveloperConfig {
             this.config.channel=channel;
             return this;
         }
+
 
         public DeveloperConfig build(){
             return this.config;

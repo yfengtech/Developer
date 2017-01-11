@@ -20,6 +20,10 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ListActivity"/>
+
+        <activity android:name=".RecyclerListActivity"/>
+
         <meta-data android:name="Channel" android:value="abc"/>
     </application>
 

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Developer</string>
+    <string name="recycler_list">RecyclerList</string>
 </resources>

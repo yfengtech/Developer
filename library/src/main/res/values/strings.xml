@@ -42,6 +42,7 @@
     <string name="changed_complete">修改成功</string>
     <string name="global_change_url_info">全局修改所有url信息,第1个为默认应用url,其他为备选,并可以动态编辑并应用</string>
     <string name="restored_complete">恢复默认设置成功</string>
+    <string name="set_edit_complete">设置Url成功</string>
     <string name="debug_image">调试图片</string>
     <string name="show_border">显示边界</string>
     <string name="show_aspect_ratio">显示比例</string>
@@ -65,4 +66,6 @@
     <string name="set_background_transparent">设置背景透明</string>
     <string name="debug_image_list">预览图片列表</string>
     <string name="debug_item">条目设定</string>
+    <string name="debug_view">调试控件数据</string>
+    <string name="look_image">查看图片信息</string>
 </resources>

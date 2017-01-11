@@ -1,14 +1,12 @@
 package cz.developer.library;
 
+import android.app.Application;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewStub;
-import android.widget.FrameLayout;
 
+import cz.developer.library.callback.MyActivityLifecycleCallback;
 import cz.developer.library.ui.DeveloperFragment;
 import cz.developer.library.ui.network.INetworkAdapter;
 import cz.developer.library.ui.switchs.ISwitchInterface;
@@ -20,7 +18,7 @@ import cz.developer.library.ui.switchs.ISwitchInterface;
  * 3:
  */
 public class DeveloperManager {
-
+    private static final MyActivityLifecycleCallback callback;
     public static final DeveloperManager instances=new DeveloperManager();
     private DeveloperConfig config;
 
@@ -28,37 +26,29 @@ public class DeveloperManager {
         return instances;
     }
 
+    static {
+        callback=new MyActivityLifecycleCallback();
+    }
+
+
     public static void toDeveloper(FragmentActivity activity){
         toFragment(activity, DeveloperFragment.newInstance());
     }
 
     public static void toFragment(FragmentActivity activity,Fragment fragment){
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
-        View contentView = getContentView(activity.getWindow().getDecorView());
-        contentView.setId(R.id.activity_container);
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.pop_in, R.anim.pop_out, R.anim.pop_in, R.anim.pop_out);
-        fragmentTransaction.addToBackStack(fragment.getClass().getName()).add(R.id.activity_container,fragment).commit();
+        fragmentTransaction.addToBackStack(fragment.getClass().getName()).add(android.R.id.content,fragment).commit();
     }
 
-    private static View getContentView(View  view) {
-        View contentView = null;
-        if (view instanceof ViewGroup) {
-            ViewGroup childViewGroup = (ViewGroup) view;
-            int childCount = childViewGroup.getChildCount();
-            if(2==childCount&&(childViewGroup.getChildAt(0) instanceof ViewStub)&&(childViewGroup.getChildAt(1) instanceof FrameLayout)){
-                contentView=childViewGroup.getChildAt(1);
-            } else {
-                for(int i=0;i<childCount;i++){
-                    return getContentView(childViewGroup.getChildAt(i));
-                }
-            }
-        }
-        return contentView;
-    }
 
-    public void setDeveloperConfig(DeveloperConfig config){
+    public void init(Application application, DeveloperConfig config){
         this.config=config;
+        if(null!=callback){
+            application.unregisterActivityLifecycleCallbacks(callback);
+        }
+        application.registerActivityLifecycleCallbacks(callback);
     }
 
     public ISwitchInterface getSwitchInterface(){

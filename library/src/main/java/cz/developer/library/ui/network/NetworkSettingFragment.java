@@ -75,14 +75,7 @@ public class NetworkSettingFragment extends TitleBarFragment {
             if(null!=actionItems){
                 SharedPreferences.Editor preferenceEditor = DeveloperPrefs.getPreferenceEditor();
                 Editable text = editor.getText();
-                int index = selectLayout.indexOfChild(selectLayout.findViewById(selectLayout.getCheckedRadioButtonId()));
-                if(!TextUtils.isEmpty(text)&&0==index&&selectItems[index].equals(text.toString())){
-                    //恢复默认
-                    for(int i=0;i<actionItems.length;i++){
-                        preferenceEditor.remove(actionItems[i]);
-                    }
-                    Toast.makeText(getContext(), R.string.restored_complete, Toast.LENGTH_SHORT).show();
-                } else {
+                if(!TextUtils.isEmpty(text)){
                     //应用设置
                     for(int i=0;i<actionItems.length;i++){
                         preferenceEditor.putString(actionItems[i],text.toString());
