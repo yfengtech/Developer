@@ -15,6 +15,7 @@ import java.util.List;
 
 import cz.developer.library.DebugViewHelper;
 import cz.developer.library.DeveloperActivityManager;
+import cz.developer.library.DeveloperManager;
 import cz.developer.library.R;
 import cz.developer.library.adapter.DebugViewAdapter;
 import cz.developer.library.model.DebugViewItem;
@@ -48,11 +49,13 @@ public class DebugViewFragment extends TitleBarFragment {
         setTitleText(title);
         setOnBackClickListener(v->getFragmentManager().popBackStack());
         Switch switchView= (Switch) view.findViewById(R.id.switch_view);
+        switchView.setChecked(DeveloperManager.config.debugList);
         switchView.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            DeveloperManager.config.debugList=isChecked;
             //设置所有控件状态
             DeveloperActivityManager.get().forActivities(activity->{
                 View decorView = activity.getWindow().getDecorView();
-                DebugViewHelper.initLayout((ViewGroup) decorView,isChecked);
+                DebugViewHelper.initLayout((ViewGroup) decorView,isChecked,true);
             });
         });
         List<DebugViewItem> viewItems= PrefsManager.readConfig(ViewConfigReader.class);

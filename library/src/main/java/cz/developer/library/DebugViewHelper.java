@@ -26,20 +26,22 @@ import cz.developer.library.adapter.IAdapterItem;
 
 public class DebugViewHelper {
 
-    public static void initLayout(ViewGroup parent,  boolean select){
-        int childCount = parent.getChildCount();
-        for(int i=0;i<childCount;i++){
-            View childView=parent.getChildAt(i);
-            if(childView instanceof AbsListView){
-                initAbsListView((AbsListView)childView,select);
-            } else if(childView instanceof RecyclerView){
-                initRecyclerView((RecyclerView) childView);
-            } else if(childView instanceof ImageView){
-                initImageView((ImageView) childView,select);
-            } else if(childView instanceof ViewGroup){
-                initLayout((ViewGroup) childView,select);
-            } else if(childView.isClickable()&&null!=childView.getTag()){
-                initView(childView,select);
+    public static void initLayout(ViewGroup parent, boolean select,boolean force){
+        if(force||DeveloperManager.config.debugList){
+            int childCount = parent.getChildCount();
+            for(int i=0;i<childCount;i++){
+                View childView=parent.getChildAt(i);
+                if(childView instanceof AbsListView){
+                    initAbsListView((AbsListView)childView,select);
+                } else if(childView instanceof RecyclerView){
+                    initRecyclerView((RecyclerView) childView,select);
+                } else if(childView instanceof ImageView){
+                    initImageView((ImageView) childView,select);
+                } else if(childView instanceof ViewGroup){
+                    initLayout((ViewGroup) childView,select,force);
+                } else if(childView.isClickable()&&null!=childView.getTag()){
+                    initView(childView,select);
+                }
             }
         }
     }
@@ -64,11 +66,19 @@ public class DebugViewHelper {
 
     }
 
-    private static void initRecyclerView(RecyclerView recyclerView) {
+    private static void initRecyclerView(RecyclerView recyclerView,final boolean select) {
+        int childCount = recyclerView.getChildCount();
+        for(int i=0;i<childCount;i++){
+            View childView = recyclerView.getChildAt(i);
+            childView.setOnLongClickListener(!select?null:v -> {
+                setRecyclerChildViewDebugListener(childView, recyclerView);
+                return true;
+            });
+        }
         recyclerView.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
             @Override
             public void onChildViewAttachedToWindow(View view) {
-                view.setOnLongClickListener(v -> {
+                view.setOnLongClickListener(!select?null:v -> {
                     setRecyclerChildViewDebugListener(view, recyclerView);
                     return true;
                 });

@@ -20,13 +20,15 @@ import cz.developer.library.ui.switchs.ISwitchInterface;
 public class DeveloperManager {
     private static final MyActivityLifecycleCallback callback;
     public static final DeveloperManager instances=new DeveloperManager();
-    private DeveloperConfig config;
+    public static final PrefsConfig config;
+    private DeveloperConfig developerConfig;
 
     public static DeveloperManager getInstances(){
         return instances;
     }
 
     static {
+        config=new PrefsConfig();
         callback=new MyActivityLifecycleCallback();
     }
 
@@ -44,7 +46,7 @@ public class DeveloperManager {
 
 
     public void init(Application application, DeveloperConfig config){
-        this.config=config;
+        this.developerConfig =config;
         if(null!=callback){
             application.unregisterActivityLifecycleCallbacks(callback);
         }
@@ -52,14 +54,14 @@ public class DeveloperManager {
     }
 
     public ISwitchInterface getSwitchInterface(){
-        return this.config.switchConfig;
+        return this.developerConfig.switchConfig;
     }
 
     public DeveloperConfig getDeveloperConfig(){
-        return this.config;
+        return this.developerConfig;
     }
 
     public INetworkAdapter getNetworkAdapter(){
-        return this.config.networkAdapter;
+        return this.developerConfig.networkAdapter;
     }
 }
