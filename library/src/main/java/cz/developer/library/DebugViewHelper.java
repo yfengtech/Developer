@@ -4,10 +4,18 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.JavascriptInterface;
+import android.webkit.WebView;
 import android.widget.AbsListView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -15,10 +23,16 @@ import android.widget.Toast;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import cz.developer.library.adapter.DebugItemInfoAdapter;
+import cz.developer.library.adapter.DebugWebImageAdapter;
 import cz.developer.library.adapter.IAdapterItem;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by cz on 1/11/17.
@@ -26,19 +40,21 @@ import cz.developer.library.adapter.IAdapterItem;
 
 public class DebugViewHelper {
 
-    public static void initLayout(ViewGroup parent, boolean select,boolean force){
+    public static void initLayout(ViewGroup root,ViewGroup layout, boolean select,boolean force){
         if(force||DeveloperManager.config.debugList){
-            int childCount = parent.getChildCount();
+            int childCount = layout.getChildCount();
             for(int i=0;i<childCount;i++){
-                View childView=parent.getChildAt(i);
+                View childView=layout.getChildAt(i);
                 if(childView instanceof AbsListView){
                     initAbsListView((AbsListView)childView,select);
                 } else if(childView instanceof RecyclerView){
                     initRecyclerView((RecyclerView) childView,select);
                 } else if(childView instanceof ImageView){
                     initImageView((ImageView) childView,select);
+                } else if(childView instanceof WebView){
+                    initWebView(root,(WebView)childView,select);
                 } else if(childView instanceof ViewGroup){
-                    initLayout((ViewGroup) childView,select,force);
+                    initLayout(root,(ViewGroup) childView,select,force);
                 } else if(childView.isClickable()&&null!=childView.getTag()){
                     initView(childView,select);
                 }
@@ -64,6 +80,100 @@ public class DebugViewHelper {
             });
         }
 
+    }
+
+    private static void initWebView(ViewGroup root,WebView webView, boolean select) {
+        Context context = webView.getContext();
+        View debugView = webView.findViewById(R.id.debug_btn);
+        if(select&&null==debugView){
+            View findView=root.findViewById(android.R.id.content);
+            if(null!=findView){
+                FrameLayout contentView= (FrameLayout)findView;
+                ImageView imageView=new ImageView(webView.getContext());
+                imageView.setImageResource(R.drawable.ic_bug_report_white);
+                imageView.setBackgroundResource(R.drawable.primary_oval_shape);
+                int padding = applyDimension(context.getResources().getDisplayMetrics(), 12);
+                imageView.setPadding(padding,padding,padding,padding);
+                imageView.setId(R.id.debug_btn);
+                FrameLayout.LayoutParams layoutParams=new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,FrameLayout.LayoutParams.WRAP_CONTENT);
+                layoutParams.gravity= Gravity.RIGHT|Gravity.BOTTOM;
+                layoutParams.rightMargin=padding;
+                layoutParams.bottomMargin=padding;
+                contentView.addView(imageView,layoutParams);
+                imageView.setOnClickListener(v -> {
+                    webView.getSettings().setJavaScriptEnabled(true);
+                    if (Build.VERSION.SDK_INT >=Build.VERSION_CODES.KITKAT) {
+                        //4.4以上,展示网页内所有图片
+                        WebView.setWebContentsDebuggingEnabled(true);
+                        webView.evaluateJavascript("javascript:(function(){"+
+                                "var imgNodes = document.getElementsByTagName(\"img\");" +
+                                "    var imgUrls=[];" +
+                                "        for(var i=0;i<imgNodes.length;i++){" +
+                                "            imgUrls[i] = imgNodes[i].getAttribute('src');" +
+                                "        }" +
+                                "        return imgUrls"+
+                                "})()",
+                                value -> {
+                                    List<String> urlItems=new ArrayList<>();
+                                    Matcher matcher = Pattern.compile("(\"([^\"]+)\")+").matcher(value);
+                                    while(matcher.find()){
+                                        urlItems.add(matcher.group(2));
+                                    }
+                                    //超过80
+                                    if(80>webView.getProgress()){
+                                        new AlertDialog.Builder(v.getContext()).
+                                                setTitle(R.string.debug_url).
+                                                setMessage(R.string.web_view_loading).
+                                                setPositiveButton(android.R.string.cancel,(dialog, which) -> dialog.dismiss()).show();
+                                    } else {
+                                        new AlertDialog.Builder(v.getContext()).
+                                                setTitle(R.string.debug_web).
+                                                setMessage(webView.getUrl()).
+                                                setNeutralButton(R.string.go_website_image,(dialog, which) -> {
+                                                    //查看图片列表
+                                                    ListView listView=new ListView(v.getContext());
+                                                    listView.setAdapter(new DebugWebImageAdapter(v.getContext(),urlItems));
+                                                    new AlertDialog.Builder(v.getContext()).
+                                                            setTitle(R.string.debug_image).
+                                                            setMessage(webView.getUrl()).
+                                                            setView(listView).show();
+                                                }).setNegativeButton(R.string.go_website,(dialog, which) -> {
+                                                    Uri uri = Uri.parse(webView.getUrl());
+                                                    Intent it = new Intent(Intent.ACTION_VIEW, uri);
+                                                    v.getContext().startActivity(it);
+                                                }).setPositiveButton(android.R.string.cancel,(dialog, which) -> dialog.dismiss()).show();
+                                    }
+                                });
+                    } else {
+                        new AlertDialog.Builder(v.getContext()).
+                                setTitle(R.string.debug_url).
+                                setMessage(webView.getUrl()).
+                                setNegativeButton(R.string.go_website,(dialog, which) -> {
+                                    Uri uri = Uri.parse(webView.getUrl());
+                                    Intent it = new Intent(Intent.ACTION_VIEW, uri);
+                                    v.getContext().startActivity(it);
+                                }).setPositiveButton(android.R.string.cancel,(dialog, which) -> dialog.dismiss()).show();
+                    }
+                });
+            }
+        } else if(!select&&null!=debugView){
+            webView.removeView(debugView);
+        }
+    }
+
+    public static final class JavaScriptInterfaceImpl {
+        public JavaScriptInterfaceImpl() {
+        }
+
+        @JavascriptInterface
+        public void callImageItems(String[] imgUrls){
+            Log.e(TAG, Arrays.toString(imgUrls));
+        }
+    }
+
+
+    private static int applyDimension(DisplayMetrics metrics,int value){
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,value,metrics);
     }
 
     private static void initRecyclerView(RecyclerView recyclerView,final boolean select) {

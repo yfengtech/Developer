@@ -1,5 +1,6 @@
 package cz.developer.library;
 
+import cz.developer.library.ui.ImageDisplayInterface;
 import cz.developer.library.ui.image.ImageAdapter;
 import cz.developer.library.ui.network.INetworkAdapter;
 import cz.developer.library.ui.switchs.ISwitchInterface;
@@ -12,6 +13,7 @@ public class DeveloperConfig {
     public ISwitchInterface switchConfig;
     public INetworkAdapter networkAdapter;
     public ImageAdapter imageAdapter;
+    public ImageDisplayInterface imageDisplay;
     public String channel;
     private DeveloperConfig(){
     }
@@ -42,6 +44,10 @@ public class DeveloperConfig {
             return this;
         }
 
+        public Builder setImageDisplay(ImageDisplayInterface imageDisplay){
+            this.config.imageDisplay =imageDisplay;
+            return this;
+        }
 
         public DeveloperConfig build(){
             return this.config;

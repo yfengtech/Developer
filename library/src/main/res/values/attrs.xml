@@ -5,4 +5,5 @@
     <attr name="developerColorAccent" format="color"/>
     <attr name="developerTextColor" format="color"/>
     <attr name="developerDarkTextColor" format="color"/>
+    <attr name="developerImageLayout" format="reference"/>
 </resources>

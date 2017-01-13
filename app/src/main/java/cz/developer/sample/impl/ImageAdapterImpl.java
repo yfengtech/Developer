@@ -42,7 +42,7 @@ public class ImageAdapterImpl implements ImageAdapter<ImageAdapterImpl.Item> {
             Item objItem= item.obj;
             textView.setText(objItem.value);
             for(String url:item.imageItems){
-                View childView=layoutInflater.inflate(R.layout.image_item,(ViewGroup) view,false);
+                View childView=layoutInflater.inflate(R.layout.debug_image_item,(ViewGroup) view,false);
                 childView.setPadding((int)item.itemPadding,0,(int)item.itemPadding,0);
                 SimpleDraweeView imageView= (SimpleDraweeView) childView.findViewById(R.id.wv_image);
                 imageView.setAspectRatio(item.aspectRatio);

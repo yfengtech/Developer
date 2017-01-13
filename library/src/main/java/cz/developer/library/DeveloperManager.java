@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import cz.developer.library.callback.MyActivityLifecycleCallback;
-import cz.developer.library.ui.DeveloperFragment;
+import cz.developer.library.ui.ImageDisplayInterface;
 import cz.developer.library.ui.network.INetworkAdapter;
 import cz.developer.library.ui.switchs.ISwitchInterface;
 
@@ -30,11 +30,6 @@ public class DeveloperManager {
     static {
         config=new PrefsConfig();
         callback=new MyActivityLifecycleCallback();
-    }
-
-
-    public static void toDeveloper(FragmentActivity activity){
-        toFragment(activity, DeveloperFragment.newInstance());
     }
 
     public static void toFragment(FragmentActivity activity,Fragment fragment){
@@ -63,5 +58,9 @@ public class DeveloperManager {
 
     public INetworkAdapter getNetworkAdapter(){
         return this.developerConfig.networkAdapter;
+    }
+
+    public ImageDisplayInterface getImageDisplay() {
+        return this.developerConfig.imageDisplay;
     }
 }

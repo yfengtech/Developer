@@ -12,6 +12,7 @@
         <item name="developerColorAccent" >@color/colorPrimary</item>
         <item name="developerTextColor" >@color/textColor</item>
         <item name="developerDarkTextColor">@color/darkTextColor</item>
+        <item name="developerImageLayout">@layout/image_layout</item>
         <!-- end -->
 
         <item name="android:windowIsTranslucent">false</item>

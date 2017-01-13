@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import cz.developer.library.DeveloperManager;
 import cz.developer.sample.model.Person;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
         button1.setTag(person);
         button1.setOnClickListener(v -> startActivity(new Intent(this,ListActivity.class)));
         findViewById(R.id.btn2).setOnClickListener(v -> startActivity(new Intent(this,RecyclerListActivity.class)));
-        findViewById(R.id.btn3).setOnClickListener(v -> DeveloperManager.toDeveloper(MainActivity.this));
+        findViewById(R.id.btn3).setOnClickListener(v -> startActivity(new Intent(this,WebViewActivity.class)));
+        findViewById(R.id.btn4).setOnClickListener(v -> startActivity(new Intent(this,PrivacyLockActivity.class)));
     }
 }

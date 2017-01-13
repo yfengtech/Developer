@@ -13,12 +13,14 @@ import com.quant.titlebar.TitleBarFragment;
 
 import java.util.List;
 
+import cz.developer.library.Constants;
 import cz.developer.library.DebugViewHelper;
 import cz.developer.library.DeveloperActivityManager;
 import cz.developer.library.DeveloperManager;
 import cz.developer.library.R;
 import cz.developer.library.adapter.DebugViewAdapter;
 import cz.developer.library.model.DebugViewItem;
+import cz.developer.library.prefs.DeveloperPrefs;
 import cz.developer.library.xml.ViewConfigReader;
 import xyqb.library.config.PrefsManager;
 
@@ -52,10 +54,11 @@ public class DebugViewFragment extends TitleBarFragment {
         switchView.setChecked(DeveloperManager.config.debugList);
         switchView.setOnCheckedChangeListener((buttonView, isChecked) -> {
             DeveloperManager.config.debugList=isChecked;
+            DeveloperPrefs.setBoolean(Constants.DEBUG_LIST,isChecked);
             //设置所有控件状态
             DeveloperActivityManager.get().forActivities(activity->{
                 View decorView = activity.getWindow().getDecorView();
-                DebugViewHelper.initLayout((ViewGroup) decorView,isChecked,true);
+                DebugViewHelper.initLayout((ViewGroup) decorView,(ViewGroup) decorView,isChecked,true);
             });
         });
         List<DebugViewItem> viewItems= PrefsManager.readConfig(ViewConfigReader.class);

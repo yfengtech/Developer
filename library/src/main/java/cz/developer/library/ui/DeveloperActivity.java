@@ -1,16 +1,12 @@
 package cz.developer.library.ui;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.quant.titlebar.TitleBarFragment;
+import com.quant.titlebar.TitleBarActivity;
 
 import java.util.List;
 
@@ -21,30 +17,20 @@ import cz.developer.library.model.DebugItem;
 import cz.developer.library.xml.ListConfigReader;
 import xyqb.library.config.PrefsManager;
 
-public class DeveloperFragment extends TitleBarFragment {
+public class DeveloperActivity extends TitleBarActivity {
     private static final String PACKAGE_NAME = "cz.developer.library";
     private ListView listView;
-    public static Fragment newInstance(){
-        return new DeveloperFragment();
-    }
 
     @Override
-    public View onCreateView(Context context, LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_developer,container,false);
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        listView= (ListView) view.findViewById(R.id.list);
-    }
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_developer);
         setTitleText(R.string.debug_list);
-        setOnBackClickListener(v->getFragmentManager().popBackStack());
+        setOnBackClickListener(v->finish());
+
+        listView= (ListView) findViewById(R.id.list);
         final List<DebugItem> debugItems = PrefsManager.readConfig(ListConfigReader.class);
-        listView.setAdapter(new DebugListAdapter(getContext(),debugItems));
+        listView.setAdapter(new DebugListAdapter(this,debugItems));
         listView.setOnItemClickListener((parent, view, position, id) -> {
             DebugItem item = debugItems.get(position);
             String className=item.clazz;
@@ -58,7 +44,7 @@ public class DeveloperFragment extends TitleBarFragment {
                     Bundle args=new Bundle();
                     args.putString("title",item.title);
                     fragment.setArguments(args);
-                    DeveloperManager.toFragment(getActivity(),fragment);
+                    DeveloperManager.toFragment(this,fragment);
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 } catch (java.lang.InstantiationException e) {
@@ -68,6 +54,7 @@ public class DeveloperFragment extends TitleBarFragment {
                 }
             }
         });
-
     }
+
+
 }
