@@ -1,6 +1,7 @@
 package cz.developer.library;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -55,11 +56,28 @@ public class DebugViewHelper {
                     initWebView(root,(WebView)childView,select);
                 } else if(childView instanceof ViewGroup){
                     initLayout(root,(ViewGroup) childView,select,force);
-                } else if(childView.isClickable()&&null!=childView.getTag()){
+                } else if(childView.isClickable()&&!isViewLongClickable(childView)&&null!=childView.getTag()){
                     initView(childView,select);
                 }
             }
         }
+    }
+
+    private static boolean isViewLongClickable(View view){
+        boolean result=false;
+        try {
+            Field field = View.class.getDeclaredField("mListenerInfo");
+            field.setAccessible(true);
+            Object o = field.get(view);
+            field=o.getClass().getDeclaredField("mOnLongClickListener");
+            field.setAccessible(true);
+            result=null!=field.get(o);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     public static void initAbsListView(AbsListView listView, boolean select) {
@@ -121,38 +139,32 @@ public class DebugViewHelper {
                                     }
                                     //超过80
                                     if(80>webView.getProgress()){
-                                        new AlertDialog.Builder(v.getContext()).
-                                                setTitle(R.string.debug_url).
-                                                setMessage(R.string.web_view_loading).
-                                                setPositiveButton(android.R.string.cancel,(dialog, which) -> dialog.dismiss()).show();
+                                        ProgressDialog progressDialog = new ProgressDialog(context);
+                                        progressDialog.setMessage(context.getString(R.string.web_view_loading));
+                                        progressDialog.setCancelable(false);
+                                        progressDialog.show();
+                                        webView.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                if(80<webView.getProgress()&&Build.VERSION.SDK_INT >=Build.VERSION_CODES.KITKAT){
+                                                    progressDialog.dismiss();
+                                                    showWebViewDetailDialog(webView, urlItems);
+                                                } else {
+                                                    webView.postDelayed(this,100);
+                                                }
+                                            }
+                                        }, 1000);
                                     } else {
-                                        new AlertDialog.Builder(v.getContext()).
-                                                setTitle(R.string.debug_web).
-                                                setMessage(webView.getUrl()).
-                                                setNeutralButton(R.string.go_website_image,(dialog, which) -> {
-                                                    //查看图片列表
-                                                    ListView listView=new ListView(v.getContext());
-                                                    listView.setAdapter(new DebugWebImageAdapter(v.getContext(),urlItems));
-                                                    new AlertDialog.Builder(v.getContext()).
-                                                            setTitle(R.string.debug_image).
-                                                            setMessage(webView.getUrl()).
-                                                            setView(listView).show();
-                                                }).setNegativeButton(R.string.go_website,(dialog, which) -> {
-                                                    Uri uri = Uri.parse(webView.getUrl());
-                                                    Intent it = new Intent(Intent.ACTION_VIEW, uri);
-                                                    v.getContext().startActivity(it);
-                                                }).setPositiveButton(android.R.string.cancel,(dialog, which) -> dialog.dismiss()).show();
+                                        showWebViewDetailDialog(webView, urlItems);
                                     }
                                 });
                     } else {
                         new AlertDialog.Builder(v.getContext()).
                                 setTitle(R.string.debug_url).
                                 setMessage(webView.getUrl()).
-                                setNegativeButton(R.string.go_website,(dialog, which) -> {
-                                    Uri uri = Uri.parse(webView.getUrl());
-                                    Intent it = new Intent(Intent.ACTION_VIEW, uri);
-                                    v.getContext().startActivity(it);
-                                }).setPositiveButton(android.R.string.cancel,(dialog, which) -> dialog.dismiss()).show();
+                                setNegativeButton(R.string.go_website,(dialog, which) ->
+                                    v.getContext().startActivity( new Intent(Intent.ACTION_VIEW, Uri.parse(webView.getUrl())))).
+                                            setPositiveButton(android.R.string.cancel,(dialog, which) -> dialog.dismiss()).show();
                     }
                 });
             }
@@ -161,16 +173,27 @@ public class DebugViewHelper {
         }
     }
 
-    public static final class JavaScriptInterfaceImpl {
-        public JavaScriptInterfaceImpl() {
-        }
-
-        @JavascriptInterface
-        public void callImageItems(String[] imgUrls){
-            Log.e(TAG, Arrays.toString(imgUrls));
-        }
+    private static void showWebViewDetailDialog(WebView webView,  List<String> urlItems) {
+        final Context context = webView.getContext();
+        new AlertDialog.Builder(context).
+                setTitle(R.string.debug_web).
+                setMessage(webView.getUrl()).
+                setNeutralButton(R.string.go_website_image, (dialog, which) -> {
+                    //查看图片列表
+                    ListView listView = new ListView(context);
+                    listView.setAdapter(new DebugWebImageAdapter(context, urlItems));
+                    listView.setOnItemClickListener((parent, view, position, id) ->
+                            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(urlItems.get(position)))));
+                    new AlertDialog.Builder(context).
+                            setTitle(R.string.debug_image).
+                            setMessage(webView.getUrl()).
+                            setView(listView).show();
+                }).setNegativeButton(R.string.go_website, (dialog, which) -> {
+            Uri uri = Uri.parse(webView.getUrl());
+            Intent it = new Intent(Intent.ACTION_VIEW, uri);
+            context.startActivity(it);
+        }).setPositiveButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss()).show();
     }
-
 
     private static int applyDimension(DisplayMetrics metrics,int value){
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,value,metrics);

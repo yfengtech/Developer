@@ -2,5 +2,7 @@
 <project>
     <item view="AbsListView" info="长按查看getItem条目信息内容" clazz="android.widget.AbsListView"/>
     <item view="RecyclerView" info="长按查看getItem条目信息内容" clazz="android.support.v7.widget.RecyclerView"/>
-    <item view="ImageView" info="长按查看Uri信息" clazz="android.widget.ImageView"/>
+    <item view="ImageView" info="长按查看Tag以及ScaleType信息" clazz="android.widget.ImageView"/>
+    <item view="WebView" info="屏幕下方显示一个圆形按钮,查看网页url以及图片信息" clazz="android.webkit.WebView"/>
+    <item view="View" info="长按查看控件Id,以及控件Tag信息" clazz="android.view.View"/>
 </project>

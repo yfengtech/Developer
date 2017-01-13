@@ -11,6 +11,4 @@ import cz.developer.library.callback.OnDisplayComplete;
  */
 public interface ImageDisplayInterface {
     void onDisplay(ImageView imageView, String url, OnDisplayComplete displayComplete);
-
-    File getImageFile(String url);
 }

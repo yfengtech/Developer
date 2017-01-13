@@ -71,7 +71,8 @@
     <string name="debug_web">查看WebView信息</string>
     <string name="go_website">跳转浏览器</string>
     <string name="go_website_image">查看网页图片</string>
-    <string name="image_size_value">图片宽:%1$d 高:%2$d</string>
-    <string name="image_info_value">文件大小:%1$s Bitmap:%2$s</string>
+    <string name="image_size_value">图片宽:%1$d高:%2$d</string>
+    <string name="image_info_value">文件大小:%1$s\nBitmap:%2$s</string>
     <string name="web_view_loading">网页正在加载中...</string>
+    <string name="wait">请稍等</string>
 </resources>

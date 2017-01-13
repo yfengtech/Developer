@@ -3,6 +3,7 @@ package cz.developer.library.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.text.TextUtils;
 import android.text.format.Formatter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,33 +62,35 @@ public class DebugWebImageAdapter extends BaseAdapter {
             viewStub.inflate();
         }
         ImageView imageView= (ImageView) convertView.findViewById(R.id.debug_image_view);
+        TextView textView= (TextView) convertView.findViewById(R.id.tv_image_url);
         final TextView imageSize= (TextView) convertView.findViewById(R.id.tv_image_size);
         final TextView imageInfo= (TextView) convertView.findViewById(R.id.tv_image_info);
         String url = getItem(position);
+        textView.setText(url);
+        imageSize.setText(inflater.getContext().getString(R.string.image_size_value,-1,-1));
+        imageInfo.setText(inflater.getContext().getString(R.string.image_info_value,"0","0"));
         if(null!=imageDisplay){
             final View originalView=convertView;
-            imageDisplay.onDisplay(imageView,url,(imageUrl,bitmap)->{
-                File imageFile = imageDisplay.getImageFile(imageUrl);
+            imageDisplay.onDisplay(imageView,url,(imageUrl,imageFile,bitmap)->{
                 if(null!=imageFile){
-                    loadBitmapInfo(originalView, imageSize, imageInfo,imageFile);
-                }
-            });
-            convertView.setOnClickListener(v -> {
-                File imageFile = imageDisplay.getImageFile(url);
-                if(null!=imageFile){
-                    loadBitmapInfo(v, imageSize, imageInfo,imageFile);
+                    loadBitmapInfo(originalView, imageSize, imageInfo,imageFile,bitmap);
                 }
             });
         }
         return convertView;
     }
 
-    private void loadBitmapInfo(View v, TextView imageSize, TextView imageInfo,File imageFile) {
-        Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+    private void loadBitmapInfo(View v, TextView imageSize, TextView imageInfo,File imageFile,Bitmap bitmap) {
         //检测文件大小
-        imageSize.setText(inflater.getContext().getString(R.string.image_size_value,bitmap.getWidth(),bitmap.getHeight()));
-        String fileSizeInfo = Formatter.formatFileSize(v.getContext(), imageFile.length());
-        String imageSizeInfo = Formatter.formatFileSize(v.getContext(), bitmap.getByteCount());
+        imageSize.setText(inflater.getContext().getString(R.string.image_size_value,null==bitmap?0:bitmap.getWidth(),null==bitmap?0:bitmap.getHeight()));
+        String fileSizeInfo ="Non";
+        if(null!=imageFile){
+            fileSizeInfo = Formatter.formatFileSize(v.getContext(), imageFile.length());
+        }
+        String imageSizeInfo ="Non";
+        if(null!=bitmap){
+            imageSizeInfo = Formatter.formatFileSize(v.getContext(), bitmap.getByteCount());
+        }
         //检测 bitmap 大小
         imageInfo.setText(inflater.getContext().getString(R.string.image_info_value,fileSizeInfo,imageSizeInfo));
     }
