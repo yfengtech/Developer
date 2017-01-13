@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="12dp">
@@ -13,8 +13,9 @@
         android:layout="?developerImageLayout"/>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:layout_alignParentRight="true"
         android:layout_alignRight="@+id/view_stub"
         android:orientation="vertical">
@@ -31,4 +32,4 @@
             android:layout_marginTop="4dp"/>
 
     </LinearLayout>
-</RelativeLayout>
+</LinearLayout>
