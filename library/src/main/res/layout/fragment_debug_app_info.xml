@@ -3,21 +3,16 @@
     xmlns:auto="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@android:color/white"
     android:clickable="true"
     android:scrollbars="none">
 
-    <com.cz.library.widget.DivideLinearLayout
+    <LinearLayout
         android:id="@+id/ll_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="true"
-        android:orientation="vertical"
-        auto:dl_dividePadding="12dp"
-        auto:dl_divideGravity="item_divide"
-        auto:dl_itemDivideSize="@dimen/divideSize"
-        auto:dl_itemDivideDrawable="@color/divide"
-        auto:dl_itemDividePadding="12dp">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_header1"
@@ -31,6 +26,11 @@
             android:textColor="?attr/developerTextColor"
             android:textSize="12sp" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/developerDivideSize"
+            android:background="@color/developerDivide"/>
+
         <TextView
             android:id="@+id/tv_channel"
             android:layout_width="match_parent"
@@ -40,6 +40,10 @@
             android:textColor="?attr/developerTextColor"
             android:textSize="14sp" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/developerDivideSize"
+            android:background="@color/developerDivide"/>
         <TextView
             android:id="@+id/tv_version"
             android:layout_width="match_parent"
@@ -48,6 +52,10 @@
             android:padding="12dp"
             android:textColor="?attr/developerTextColor"
             android:textSize="14sp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/developerDivideSize"
+            android:background="@color/developerDivide"/>
 
         <TextView
             android:id="@+id/tv_version_code"
@@ -57,6 +65,10 @@
             android:padding="12dp"
             android:textColor="?attr/developerTextColor"
             android:textSize="14sp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/developerDivideSize"
+            android:background="@color/developerDivide"/>
 
         <TextView
             android:id="@+id/tv_header2"
@@ -70,6 +82,11 @@
             android:textColor="?attr/developerTextColor"
             android:textSize="12sp" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/developerDivideSize"
+            android:background="@color/developerDivide"/>
+
         <TextView
             android:id="@+id/tv_os_version"
             android:layout_width="match_parent"
@@ -78,6 +95,11 @@
             android:padding="12dp"
             android:textColor="?attr/developerTextColor"
             android:textSize="14sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/developerDivideSize"
+            android:background="@color/developerDivide"/>
 
         <TextView
             android:id="@+id/tv_os_api"
@@ -88,6 +110,11 @@
             android:textColor="?attr/developerTextColor"
             android:textSize="14sp" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/developerDivideSize"
+            android:background="@color/developerDivide"/>
+
         <TextView
             android:id="@+id/tv_device_model"
             android:layout_width="match_parent"
@@ -97,6 +124,10 @@
             android:textColor="?attr/developerTextColor"
             android:textSize="14sp" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/developerDivideSize"
+            android:background="@color/developerDivide"/>
         <TextView
             android:id="@+id/tv_device_brand"
             android:layout_width="match_parent"
@@ -106,6 +137,11 @@
             android:textColor="?attr/developerTextColor"
             android:textSize="14sp" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/developerDivideSize"
+            android:background="@color/developerDivide"/>
+
         <TextView
             android:id="@+id/tv_imei"
             android:layout_width="match_parent"
@@ -114,6 +150,11 @@
             android:padding="12dp"
             android:textColor="?attr/developerTextColor"
             android:textSize="14sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/developerDivideSize"
+            android:background="@color/developerDivide"/>
 
         <TextView
             android:id="@+id/tv_android_id"
@@ -126,5 +167,6 @@
 
 
 
-    </com.cz.library.widget.DivideLinearLayout>
+
+    </LinearLayout>
 </ScrollView>

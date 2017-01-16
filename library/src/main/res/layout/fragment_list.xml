@@ -2,15 +2,15 @@
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/white"
+    android:background="@android:color/white"
     android:clickable="true">
 
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:cacheColorHint="@color/transparent"
-        android:divider="@color/divide"
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="@color/developerDivide"
         android:dividerHeight="0.5dp"
         android:listSelector="@drawable/white_item_selector"
         android:orientation="vertical"

@@ -4,16 +4,13 @@
     android:id="@+id/ll_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@android:color/white"
     android:clickable="true">
 
-    <com.cz.library.widget.DivideLinearLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        auto:dl_itemDivideSize="@dimen/divideSize"
-        auto:dl_divideDrawable="@color/divide"
-        auto:dl_itemDividePadding="12dp">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_clear_cache"
@@ -28,5 +25,5 @@
             />
 
 
-    </com.cz.library.widget.DivideLinearLayout>
+    </LinearLayout>
 </ScrollView>

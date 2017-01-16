@@ -3,4 +3,5 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="itemHeight">50dp</dimen>
+    <dimen name="developerDivideSize">0.4dp</dimen>
 </resources>

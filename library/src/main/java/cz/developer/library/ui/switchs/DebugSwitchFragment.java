@@ -3,14 +3,13 @@ package cz.developer.library.ui.switchs;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 
-import com.cz.library.util.Utils;
-import com.cz.library.widget.DivideLinearLayout;
 import com.quant.titlebar.TitleBarFragment;
 
 import java.util.Map;
@@ -24,7 +23,7 @@ import cz.developer.library.R;
  * debug信息
  */
 public class DebugSwitchFragment extends TitleBarFragment {
-    private DivideLinearLayout container;
+    private LinearLayout container;
     private String title;
 
     @Override
@@ -48,13 +47,13 @@ public class DebugSwitchFragment extends TitleBarFragment {
         setTitleText(title);
         setOnBackClickListener(v->getFragmentManager().popBackStack());
 
-        container= (DivideLinearLayout) view.findViewById(R.id.ll_container);
+        container= (LinearLayout) view.findViewById(R.id.ll_container);
         //添加附加选项
         ISwitchInterface switchInterface = DeveloperManager.getInstances().getSwitchInterface();
         if(null!=switchInterface){
             Map<String, String> extrasItems = switchInterface.getExtrasItems();
             if(null!=extrasItems){
-                int padding = Utils.dip2px(12);
+                int padding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,12,getResources().getDisplayMetrics());
                 for(Map.Entry<String,String> entry:extrasItems.entrySet()){
                     Switch switchView=new Switch(getContext());
                     switchView.setText(entry.getKey());

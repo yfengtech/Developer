@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/white">
 
-    <com.cz.library.widget.DivideTextView
+    <TextView
         android:id="@+id/tv_old_url"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,19 +14,18 @@
         android:padding="12dp"
         android:text="@string/old_server_url"
         android:textColor="?attr/developerTextColor"
-        android:textSize="15sp"
-        auto:dl_divideDrawable="@color/divide"
-        auto:dl_divideGravity="bottom"
-        auto:dl_dividePadding="12dp" />
+        android:textSize="15sp" />
 
-    <com.cz.library.widget.DivideLinearLayout
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/developerDivideSize"
+        android:background="@color/developerDivide"/>
+
+    <LinearLayout
         android:id="@+id/dl_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_old_url"
-        auto:dl_divideDrawable="@color/divide"
-        auto:dl_divideGravity="bottom"
-        auto:dl_dividePadding="12dp">
+        android:layout_below="@id/tv_old_url">
 
         <TextView
             android:layout_width="wrap_content"
@@ -44,7 +43,12 @@
             android:textColor="?attr/developerTextColor"
             android:textSize="15sp" />
 
-    </com.cz.library.widget.DivideLinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/developerDivideSize"
+        android:background="@color/developerDivide"/>
 
     <LinearLayout
         android:id="@+id/ll_btn_panel"

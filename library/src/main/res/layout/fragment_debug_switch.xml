@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.cz.library.widget.DivideLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:auto="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ll_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical"
-    auto:dl_divideGravity="item_divide"
-    auto:dl_itemDivideDrawable="@color/divide"
-    auto:dl_itemDividePadding="12dp"
-    auto:dl_itemDivideSize="@dimen/divideSize"/>
+    android:background="@android:color/white"
+    android:orientation="vertical" />
