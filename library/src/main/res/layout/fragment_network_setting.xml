@@ -6,6 +6,7 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:background="@android:color/white"
+    android:fitsSystemWindows="true"
     android:clickable="true">
 
     <TextView

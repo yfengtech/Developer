@@ -36,7 +36,7 @@ public class DeveloperManager {
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.pop_in, R.anim.pop_out, R.anim.pop_in, R.anim.pop_out);
-        fragmentTransaction.addToBackStack(fragment.getClass().getName()).add(android.R.id.content,fragment).commit();
+        fragmentTransaction.addToBackStack(fragment.getClass().getName()).add(R.id.container,fragment).commit();
     }
 
 

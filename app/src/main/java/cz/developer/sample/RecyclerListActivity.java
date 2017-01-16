@@ -6,10 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import cz.developer.library.adapter.IAdapterItem;
 
 /**
  * Created by cz on 1/11/17.
@@ -26,7 +25,7 @@ public class RecyclerListActivity extends AppCompatActivity {
         recyclerView.setAdapter(new SimpleAdapter(getLayoutInflater()));
     }
 
-    public static class SimpleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements IAdapterItem<String> {
+    public static class SimpleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
         private final LayoutInflater layoutInflater;
 
         public SimpleAdapter(LayoutInflater layoutInflater) {
@@ -35,23 +34,51 @@ public class RecyclerListActivity extends AppCompatActivity {
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new RecyclerView.ViewHolder(layoutInflater.inflate(android.R.layout.simple_list_item_1,parent,false)){};
+            RecyclerView.ViewHolder viewHolder=null;
+            if(0==viewType){
+                viewHolder= new RecyclerView.ViewHolder(layoutInflater.inflate(android.R.layout.simple_list_item_1,parent,false)){};
+            } else if(1==viewType){
+                viewHolder= new RecyclerView.ViewHolder(layoutInflater.inflate(R.layout.layout2_item,parent,false)){};
+            }
+            return viewHolder;
         }
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            TextView textView= (TextView) holder.itemView;
-            textView.setText(DataProvider.ITEMS[position]);
+            int itemViewType = getItemViewType(position);
+            if(0==itemViewType){
+                TextView textView= (TextView) holder.itemView;
+                textView.setTag(DataProvider.ITEMS[position]);
+                textView.setText(DataProvider.ITEMS[position]);
+                textView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    }
+                });
+            } else if(1==itemViewType){
+                TextView textView= (TextView) holder.itemView.findViewById(R.id.text1);
+                textView.setText(DataProvider.ITEMS[position]);
+                textView.setTag(DataProvider.ITEMS[position]);
+                textView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    }
+                });
+            }
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            int viewType=0;
+            if(0!=position%2){
+                viewType=1;
+            }
+            return viewType;
         }
 
         @Override
         public int getItemCount() {
             return DataProvider.ITEMS.length;
-        }
-
-        @Override
-        public String getItem(int position) {
-            return DataProvider.ITEMS[position];
         }
 
     }

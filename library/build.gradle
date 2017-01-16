@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
-version = "1.1.1"
+version = "1.2.1"
 android {
     compileSdkVersion 24
     buildToolsVersion '24.0.2'
@@ -99,7 +99,7 @@ tasks.withType(JavaCompile) {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.cz.titlebar:titlebar:1.1.7'
+    compile 'com.cz.titlebar:titlebar:1.2.4'
     compile 'com.cz.xml:library:1.0.6'
     compile 'io.reactivex:rxjava:1.1.6'
     compile 'io.reactivex:rxandroid:0.24.0'

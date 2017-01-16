@@ -8,12 +8,10 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.AbsListView;
 import android.widget.FrameLayout;
@@ -24,7 +22,6 @@ import android.widget.Toast;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,8 +29,6 @@ import java.util.regex.Pattern;
 import cz.developer.library.adapter.DebugItemInfoAdapter;
 import cz.developer.library.adapter.DebugWebImageAdapter;
 import cz.developer.library.adapter.IAdapterItem;
-
-import static android.content.ContentValues.TAG;
 
 /**
  * Created by cz on 1/11/17.
@@ -69,9 +64,30 @@ public class DebugViewHelper {
             Field field = View.class.getDeclaredField("mListenerInfo");
             field.setAccessible(true);
             Object o = field.get(view);
-            field=o.getClass().getDeclaredField("mOnLongClickListener");
+            if(null!=o){
+                field= o.getClass().getDeclaredField("mOnLongClickListener");
+                field.setAccessible(true);
+                result=null!=field.get(o);
+            }
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    private static boolean isViewClickable(View view){
+        boolean result=false;
+        try {
+            Field field = View.class.getDeclaredField("mListenerInfo");
             field.setAccessible(true);
-            result=null!=field.get(o);
+            Object o = field.get(view);
+            if(null!=o){
+                field= o.getClass().getDeclaredField("mOnClickListener");
+                field.setAccessible(true);
+                result=null!=field.get(o);
+            }
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -81,10 +97,10 @@ public class DebugViewHelper {
     }
 
     public static void initAbsListView(AbsListView listView, boolean select) {
-        ListAdapter adapter = listView.getAdapter();
-        //初始化己加载条目
-        if(null!=adapter){
-            listView.setOnItemLongClickListener(!select?null:(parent, view, position, id) -> {
+        listView.setOnItemLongClickListener(!select?null:(parent, view, position, id) -> {
+            ListAdapter adapter = listView.getAdapter();
+            //初始化己加载条目
+            if(null!=adapter){
                 Object item = adapter.getItem(position);
                 try{
                     List<String> fieldItems = getItemFieldItems(item);
@@ -94,10 +110,9 @@ public class DebugViewHelper {
                 } catch (Exception e){
                     e.printStackTrace();
                 }
-                return true;
-            });
-        }
-
+            }
+            return true;
+        });
     }
 
     private static void initWebView(ViewGroup root,WebView webView, boolean select) {
@@ -109,7 +124,7 @@ public class DebugViewHelper {
                 FrameLayout contentView= (FrameLayout)findView;
                 ImageView imageView=new ImageView(webView.getContext());
                 imageView.setImageResource(R.drawable.ic_bug_report_white);
-                imageView.setBackgroundResource(R.drawable.primary_oval_shape);
+//                imageView.setBackgroundResource(R.drawable.primary_oval_shape);
                 int padding = applyDimension(context.getResources().getDisplayMetrics(), 12);
                 imageView.setPadding(padding,padding,padding,padding);
                 imageView.setId(R.id.debug_btn);
@@ -202,19 +217,13 @@ public class DebugViewHelper {
     private static void initRecyclerView(RecyclerView recyclerView,final boolean select) {
         int childCount = recyclerView.getChildCount();
         for(int i=0;i<childCount;i++){
-            View childView = recyclerView.getChildAt(i);
-            childView.setOnLongClickListener(!select?null:v -> {
-                setRecyclerChildViewDebugListener(childView, recyclerView);
-                return true;
-            });
+            initRecyclerView(recyclerView.getChildAt(i), select, recyclerView);
         }
+
         recyclerView.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
             @Override
             public void onChildViewAttachedToWindow(View view) {
-                view.setOnLongClickListener(!select?null:v -> {
-                    setRecyclerChildViewDebugListener(view, recyclerView);
-                    return true;
-                });
+                initRecyclerView(view, select, recyclerView);
             }
 
             @Override
@@ -223,21 +232,63 @@ public class DebugViewHelper {
         });
     }
 
-    private static void setRecyclerChildViewDebugListener(View view, RecyclerView recyclerView) {
+    private static void initRecyclerView(View view, boolean select, RecyclerView recyclerView) {
+        if(isViewClickable(view)&&!isViewLongClickable(view)){
+            view.setOnLongClickListener(!select?null:v -> {
+                setRecyclerAdapterItemClicked(view, recyclerView);
+                return true;
+            });
+        } else {
+            //子控件事件
+            setRecyclerChildViewClicked(view,recyclerView,select);
+        }
+    }
+
+    private static void setRecyclerChildViewClicked(View view,RecyclerView recyclerView,boolean select) {
+        if(view instanceof ViewGroup){
+            ViewGroup viewGroup = (ViewGroup) view;
+            for(int i=0;i<viewGroup.getChildCount();i++){
+                setRecyclerChildViewClicked(viewGroup.getChildAt(i),recyclerView,select);
+            }
+        } else if(!isViewLongClickable(view)&&null!=view.getTag()){
+            view.setOnLongClickListener(!select?null:v -> {
+                setRecyclerAdapterItemClicked(view, recyclerView);
+                return true;
+            });
+        }
+    }
+
+    private static void setRecyclerAdapterItemClicked(View view, RecyclerView recyclerView) {
         RecyclerView.Adapter adapter = recyclerView.getAdapter();
-        if(null!=adapter&&adapter instanceof IAdapterItem){
-            IAdapterItem adapterItem= (IAdapterItem) adapter;
-            RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+        if(null!=adapter){
+            if(adapter instanceof IAdapterItem){
+                IAdapterItem adapterItem= (IAdapterItem) adapter;
+                recyclerViewItemClicked(view, recyclerView, adapterItem);
+            } else {
+                //处理装饰模式内对象
+                recyclerViewItemClicked(view, recyclerView, null);
+            }
+        }
+    }
+
+    private static void recyclerViewItemClicked(View view, RecyclerView recyclerView, IAdapterItem adapterItem) {
+        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+        Object item;
+        if(null!=adapterItem){
             int position = layoutManager.getPosition(view);
-            Object item = adapterItem.getItem(position);
-            try{
+            item = adapterItem.getItem(position);
+        } else {
+            item=view.getTag();
+        }
+        try{
+            if(null!=item){
                 List<String> fieldItems = getItemFieldItems(item);
                 ListView debugList=new ListView(view.getContext());
                 debugList.setAdapter(new DebugItemInfoAdapter(debugList.getContext(), fieldItems));
                 new AlertDialog.Builder(debugList.getContext()).setTitle(item.getClass().getSimpleName()).setView(debugList).show();
-            } catch (Exception e){
-                e.printStackTrace();
             }
+        } catch (Exception e){
+            e.printStackTrace();
         }
     }
 
