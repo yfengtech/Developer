@@ -4,4 +4,8 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="itemHeight">50dp</dimen>
     <dimen name="developerDivideSize">0.4dp</dimen>
+
+    <dimen name="mem_monitor_padding">8dp</dimen>
+    <dimen name="mem_monitor_text_padding">8dp</dimen>
+    <dimen name="mem_monitor_height">250dp</dimen>
 </resources>
