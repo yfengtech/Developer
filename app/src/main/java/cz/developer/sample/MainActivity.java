@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         });
         findViewById(R.id.btn2).setOnClickListener(v -> startActivity(new Intent(this,RecyclerListActivity.class)));
         findViewById(R.id.btn3).setOnClickListener(v -> startActivity(new Intent(this,WebViewActivity.class)));
-        findViewById(R.id.btn4).setOnClickListener(v -> startActivity(new Intent(this,PrivacyLockActivity.class)));
+        findViewById(R.id.btn4).setOnClickListener(v -> getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ListFragment()).commit());
+        findViewById(R.id.btn5).setOnClickListener(v -> startActivity(new Intent(this,PrivacyLockActivity.class)));
     }
 }

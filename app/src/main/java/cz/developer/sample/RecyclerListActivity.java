@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -57,11 +58,20 @@ public class RecyclerListActivity extends AppCompatActivity {
                 });
             } else if(1==itemViewType){
                 TextView textView= (TextView) holder.itemView.findViewById(R.id.text1);
+                ImageView imageView= (ImageView) holder.itemView.findViewById(R.id.iv_image);
                 textView.setText(DataProvider.ITEMS[position]);
                 textView.setTag(DataProvider.ITEMS[position]);
                 textView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                    }
+                });
+
+                imageView.setTag(DataProvider.ITEMS[position]);
+                imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
                     }
                 });
             }

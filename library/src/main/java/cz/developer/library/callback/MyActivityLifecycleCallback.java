@@ -21,6 +21,7 @@ import xyqb.library.config.PrefsManager;
  * Created by cz on 9/7/16.
  */
 public class MyActivityLifecycleCallback implements Application.ActivityLifecycleCallbacks {
+    private static final String TAG = "MyActivityLifecycleCallback";
     private final List<DebugViewItem> viewItems;
     public MyActivityLifecycleCallback() {
         List<DebugViewItem> viewItems= PrefsManager.readConfig(ViewConfigReader.class);
@@ -36,16 +37,19 @@ public class MyActivityLifecycleCallback implements Application.ActivityLifecycl
         if(null!=activity){
             DeveloperActivityManager.get().add(activity);
         }
-    }
-
-    @Override
-    public void onActivityStarted(Activity activity) {
         //仅开启时,初始化当前activity
         if(null!=activity&& DeveloperManager.config.debugList){
             View decorView =  activity.getWindow().getDecorView();
             ViewGroup contentView = (ViewGroup) decorView.findViewById(android.R.id.content);
-            DebugViewHelper.initLayout(contentView,contentView,true,false);
+            DebugViewHelper.initLayout(contentView,true,false);
         }
+    }
+
+    @Override
+    public void onActivityStarted(Activity activity) {
+        View decorView =  activity.getWindow().getDecorView();
+        ViewGroup contentView = (ViewGroup) decorView.findViewById(android.R.id.content);
+        contentView.getChildCount();
     }
 
     @Override

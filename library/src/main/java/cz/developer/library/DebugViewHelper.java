@@ -8,13 +8,13 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.AbsListView;
-import android.widget.FrameLayout;
+import android.widget.AbsoluteLayout;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -29,6 +29,7 @@ import java.util.regex.Pattern;
 import cz.developer.library.adapter.DebugItemInfoAdapter;
 import cz.developer.library.adapter.DebugWebImageAdapter;
 import cz.developer.library.adapter.IAdapterItem;
+import cz.developer.library.callback.HierarchyTreeChangeListener;
 
 /**
  * Created by cz on 1/11/17.
@@ -36,27 +37,35 @@ import cz.developer.library.adapter.IAdapterItem;
 
 public class DebugViewHelper {
 
-    public static void initLayout(ViewGroup root,ViewGroup layout, boolean select,boolean force){
+    private static final String TAG = "DebugViewHelper";
+
+    public static void initLayout(ViewGroup layout,  boolean select, boolean force){
         if(force||DeveloperManager.config.debugList){
-            int childCount = layout.getChildCount();
-            for(int i=0;i<childCount;i++){
-                View childView=layout.getChildAt(i);
-                if(childView instanceof AbsListView){
-                    initAbsListView((AbsListView)childView,select);
-                } else if(childView instanceof RecyclerView){
-                    initRecyclerView((RecyclerView) childView,select);
-                } else if(childView instanceof ImageView){
-                    initImageView((ImageView) childView,select);
-                } else if(childView instanceof WebView){
-                    initWebView(root,(WebView)childView,select);
-                } else if(childView instanceof ViewGroup){
-                    initLayout(root,(ViewGroup) childView,select,force);
-                } else if(childView.isClickable()&&!isViewLongClickable(childView)&&null!=childView.getTag()){
-                    initView(childView,select);
+            layout.setOnHierarchyChangeListener(HierarchyTreeChangeListener.wrap(new ViewGroup.OnHierarchyChangeListener() {
+                @Override
+                public void onChildViewAdded(View parent, View childView) {
+                    if(childView instanceof AbsListView){
+                        initAbsListView((AbsListView)childView,select);
+                    } else if(childView instanceof RecyclerView){
+                        initRecyclerView((RecyclerView) childView,select);
+                    } else if(childView instanceof ImageView){
+                        initImageView((ImageView) childView,select);
+                    } else if(childView instanceof WebView){
+                        initWebView((WebView)childView,select);
+                    } else if(childView.isClickable()&&!isViewLongClickable(childView)&&null!=childView.getTag()){
+                        initView(childView,select);
+                    }
                 }
-            }
+
+                @Override
+                public void onChildViewRemoved(View parent, View child) {
+                    Log.e(TAG,"onChildViewRemoved:"+child);
+                }
+            }));
         }
     }
+
+
 
     private static boolean isViewLongClickable(View view){
         boolean result=false;
@@ -115,74 +124,73 @@ public class DebugViewHelper {
         });
     }
 
-    private static void initWebView(ViewGroup root,WebView webView, boolean select) {
+    private static void initWebView(WebView webView, boolean select) {
         Context context = webView.getContext();
         View debugView = webView.findViewById(R.id.debug_btn);
         if(select&&null==debugView){
-            View findView=root.findViewById(android.R.id.content);
-            if(null!=findView){
-                FrameLayout contentView= (FrameLayout)findView;
-                ImageView imageView=new ImageView(webView.getContext());
-                imageView.setImageResource(R.drawable.ic_bug_report_white);
+            ImageView imageView=new ImageView(webView.getContext());
+            imageView.setImageResource(R.drawable.ic_bug_report);
 //                imageView.setBackgroundResource(R.drawable.primary_oval_shape);
-                int padding = applyDimension(context.getResources().getDisplayMetrics(), 12);
-                imageView.setPadding(padding,padding,padding,padding);
-                imageView.setId(R.id.debug_btn);
-                FrameLayout.LayoutParams layoutParams=new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,FrameLayout.LayoutParams.WRAP_CONTENT);
-                layoutParams.gravity= Gravity.RIGHT|Gravity.BOTTOM;
-                layoutParams.rightMargin=padding;
-                layoutParams.bottomMargin=padding;
-                contentView.addView(imageView,layoutParams);
-                imageView.setOnClickListener(v -> {
-                    webView.getSettings().setJavaScriptEnabled(true);
-                    if (Build.VERSION.SDK_INT >=Build.VERSION_CODES.KITKAT) {
-                        //4.4以上,展示网页内所有图片
-                        WebView.setWebContentsDebuggingEnabled(true);
-                        webView.evaluateJavascript("javascript:(function(){"+
-                                "var imgNodes = document.getElementsByTagName(\"img\");" +
-                                "    var imgUrls=[];" +
-                                "        for(var i=0;i<imgNodes.length;i++){" +
-                                "            imgUrls[i] = imgNodes[i].getAttribute('src');" +
-                                "        }" +
-                                "        return imgUrls"+
-                                "})()",
-                                value -> {
-                                    List<String> urlItems=new ArrayList<>();
-                                    Matcher matcher = Pattern.compile("(\"([^\"]+)\")+").matcher(value);
-                                    while(matcher.find()){
-                                        urlItems.add(matcher.group(2));
-                                    }
-                                    //超过80
-                                    if(80>webView.getProgress()){
-                                        ProgressDialog progressDialog = new ProgressDialog(context);
-                                        progressDialog.setMessage(context.getString(R.string.web_view_loading));
-                                        progressDialog.setCancelable(false);
-                                        progressDialog.show();
-                                        webView.postDelayed(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                if(80<webView.getProgress()&&Build.VERSION.SDK_INT >=Build.VERSION_CODES.KITKAT){
-                                                    progressDialog.dismiss();
-                                                    showWebViewDetailDialog(webView, urlItems);
-                                                } else {
-                                                    webView.postDelayed(this,100);
-                                                }
+            int padding = applyDimension(context.getResources().getDisplayMetrics(), 12);
+            imageView.setPadding(padding,padding,padding,padding);
+            imageView.setId(R.id.debug_btn);
+            webView.addView(imageView,new AbsoluteLayout.LayoutParams(AbsoluteLayout.LayoutParams.WRAP_CONTENT,AbsoluteLayout.LayoutParams.WRAP_CONTENT,0,0));
+            imageView.setOnClickListener(v -> {
+                webView.getSettings().setJavaScriptEnabled(true);
+                if (Build.VERSION.SDK_INT >=Build.VERSION_CODES.KITKAT) {
+                    //4.4以上,展示网页内所有图片
+                    WebView.setWebContentsDebuggingEnabled(true);
+                    webView.evaluateJavascript("javascript:(function(){"+
+                                    "var imgNodes = document.getElementsByTagName(\"img\");" +
+                                    "    var imgUrls=[];" +
+                                    "        for(var i=0;i<imgNodes.length;i++){" +
+                                    "            imgUrls[i] = imgNodes[i].getAttribute('src');" +
+                                    "        }" +
+                                    "        return imgUrls"+
+                                    "})()",
+                            value -> {
+                                List<String> urlItems=new ArrayList<>();
+                                Matcher matcher = Pattern.compile("(\"([^\"]+)\")+").matcher(value);
+                                while(matcher.find()){
+                                    urlItems.add(matcher.group(2));
+                                }
+                                //超过80
+                                if(80>webView.getProgress()){
+                                    ProgressDialog progressDialog = new ProgressDialog(context);
+                                    progressDialog.setMessage(context.getString(R.string.web_view_loading));
+                                    progressDialog.setCancelable(false);
+                                    progressDialog.show();
+                                    webView.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            if(80<webView.getProgress()&&Build.VERSION.SDK_INT >=Build.VERSION_CODES.KITKAT){
+                                                progressDialog.dismiss();
+                                                showWebViewDetailDialog(webView, urlItems);
+                                            } else {
+                                                webView.postDelayed(this,100);
                                             }
-                                        }, 1000);
-                                    } else {
-                                        showWebViewDetailDialog(webView, urlItems);
-                                    }
-                                });
-                    } else {
-                        new AlertDialog.Builder(v.getContext()).
-                                setTitle(R.string.debug_url).
-                                setMessage(webView.getUrl()).
-                                setNegativeButton(R.string.go_website,(dialog, which) ->
+                                        }
+                                    }, 1000);
+                                } else {
+                                    showWebViewDetailDialog(webView, urlItems);
+                                }
+                            });
+                } else {
+                    new AlertDialog.Builder(v.getContext()).
+                            setTitle(R.string.debug_url).
+                            setMessage(webView.getUrl()).
+                            setNegativeButton(R.string.go_website,(dialog, which) ->
                                     v.getContext().startActivity( new Intent(Intent.ACTION_VIEW, Uri.parse(webView.getUrl())))).
-                                            setPositiveButton(android.R.string.cancel,(dialog, which) -> dialog.dismiss()).show();
-                    }
-                });
-            }
+                            setPositiveButton(android.R.string.cancel,(dialog, which) -> dialog.dismiss()).show();
+                }
+            });
+            imageView.post(() -> {
+                AbsoluteLayout.LayoutParams layoutParams= (AbsoluteLayout.LayoutParams) imageView.getLayoutParams();
+                int margin = applyDimension(context.getResources().getDisplayMetrics(), 4);
+                layoutParams.x=webView.getWidth()-imageView.getWidth()-margin;
+                layoutParams.y=webView.getHeight()-imageView.getHeight()-margin;
+                imageView.requestLayout();
+            });
         } else if(!select&&null!=debugView){
             webView.removeView(debugView);
         }
