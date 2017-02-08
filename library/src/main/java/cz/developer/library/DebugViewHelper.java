@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,33 +36,63 @@ import cz.developer.library.callback.HierarchyTreeChangeListener;
 
 public class DebugViewHelper {
 
-    private static final String TAG = "DebugViewHelper";
+    public static void setViewHierarchyChangeListener(ViewGroup layout, boolean select){
+        layout.setOnHierarchyChangeListener(!select?null:HierarchyTreeChangeListener.wrap(new ViewGroup.OnHierarchyChangeListener() {
+            @Override
+            public void onChildViewAdded(View parent, View childView) {
+                initViewInfo(childView, select);
+            }
 
-    public static void initLayout(ViewGroup layout,  boolean select, boolean force){
-        if(force||DeveloperManager.config.debugList){
-            layout.setOnHierarchyChangeListener(HierarchyTreeChangeListener.wrap(new ViewGroup.OnHierarchyChangeListener() {
-                @Override
-                public void onChildViewAdded(View parent, View childView) {
-                    if(childView instanceof AbsListView){
-                        initAbsListView((AbsListView)childView,select);
-                    } else if(childView instanceof RecyclerView){
-                        initRecyclerView((RecyclerView) childView,select);
-                    } else if(childView instanceof ImageView){
-                        initImageView((ImageView) childView,select);
-                    } else if(childView instanceof WebView){
-                        initWebView((WebView)childView,select);
-                    } else if(childView.isClickable()&&!isViewLongClickable(childView)&&null!=childView.getTag()){
-                        initView(childView,select);
-                    }
-                }
+            @Override
+            public void onChildViewRemoved(View parent, View child) {
+            }
+        }));
+    }
 
-                @Override
-                public void onChildViewRemoved(View parent, View child) {
-                    Log.e(TAG,"onChildViewRemoved:"+child);
-                }
-            }));
+    /**
+     * 初始化控件信息
+     * @param childView
+     * @param select
+     */
+    private static void initViewInfo(View childView, boolean select) {
+        if(childView instanceof AbsListView){
+            initAbsListView((AbsListView)childView,select);
+        } else if(childView instanceof RecyclerView){
+            initRecyclerView((RecyclerView) childView,select);
+        } else if(childView instanceof ImageView){
+            initImageView((ImageView) childView,select);
+        } else if(childView instanceof WebView){
+            initWebView((WebView)childView,select);
+        } else if(childView.isClickable()&&!isViewLongClickable(childView)&&null!=childView.getTag()){
+            initView(childView,select);
         }
     }
+
+    /**
+     * 初始化控件信息
+     * @param layout
+     * @param select
+     */
+    public static void initLayoutInfo(ViewGroup layout, boolean select){
+        int childCount = layout.getChildCount();
+        for(int i=0;i<childCount;i++){
+            View childView=layout.getChildAt(i);
+            if(childView instanceof AbsListView){
+                initAbsListView((AbsListView)childView,select);
+            } else if(childView instanceof RecyclerView){
+                initRecyclerView((RecyclerView) childView,select);
+            } else if(childView instanceof ImageView){
+                initImageView((ImageView) childView,select);
+            } else if(childView instanceof WebView){
+                initWebView((WebView)childView,select);
+            } else if(childView instanceof ViewGroup){
+                initLayoutInfo((ViewGroup) childView,select);
+            } else if(childView.isClickable()&&!isViewLongClickable(childView)&&null!=childView.getTag()){
+                initView(childView,select);
+            }
+        }
+    }
+
 
 
 

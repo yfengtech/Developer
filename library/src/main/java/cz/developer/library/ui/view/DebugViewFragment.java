@@ -58,10 +58,13 @@ public class DebugViewFragment extends TitleBarFragment {
             //设置所有控件状态
             DeveloperActivityManager.get().forActivities(activity->{
                 View decorView = activity.getWindow().getDecorView();
-                View contentView=decorView.findViewById(android.R.id.content);
-                if(null!=contentView&&contentView instanceof ViewGroup){
-                    ViewGroup contentLayout= (ViewGroup) contentView;
-                    DebugViewHelper.initLayout(contentLayout,isChecked,true);
+                if(null!=decorView){
+                    View contentView=decorView.findViewById(android.R.id.content);
+                    if(null!=contentView&&contentView instanceof ViewGroup){
+                        ViewGroup contentLayout= (ViewGroup) contentView;
+                        DebugViewHelper.initLayoutInfo(contentLayout,isChecked);
+                        DebugViewHelper.setViewHierarchyChangeListener(contentLayout,isChecked);
+                    }
                 }
             });
         });

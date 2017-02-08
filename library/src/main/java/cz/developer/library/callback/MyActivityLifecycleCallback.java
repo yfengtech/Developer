@@ -41,15 +41,12 @@ public class MyActivityLifecycleCallback implements Application.ActivityLifecycl
         if(null!=activity&& DeveloperManager.config.debugList){
             View decorView =  activity.getWindow().getDecorView();
             ViewGroup contentView = (ViewGroup) decorView.findViewById(android.R.id.content);
-            DebugViewHelper.initLayout(contentView,true,false);
+            DebugViewHelper.setViewHierarchyChangeListener(contentView,true);
         }
     }
 
     @Override
     public void onActivityStarted(Activity activity) {
-        View decorView =  activity.getWindow().getDecorView();
-        ViewGroup contentView = (ViewGroup) decorView.findViewById(android.R.id.content);
-        contentView.getChildCount();
     }
 
     @Override
