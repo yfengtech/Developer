@@ -11,7 +11,6 @@ import java.util.List;
 
 import cz.developer.library.DebugViewHelper;
 import cz.developer.library.DeveloperActivityManager;
-import cz.developer.library.DeveloperManager;
 import cz.developer.library.model.DebugViewItem;
 import cz.developer.library.xml.ViewConfigReader;
 import xyqb.library.config.PrefsManager;
@@ -36,12 +35,9 @@ public class MyActivityLifecycleCallback implements Application.ActivityLifecycl
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
         if(null!=activity){
             DeveloperActivityManager.get().add(activity);
-        }
-        //仅开启时,初始化当前activity
-        if(null!=activity&& DeveloperManager.config.debugList){
             View decorView =  activity.getWindow().getDecorView();
             ViewGroup contentView = (ViewGroup) decorView.findViewById(android.R.id.content);
-            DebugViewHelper.setViewHierarchyChangeListener(contentView,true);
+            DebugViewHelper.setViewHierarchyChangeListener(contentView);
         }
     }
 

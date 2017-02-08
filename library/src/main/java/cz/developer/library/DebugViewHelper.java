@@ -36,11 +36,11 @@ import cz.developer.library.callback.HierarchyTreeChangeListener;
 
 public class DebugViewHelper {
 
-    public static void setViewHierarchyChangeListener(ViewGroup layout, boolean select){
-        layout.setOnHierarchyChangeListener(!select?null:HierarchyTreeChangeListener.wrap(new ViewGroup.OnHierarchyChangeListener() {
+    public static void setViewHierarchyChangeListener(ViewGroup layout){
+        layout.setOnHierarchyChangeListener(HierarchyTreeChangeListener.wrap(new ViewGroup.OnHierarchyChangeListener() {
             @Override
             public void onChildViewAdded(View parent, View childView) {
-                initViewInfo(childView, select);
+                initViewInfo(childView, DeveloperManager.config.debugList);
             }
 
             @Override

@@ -63,7 +63,6 @@ public class DebugViewFragment extends TitleBarFragment {
                     if(null!=contentView&&contentView instanceof ViewGroup){
                         ViewGroup contentLayout= (ViewGroup) contentView;
                         DebugViewHelper.initLayoutInfo(contentLayout,isChecked);
-                        DebugViewHelper.setViewHierarchyChangeListener(contentLayout,isChecked);
                     }
                 }
             });
