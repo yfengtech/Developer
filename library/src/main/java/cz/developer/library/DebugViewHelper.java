@@ -63,7 +63,7 @@ public class DebugViewHelper {
             initImageView((ImageView) childView,select);
         } else if(childView instanceof WebView){
             initWebView((WebView)childView,select);
-        } else if(childView.isClickable()&&!isViewLongClickable(childView)&&null!=childView.getTag()){
+        } else if(!isViewLongClickable(childView)&&null!=childView.getTag()){
             initView(childView,select);
         }
     }
@@ -87,7 +87,7 @@ public class DebugViewHelper {
                 initWebView((WebView)childView,select);
             } else if(childView instanceof ViewGroup){
                 initLayoutInfo((ViewGroup) childView,select);
-            } else if(childView.isClickable()&&!isViewLongClickable(childView)&&null!=childView.getTag()){
+            } else if(childView.isClickable()&&!isViewLongClickable(childView)){
                 initView(childView,select);
             }
         }
@@ -288,6 +288,7 @@ public class DebugViewHelper {
                 setRecyclerChildViewClicked(viewGroup.getChildAt(i),recyclerView,select);
             }
         } else if(!isViewLongClickable(view)&&null!=view.getTag()){
+            view.setLongClickable(select);
             view.setOnLongClickListener(!select?null:v -> {
                 setRecyclerAdapterItemClicked(view, recyclerView);
                 return true;
@@ -330,22 +331,24 @@ public class DebugViewHelper {
     }
 
     private static void initView(View view,boolean select) {
-        view.setOnLongClickListener(!select?null:v -> {
-            Object item = v.getTag();
-            if(null!=item){
+        Object item = view.getTag();
+        if(null!=item){
+            view.setLongClickable(select);
+            view.setOnLongClickListener(!select?null:v -> {
                 List<String> fieldItems = getItemFieldItems(item);
                 ListView debugList=new ListView(view.getContext());
                 debugList.setAdapter(new DebugItemInfoAdapter(debugList.getContext(), fieldItems));
                 new AlertDialog.Builder(debugList.getContext()).setTitle(item.getClass().getSimpleName()).setView(debugList).show();
-            }
-            return true;
-        });
+                return true;
+            });
+        }
     }
 
     private static void initImageView(ImageView imageView,boolean select) {
-        imageView.setOnLongClickListener(!select?null:v -> {
-            Object tag = v.getTag();
-            if(null!=tag){
+        Object tag = imageView.getTag();
+        if(null!=tag){
+            imageView.setLongClickable(select);
+            imageView.setOnLongClickListener(!select?null:v -> {
                 new AlertDialog.Builder(v.getContext()).setTitle(R.string.look_image).setMessage(tag.toString()).
                         setNegativeButton(android.R.string.cancel,(dialog, which) -> dialog.dismiss()).
                         setPositiveButton(android.R.string.ok,(dialog, which) -> {
@@ -358,9 +361,9 @@ public class DebugViewHelper {
                                 Toast.makeText(context, "Open website error!", Toast.LENGTH_SHORT).show();
                             }
                         }).show();
-            }
-            return true;
-        });
+                return true;
+            });
+        }
     }
 
     private static List<String> getItemFieldItems(Object item){

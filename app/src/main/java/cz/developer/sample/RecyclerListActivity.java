@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by cz on 1/11/17.
@@ -61,20 +62,15 @@ public class RecyclerListActivity extends AppCompatActivity {
                 ImageView imageView= (ImageView) holder.itemView.findViewById(R.id.iv_image);
                 textView.setText(DataProvider.ITEMS[position]);
                 textView.setTag(DataProvider.ITEMS[position]);
-                textView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                    }
-                });
 
                 imageView.setTag(DataProvider.ITEMS[position]);
-                imageView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                    }
-                });
             }
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(layoutInflater.getContext(), "Click:"+holder.getAdapterPosition(), Toast.LENGTH_SHORT).show();
+                }
+            });
         }
 
         @Override
