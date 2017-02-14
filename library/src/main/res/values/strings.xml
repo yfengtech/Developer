@@ -75,4 +75,10 @@
     <string name="image_info_value">文件大小:%1$s\nBitmap:%2$s</string>
     <string name="web_view_loading">网页正在加载中...</string>
     <string name="wait">请稍等</string>
+    <string name="item_info">条目信息</string>
+    <string name="share">分享</string>
+
+    <string name="content_share_to">内容分享到</string>
+    <string name="copy">复制</string>
+    <string name="copy_complete">内容己复制</string>
 </resources>

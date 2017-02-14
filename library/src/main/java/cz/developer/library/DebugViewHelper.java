@@ -2,12 +2,15 @@ package cz.developer.library;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.util.Patterns;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,14 +23,16 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import cz.developer.library.adapter.DebugItemInfoAdapter;
 import cz.developer.library.adapter.DebugWebImageAdapter;
-import cz.developer.library.adapter.IAdapterItem;
 import cz.developer.library.callback.HierarchyTreeChangeListener;
 
 /**
@@ -40,7 +45,9 @@ public class DebugViewHelper {
         layout.setOnHierarchyChangeListener(HierarchyTreeChangeListener.wrap(new ViewGroup.OnHierarchyChangeListener() {
             @Override
             public void onChildViewAdded(View parent, View childView) {
-                initViewInfo(childView, DeveloperManager.config.debugList);
+                if(!(parent instanceof AbsListView)){
+                    initViewInfo(childView, DeveloperManager.config.debugList);
+                }
             }
 
             @Override
@@ -63,7 +70,7 @@ public class DebugViewHelper {
             initImageView((ImageView) childView,select);
         } else if(childView instanceof WebView){
             initWebView((WebView)childView,select);
-        } else if(!isViewLongClickable(childView)&&null!=childView.getTag()){
+        } else if(!isViewLongClickable(childView)){
             initView(childView,select);
         }
     }
@@ -87,7 +94,7 @@ public class DebugViewHelper {
                 initWebView((WebView)childView,select);
             } else if(childView instanceof ViewGroup){
                 initLayoutInfo((ViewGroup) childView,select);
-            } else if(childView.isClickable()&&!isViewLongClickable(childView)){
+            } else if(!isViewLongClickable(childView)){
                 initView(childView,select);
             }
         }
@@ -135,22 +142,85 @@ public class DebugViewHelper {
     }
 
     public static void initAbsListView(AbsListView listView, boolean select) {
-        listView.setOnItemLongClickListener(!select?null:(parent, view, position, id) -> {
-            ListAdapter adapter = listView.getAdapter();
-            //初始化己加载条目
-            if(null!=adapter){
-                Object item = adapter.getItem(position);
-                try{
-                    List<String> fieldItems = getItemFieldItems(item);
-                    ListView debugList=new ListView(listView.getContext());
-                    debugList.setAdapter(new DebugItemInfoAdapter(listView.getContext(), fieldItems));
-                    new AlertDialog.Builder(listView.getContext()).setTitle(item.getClass().getSimpleName()).setView(debugList).show();
-                } catch (Exception e){
-                    e.printStackTrace();
+        if(!select){
+            //部分手机上,longClickable设置后,也会拦截点击事件,如小米...
+            listView.setLongClickable(select);
+        } else {
+            listView.setOnItemLongClickListener((parent, view, position, id) -> {
+                ListAdapter adapter = listView.getAdapter();
+                //初始化己加载条目
+                if(null!=adapter){
+                    itemClick(view.getContext(),adapter.getItem(position));
                 }
+                return true;
+            });
+        }
+    }
+
+    private static void itemClick(Context context,Object item){
+        try{
+            if(null!=context&&null!=item){
+                Map<String,String> fieldItems = getItemFieldItems(item);
+                List<String> items=new ArrayList<>(fieldItems.size());
+                List<String> itemValue=new ArrayList<>(fieldItems.size());
+                for(Map.Entry<String,String> entry:fieldItems.entrySet()){
+                    itemValue.add(entry.getValue());
+                    items.add(entry.getKey()+":"+entry.getValue());
+                }
+                ListView debugList=new ListView(context);
+                debugList.setAdapter(new DebugItemInfoAdapter(context, items));
+                AlertDialog dialog = new AlertDialog.Builder(context).setTitle(R.string.debug_info).setView(debugList).show();
+                debugList.setOnItemClickListener((parent1, view1, position1, id1) -> {
+                    dialog.dismiss();
+                    itemClickListener(parent1.getContext(),itemValue.get(position1));
+                });
             }
-            return true;
-        });
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 条目点击
+     * @param value
+     */
+    private static void itemClickListener(Context context, String value) {
+        if(null!=context){
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle(R.string.item_info).setMessage(value);
+
+            //是否为网页,为网页,加上跳转
+            Matcher matcher = Patterns.WEB_URL.matcher(value);
+            if(matcher.matches()){
+                builder.setNegativeButton(R.string.go_website,(dialog, which) ->
+                        context.startActivity( new Intent(Intent.ACTION_VIEW, Uri.parse(value))));
+            }
+            //加入copy
+            builder.setNeutralButton(R.string.copy,(dialog, which) -> {
+                // 得到剪贴板管理器
+                ClipboardManager cmb = (ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
+                cmb.setPrimaryClip(ClipData.newPlainText("item field value",value));
+                Toast.makeText(context, R.string.copy_complete, Toast.LENGTH_SHORT).show();
+            });
+            //加入分享
+            builder.setPositiveButton(R.string.share,(dialog, which) -> shareMessage(context,context.getString(R.string.content_share_to),value)).show();
+        }
+    }
+
+
+    /**
+     * 分享功能
+     * @param context 上下文
+     * @param title 消息标题
+     * @param message 消息内容
+     */
+    public static void shareMessage(Context context, String title, String message) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain"); // 纯文本
+        intent.putExtra(Intent.EXTRA_SUBJECT, title);
+        intent.putExtra(Intent.EXTRA_TEXT, message);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(Intent.createChooser(intent, title));
     }
 
     private static void initWebView(WebView webView, boolean select) {
@@ -275,8 +345,11 @@ public class DebugViewHelper {
                 view.setLongClickable(select);
             } else {
                 view.setOnLongClickListener(v -> {
-                    setRecyclerAdapterItemClicked(view, recyclerView);
-                    return true;
+                    Object tag = v.getTag();
+                    if(null!=tag){
+                        itemClick(view.getContext(), tag);
+                    }
+                    return null!=tag;
                 });
             }
         } else {
@@ -291,80 +364,50 @@ public class DebugViewHelper {
             for(int i=0;i<viewGroup.getChildCount();i++){
                 setRecyclerChildViewClicked(viewGroup.getChildAt(i),recyclerView,select);
             }
-        } else if(!isViewLongClickable(view)&&null!=view.getTag()){
+        } else if(!isViewLongClickable(view)){
             if(!select){
                 view.setLongClickable(select);
             } else {
                 view.setOnLongClickListener(v -> {
-                    setRecyclerAdapterItemClicked(view, recyclerView);
-                    return true;
+                    Object tag = view.getTag();
+                    if(null!=tag){
+                        itemClick(view.getContext(), tag);
+                    }
+                    return null!=tag;
                 });
             }
         }
     }
 
-    private static void setRecyclerAdapterItemClicked(View view, RecyclerView recyclerView) {
-        RecyclerView.Adapter adapter = recyclerView.getAdapter();
-        if(null!=adapter){
-            if(adapter instanceof IAdapterItem){
-                IAdapterItem adapterItem= (IAdapterItem) adapter;
-                recyclerViewItemClicked(view, recyclerView, adapterItem);
-            } else {
-                //处理装饰模式内对象
-                recyclerViewItemClicked(view, recyclerView, null);
-            }
-        }
-    }
 
-    private static void recyclerViewItemClicked(View view, RecyclerView recyclerView, IAdapterItem adapterItem) {
-        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
-        Object item;
-        if(null!=adapterItem){
-            int position = layoutManager.getPosition(view);
-            item = adapterItem.getItem(position);
-        } else {
-            item=view.getTag();
-        }
-        try{
-            if(null!=item){
-                List<String> fieldItems = getItemFieldItems(item);
-                ListView debugList=new ListView(view.getContext());
-                debugList.setAdapter(new DebugItemInfoAdapter(debugList.getContext(), fieldItems));
-                new AlertDialog.Builder(debugList.getContext()).setTitle(item.getClass().getSimpleName()).setView(debugList).show();
-            }
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-    }
 
     private static void initView(View view,boolean select) {
-        Object item = view.getTag();
-        if(null!=item){
-            if(!select){
-                view.setLongClickable(select);
-            } else {
-                view.setOnLongClickListener(v -> {
-                    List<String> fieldItems = getItemFieldItems(item);
-                    ListView debugList=new ListView(view.getContext());
-                    debugList.setAdapter(new DebugItemInfoAdapter(debugList.getContext(), fieldItems));
-                    new AlertDialog.Builder(debugList.getContext()).setTitle(item.getClass().getSimpleName()).setView(debugList).show();
-                    return true;
-                });
-            }
+        if(!select){
+            view.setLongClickable(select);
+        } else {
+            view.setOnLongClickListener(v -> {
+                Object item = view.getTag();
+                if(null!=item){
+                    itemClick(v.getContext(),item);
+                }
+                return null!=item;
+            });
         }
     }
 
     private static void initImageView(ImageView imageView,boolean select) {
-        Object tag = imageView.getTag();
-        if(null!=tag){
-            if(!select){
-                imageView.setLongClickable(select);
-            } else {
-                imageView.setOnLongClickListener(v -> {
-                    new AlertDialog.Builder(v.getContext()).setTitle(R.string.look_image).setMessage(tag.toString()).
-                            setNegativeButton(android.R.string.cancel,(dialog, which) -> dialog.dismiss()).
-                            setPositiveButton(android.R.string.ok,(dialog, which) -> {
-                                Context context = v.getContext();
+        if(!select){
+            imageView.setLongClickable(select);
+        } else if(!isViewLongClickable(imageView)){
+            imageView.setOnLongClickListener(v -> {
+                Object tag = imageView.getTag();
+                if(null!=tag) {
+                    Context context = v.getContext();
+                    new AlertDialog.Builder(context).setTitle(R.string.look_image).setMessage(tag.toString()).
+                            setNeutralButton(android.R.string.cancel,(dialog, which) -> dialog.dismiss()).
+                            setNegativeButton(R.string.share,(dialog, which) ->
+                                    shareMessage(context,context.getString(R.string.content_share_to),tag.toString())).
+                            setPositiveButton(R.string.go_website,(dialog, which) -> {
                                 try{
                                     Uri uri = Uri.parse(tag.toString());
                                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
@@ -373,17 +416,17 @@ public class DebugViewHelper {
                                     Toast.makeText(context, "Open website error!", Toast.LENGTH_SHORT).show();
                                 }
                             }).show();
-                    return true;
-                });
-            }
+                }
+                return null!=tag;
+            });
         }
     }
 
-    private static List<String> getItemFieldItems(Object item){
-        List<String> fieldItems=new ArrayList<>();
+    private static Map<String,String> getItemFieldItems(Object item){
+        Map<String,String> fieldItems=new HashMap<>();
         if(null!=item){
             if(item instanceof String){
-                fieldItems.add("String:"+item);
+                fieldItems.put("String",item.toString());
             } else {
                 Class<?> clazz = item.getClass();
                 Field[] declaredFields = clazz.getDeclaredFields();
@@ -393,8 +436,11 @@ public class DebugViewHelper {
                             declaredFields[i].setAccessible(true);
                         }
                         try {
-                            Object o = declaredFields[i].get(item);
-                            fieldItems.add(declaredFields[i].getName()+":"+o);
+                            //非静态字静加入
+                            if(!Modifier.isStatic(declaredFields[i].getModifiers())){
+                                Object o = declaredFields[i].get(item);
+                                fieldItems.put(declaredFields[i].getName(),null==o?"Non":o.toString());
+                            }
                         } catch (IllegalAccessException e) {
                             e.printStackTrace();
                         }

@@ -25,10 +25,6 @@ public class MainActivity extends AppCompatActivity {
         person.job="Teacher";
         button1.setTag(person);
         button1.setOnClickListener(v -> startActivity(new Intent(this,ListActivity.class)));
-        button1.setOnLongClickListener(v -> {
-            button1.setText("List Long Clicked!");
-            return true;
-        });
         findViewById(R.id.btn2).setOnClickListener(v -> startActivity(new Intent(this,RecyclerListActivity.class)));
         findViewById(R.id.btn3).setOnClickListener(v -> startActivity(new Intent(this,WebViewActivity.class)));
         findViewById(R.id.btn4).setOnClickListener(v -> getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ListFragment()).commit());
