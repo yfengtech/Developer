@@ -271,10 +271,14 @@ public class DebugViewHelper {
 
     private static void initRecyclerView(View view, boolean select, RecyclerView recyclerView) {
         if(isViewClickable(view)&&!isViewLongClickable(view)){
-            view.setOnLongClickListener(!select?null:v -> {
-                setRecyclerAdapterItemClicked(view, recyclerView);
-                return true;
-            });
+            if(!select){
+                view.setLongClickable(select);
+            } else {
+                view.setOnLongClickListener(v -> {
+                    setRecyclerAdapterItemClicked(view, recyclerView);
+                    return true;
+                });
+            }
         } else {
             //子控件事件
             setRecyclerChildViewClicked(view,recyclerView,select);
@@ -288,11 +292,14 @@ public class DebugViewHelper {
                 setRecyclerChildViewClicked(viewGroup.getChildAt(i),recyclerView,select);
             }
         } else if(!isViewLongClickable(view)&&null!=view.getTag()){
-            view.setLongClickable(select);
-            view.setOnLongClickListener(!select?null:v -> {
-                setRecyclerAdapterItemClicked(view, recyclerView);
-                return true;
-            });
+            if(!select){
+                view.setLongClickable(select);
+            } else {
+                view.setOnLongClickListener(v -> {
+                    setRecyclerAdapterItemClicked(view, recyclerView);
+                    return true;
+                });
+            }
         }
     }
 
@@ -333,36 +340,42 @@ public class DebugViewHelper {
     private static void initView(View view,boolean select) {
         Object item = view.getTag();
         if(null!=item){
-            view.setLongClickable(select);
-            view.setOnLongClickListener(!select?null:v -> {
-                List<String> fieldItems = getItemFieldItems(item);
-                ListView debugList=new ListView(view.getContext());
-                debugList.setAdapter(new DebugItemInfoAdapter(debugList.getContext(), fieldItems));
-                new AlertDialog.Builder(debugList.getContext()).setTitle(item.getClass().getSimpleName()).setView(debugList).show();
-                return true;
-            });
+            if(!select){
+                view.setLongClickable(select);
+            } else {
+                view.setOnLongClickListener(v -> {
+                    List<String> fieldItems = getItemFieldItems(item);
+                    ListView debugList=new ListView(view.getContext());
+                    debugList.setAdapter(new DebugItemInfoAdapter(debugList.getContext(), fieldItems));
+                    new AlertDialog.Builder(debugList.getContext()).setTitle(item.getClass().getSimpleName()).setView(debugList).show();
+                    return true;
+                });
+            }
         }
     }
 
     private static void initImageView(ImageView imageView,boolean select) {
         Object tag = imageView.getTag();
         if(null!=tag){
-            imageView.setLongClickable(select);
-            imageView.setOnLongClickListener(!select?null:v -> {
-                new AlertDialog.Builder(v.getContext()).setTitle(R.string.look_image).setMessage(tag.toString()).
-                        setNegativeButton(android.R.string.cancel,(dialog, which) -> dialog.dismiss()).
-                        setPositiveButton(android.R.string.ok,(dialog, which) -> {
-                            Context context = v.getContext();
-                            try{
-                                Uri uri = Uri.parse(tag.toString());
-                                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                                context.startActivity(intent);
-                            } catch (Exception e){
-                                Toast.makeText(context, "Open website error!", Toast.LENGTH_SHORT).show();
-                            }
-                        }).show();
-                return true;
-            });
+            if(!select){
+                imageView.setLongClickable(select);
+            } else {
+                imageView.setOnLongClickListener(v -> {
+                    new AlertDialog.Builder(v.getContext()).setTitle(R.string.look_image).setMessage(tag.toString()).
+                            setNegativeButton(android.R.string.cancel,(dialog, which) -> dialog.dismiss()).
+                            setPositiveButton(android.R.string.ok,(dialog, which) -> {
+                                Context context = v.getContext();
+                                try{
+                                    Uri uri = Uri.parse(tag.toString());
+                                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                                    context.startActivity(intent);
+                                } catch (Exception e){
+                                    Toast.makeText(context, "Open website error!", Toast.LENGTH_SHORT).show();
+                                }
+                            }).show();
+                    return true;
+                });
+            }
         }
     }
 
