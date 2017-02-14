@@ -10,8 +10,10 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.Patterns;
 import android.util.TypedValue;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
@@ -40,7 +42,7 @@ import cz.developer.library.callback.HierarchyTreeChangeListener;
  */
 
 public class DebugViewHelper {
-
+    public static final String TAG="DebugViewHelper";
     public static void setViewHierarchyChangeListener(ViewGroup layout){
         layout.setOnHierarchyChangeListener(HierarchyTreeChangeListener.wrap(new ViewGroup.OnHierarchyChangeListener() {
             @Override
@@ -94,7 +96,7 @@ public class DebugViewHelper {
                 initWebView((WebView)childView,select);
             } else if(childView instanceof ViewGroup){
                 initLayoutInfo((ViewGroup) childView,select);
-            } else if(!isViewLongClickable(childView)){
+            } else if(!isViewLongClickable(childView)&&childView.isClickable()){
                 initView(childView,select);
             }
         }
@@ -324,13 +326,13 @@ public class DebugViewHelper {
     private static void initRecyclerView(RecyclerView recyclerView,final boolean select) {
         int childCount = recyclerView.getChildCount();
         for(int i=0;i<childCount;i++){
-            initRecyclerView(recyclerView.getChildAt(i), select, recyclerView);
+            initRecyclerView(recyclerView.getChildAt(i), select);
         }
 
         recyclerView.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
             @Override
             public void onChildViewAttachedToWindow(View view) {
-                initRecyclerView(view, select, recyclerView);
+                initRecyclerView(view, select);
             }
 
             @Override
@@ -339,7 +341,7 @@ public class DebugViewHelper {
         });
     }
 
-    private static void initRecyclerView(View view, boolean select, RecyclerView recyclerView) {
+    private static void initRecyclerView(View view, boolean select) {
         if(isViewClickable(view)&&!isViewLongClickable(view)){
             if(!select){
                 view.setLongClickable(select);
@@ -354,15 +356,15 @@ public class DebugViewHelper {
             }
         } else {
             //子控件事件
-            setRecyclerChildViewClicked(view,recyclerView,select);
+            setRecyclerChildViewClicked(view,select);
         }
     }
 
-    private static void setRecyclerChildViewClicked(View view,RecyclerView recyclerView,boolean select) {
+    private static void setRecyclerChildViewClicked(View view,boolean select) {
         if(view instanceof ViewGroup){
             ViewGroup viewGroup = (ViewGroup) view;
             for(int i=0;i<viewGroup.getChildCount();i++){
-                setRecyclerChildViewClicked(viewGroup.getChildAt(i),recyclerView,select);
+                setRecyclerChildViewClicked(viewGroup.getChildAt(i),select);
             }
         } else if(!isViewLongClickable(view)){
             if(!select){
@@ -383,6 +385,13 @@ public class DebugViewHelper {
 
     private static void initView(View view,boolean select) {
         if(!select){
+            view.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    Log.e(TAG,"touch:"+event.getAction());
+                    return false;
+                }
+            });
             view.setLongClickable(select);
         } else {
             view.setOnLongClickListener(v -> {
@@ -390,7 +399,7 @@ public class DebugViewHelper {
                 if(null!=item){
                     itemClick(v.getContext(),item);
                 }
-                return null!=item;
+                return false;
             });
         }
     }
