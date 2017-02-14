@@ -8,12 +8,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
-import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.Patterns;
 import android.util.TypedValue;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
@@ -39,17 +36,18 @@ import cz.developer.library.callback.HierarchyTreeChangeListener;
 
 /**
  * Created by cz on 1/11/17.
+ * 维护全局的控件信息查看,实现此功能,需要完成以下方面
+ * 1:动态管理当前activity集,为动态切换时,提供热切换
+ * 2:支持自定义任何view,此处以view.setTag方式实现,必须调用{@lint cz.developer.library.DeveloperManager#setTag}
+ *
+ * 难点,如何实现
  */
-
 public class DebugViewHelper {
-    public static final String TAG="DebugViewHelper";
     public static void setViewHierarchyChangeListener(ViewGroup layout){
         layout.setOnHierarchyChangeListener(HierarchyTreeChangeListener.wrap(new ViewGroup.OnHierarchyChangeListener() {
             @Override
             public void onChildViewAdded(View parent, View childView) {
-                if(!(parent instanceof AbsListView)){
-                    initViewInfo(childView, DeveloperManager.config.debugList);
-                }
+                initAddChildView(childView, DeveloperManager.config.debugList);
             }
 
             @Override
@@ -63,11 +61,9 @@ public class DebugViewHelper {
      * @param childView
      * @param select
      */
-    private static void initViewInfo(View childView, boolean select) {
+    private static void initAddChildView(View childView, boolean select) {
         if(childView instanceof AbsListView){
             initAbsListView((AbsListView)childView,select);
-        } else if(childView instanceof RecyclerView){
-            initRecyclerView((RecyclerView) childView,select);
         } else if(childView instanceof ImageView){
             initImageView((ImageView) childView,select);
         } else if(childView instanceof WebView){
@@ -88,8 +84,6 @@ public class DebugViewHelper {
             View childView=layout.getChildAt(i);
             if(childView instanceof AbsListView){
                 initAbsListView((AbsListView)childView,select);
-            } else if(childView instanceof RecyclerView){
-                initRecyclerView((RecyclerView) childView,select);
             } else if(childView instanceof ImageView){
                 initImageView((ImageView) childView,select);
             } else if(childView instanceof WebView){
@@ -323,98 +317,28 @@ public class DebugViewHelper {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,value,metrics);
     }
 
-    private static void initRecyclerView(RecyclerView recyclerView,final boolean select) {
-        int childCount = recyclerView.getChildCount();
-        for(int i=0;i<childCount;i++){
-            initRecyclerView(recyclerView.getChildAt(i), select);
-        }
-
-        recyclerView.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
-            @Override
-            public void onChildViewAttachedToWindow(View view) {
-                initRecyclerView(view, select);
-            }
-
-            @Override
-            public void onChildViewDetachedFromWindow(View view) {
-            }
-        });
-    }
-
-    private static void initRecyclerView(View view, boolean select) {
-        if(isViewClickable(view)&&!isViewLongClickable(view)){
-            if(!select){
-                view.setLongClickable(select);
-            } else {
-                view.setOnLongClickListener(v -> {
-                    Object tag = v.getTag();
-                    if(null!=tag){
-                        itemClick(view.getContext(), tag);
-                    }
-                    return null!=tag;
-                });
-            }
-        } else {
-            //子控件事件
-            setRecyclerChildViewClicked(view,select);
-        }
-    }
-
-    private static void setRecyclerChildViewClicked(View view,boolean select) {
-        if(view instanceof ViewGroup){
-            ViewGroup viewGroup = (ViewGroup) view;
-            for(int i=0;i<viewGroup.getChildCount();i++){
-                setRecyclerChildViewClicked(viewGroup.getChildAt(i),select);
-            }
-        } else if(!isViewLongClickable(view)){
-            if(!select){
-                view.setLongClickable(select);
-            } else {
-                view.setOnLongClickListener(v -> {
-                    Object tag = view.getTag();
-                    if(null!=tag){
-                        itemClick(view.getContext(), tag);
-                    }
-                    return null!=tag;
-                });
-            }
-        }
-    }
-
-
-
     private static void initView(View view,boolean select) {
-        if(!select){
-            view.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    Log.e(TAG,"touch:"+event.getAction());
-                    return false;
-                }
-            });
-            view.setLongClickable(select);
-        } else {
+        if(select){
             view.setOnLongClickListener(v -> {
-                Object item = view.getTag();
+                Object item = DeveloperManager.getViewTag(v);
                 if(null!=item){
                     itemClick(v.getContext(),item);
                 }
-                return false;
+                return true;
             });
         }
+        view.setLongClickable(null!=DeveloperManager.getViewTag(view));
     }
 
     private static void initImageView(ImageView imageView,boolean select) {
-        if(!select){
-            imageView.setLongClickable(select);
-        } else if(!isViewLongClickable(imageView)){
+        if(select&&!isViewLongClickable(imageView)){
             imageView.setOnLongClickListener(v -> {
-                Object tag = imageView.getTag();
+                Object tag = DeveloperManager.getViewTag(v);
                 if(null!=tag) {
                     Context context = v.getContext();
                     new AlertDialog.Builder(context).setTitle(R.string.look_image).setMessage(tag.toString()).
-                            setNeutralButton(android.R.string.cancel,(dialog, which) -> dialog.dismiss()).
-                            setNegativeButton(R.string.share,(dialog, which) ->
+                            setNegativeButton(android.R.string.cancel,(dialog, which) -> dialog.dismiss()).
+                            setNeutralButton(R.string.share,(dialog, which) ->
                                     shareMessage(context,context.getString(R.string.content_share_to),tag.toString())).
                             setPositiveButton(R.string.go_website,(dialog, which) -> {
                                 try{
@@ -426,9 +350,10 @@ public class DebugViewHelper {
                                 }
                             }).show();
                 }
-                return null!=tag;
+                return true;
             });
         }
+        imageView.setLongClickable(null!=DeveloperManager.getViewTag(imageView));
     }
 
     private static Map<String,String> getItemFieldItems(Object item){

@@ -5,6 +5,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
+import android.view.View;
 
 import cz.developer.library.callback.MyActivityLifecycleCallback;
 import cz.developer.library.ui.ImageDisplayInterface;
@@ -19,6 +21,7 @@ import cz.developer.library.ui.switchs.ISwitchInterface;
  */
 public class DeveloperManager {
     private static final MyActivityLifecycleCallback callback;
+    public static final int VIEW_TAG=DeveloperManager.class.hashCode();
     public static final DeveloperManager instances=new DeveloperManager();
     public static final PrefsConfig config;
     private DeveloperConfig developerConfig;
@@ -30,6 +33,21 @@ public class DeveloperManager {
     static {
         config=new PrefsConfig();
         callback=new MyActivityLifecycleCallback();
+    }
+
+    public static void setViewTag(View view, Object tag){
+        if(null!=view&&null!=tag){
+            view.setTag(VIEW_TAG,tag);
+            view.setLongClickable(true);
+        }
+    }
+
+    public static Object getViewTag(View view){
+        Object tag=null;
+        if(null!=view){
+            tag=view.getTag(VIEW_TAG);
+        }
+        return tag;
     }
 
     public static void toFragment(FragmentActivity activity,Fragment fragment){

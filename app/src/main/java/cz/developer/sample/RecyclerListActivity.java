@@ -12,12 +12,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import cz.developer.library.DeveloperManager;
+
 /**
  * Created by cz on 1/11/17.
  */
 
 public class RecyclerListActivity extends AppCompatActivity {
-    private static final String TAG = "RecyclerListActivity";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,20 +51,15 @@ public class RecyclerListActivity extends AppCompatActivity {
             int itemViewType = getItemViewType(position);
             if(0==itemViewType){
                 TextView textView= (TextView) holder.itemView;
-                textView.setTag(DataProvider.ITEMS[position]);
                 textView.setText(DataProvider.ITEMS[position]);
-                textView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                    }
-                });
+                DeveloperManager.setViewTag(textView,DataProvider.ITEMS[position]);
             } else if(1==itemViewType){
                 TextView textView= (TextView) holder.itemView.findViewById(R.id.text1);
                 ImageView imageView= (ImageView) holder.itemView.findViewById(R.id.iv_image);
+                DeveloperManager.setViewTag(textView,DataProvider.ITEMS[position]);
                 textView.setText(DataProvider.ITEMS[position]);
-                textView.setTag(DataProvider.ITEMS[position]);
 
-                imageView.setTag(DataProvider.ITEMS[position]);
+                DeveloperManager.setViewTag(imageView,DataProvider.ITEMS[position]);
             }
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
