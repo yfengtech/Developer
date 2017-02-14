@@ -2,6 +2,7 @@ package cz.developer.sample;
 
 import android.view.View;
 
+import cz.developer.library.DebugViewHelper;
 import cz.developer.library.DeveloperManager;
 
 /**
@@ -11,6 +12,6 @@ import cz.developer.library.DeveloperManager;
 public class DeveloperWrapper {
 
     public static void setViewTag(View view, Object tag){
-        DeveloperManager.setViewTag(view,tag);
+        DebugViewHelper.setViewTag(view,tag);
     }
 }

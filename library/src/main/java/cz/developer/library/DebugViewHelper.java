@@ -43,6 +43,8 @@ import cz.developer.library.callback.HierarchyTreeChangeListener;
  * 难点,如何实现
  */
 public class DebugViewHelper {
+    public static final int VIEW_TAG=DebugViewHelper.class.hashCode();
+
     public static void setViewHierarchyChangeListener(ViewGroup layout){
         layout.setOnHierarchyChangeListener(HierarchyTreeChangeListener.wrap(new ViewGroup.OnHierarchyChangeListener() {
             @Override
@@ -96,9 +98,6 @@ public class DebugViewHelper {
         }
     }
 
-
-
-
     private static boolean isViewLongClickable(View view){
         boolean result=false;
         try {
@@ -107,25 +106,6 @@ public class DebugViewHelper {
             Object o = field.get(view);
             if(null!=o){
                 field= o.getClass().getDeclaredField("mOnLongClickListener");
-                field.setAccessible(true);
-                result=null!=field.get(o);
-            }
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
-    private static boolean isViewClickable(View view){
-        boolean result=false;
-        try {
-            Field field = View.class.getDeclaredField("mListenerInfo");
-            field.setAccessible(true);
-            Object o = field.get(view);
-            if(null!=o){
-                field= o.getClass().getDeclaredField("mOnClickListener");
                 field.setAccessible(true);
                 result=null!=field.get(o);
             }
@@ -318,22 +298,22 @@ public class DebugViewHelper {
     }
 
     private static void initView(View view,boolean select) {
-        if(select){
+        if(select&&!isViewLongClickable(view)){
             view.setOnLongClickListener(v -> {
-                Object item = DeveloperManager.getViewTag(v);
+                Object item = getViewTag(v);
                 if(null!=item){
                     itemClick(v.getContext(),item);
                 }
                 return true;
             });
         }
-        view.setLongClickable(null!=DeveloperManager.getViewTag(view));
+        view.setLongClickable(null!=getViewTag(view));
     }
 
     private static void initImageView(ImageView imageView,boolean select) {
         if(select&&!isViewLongClickable(imageView)){
             imageView.setOnLongClickListener(v -> {
-                Object tag = DeveloperManager.getViewTag(v);
+                Object tag = getViewTag(v);
                 if(null!=tag) {
                     Context context = v.getContext();
                     new AlertDialog.Builder(context).setTitle(R.string.look_image).setMessage(tag.toString()).
@@ -353,7 +333,7 @@ public class DebugViewHelper {
                 return true;
             });
         }
-        imageView.setLongClickable(null!=DeveloperManager.getViewTag(imageView));
+        imageView.setLongClickable(null!=getViewTag(imageView));
     }
 
     private static Map<String,String> getItemFieldItems(Object item){
@@ -383,5 +363,20 @@ public class DebugViewHelper {
             }
         }
         return fieldItems;
+    }
+
+    public static void setViewTag(View view, Object tag){
+        if(null!=view&&null!=tag){
+            view.setTag(VIEW_TAG,tag);
+            view.setLongClickable(true);
+        }
+    }
+
+    public static Object getViewTag(View view){
+        Object tag=null;
+        if(null!=view){
+            tag=view.getTag(VIEW_TAG);
+        }
+        return tag;
     }
 }
