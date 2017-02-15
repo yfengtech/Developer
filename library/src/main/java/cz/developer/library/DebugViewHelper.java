@@ -316,19 +316,25 @@ public class DebugViewHelper {
                 Object tag = getViewTag(v);
                 if(null!=tag) {
                     Context context = v.getContext();
-                    new AlertDialog.Builder(context).setTitle(R.string.look_image).setMessage(tag.toString()).
-                            setNegativeButton(android.R.string.cancel,(dialog, which) -> dialog.dismiss()).
-                            setNeutralButton(R.string.share,(dialog, which) ->
-                                    shareMessage(context,context.getString(R.string.content_share_to),tag.toString())).
-                            setPositiveButton(R.string.go_website,(dialog, which) -> {
-                                try{
-                                    Uri uri = Uri.parse(tag.toString());
-                                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                                    context.startActivity(intent);
-                                } catch (Exception e){
-                                    Toast.makeText(context, "Open website error!", Toast.LENGTH_SHORT).show();
-                                }
-                            }).show();
+                    Matcher matcher = Patterns.WEB_URL.matcher(tag.toString());
+                    if(!matcher.matches()){
+                        //条目对象
+                        itemClick(v.getContext(),tag);
+                    } else {
+                        new AlertDialog.Builder(context).setTitle(R.string.look_image).setMessage(tag.toString()).
+                                setNegativeButton(android.R.string.cancel,(dialog, which) -> dialog.dismiss()).
+                                setNeutralButton(R.string.share,(dialog, which) ->
+                                        shareMessage(context,context.getString(R.string.content_share_to),tag.toString())).
+                                setPositiveButton(R.string.go_website,(dialog, which) -> {
+                                    try{
+                                        Uri uri = Uri.parse(tag.toString());
+                                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                                        context.startActivity(intent);
+                                    } catch (Exception e){
+                                        Toast.makeText(context, "Open website error!", Toast.LENGTH_SHORT).show();
+                                    }
+                                }).show();
+                    }
                 }
                 return true;
             });
