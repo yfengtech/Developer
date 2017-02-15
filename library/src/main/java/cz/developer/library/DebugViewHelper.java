@@ -92,7 +92,7 @@ public class DebugViewHelper {
                 initWebView((WebView)childView,select);
             } else if(childView instanceof ViewGroup){
                 initLayoutInfo((ViewGroup) childView,select);
-            } else if(!isViewLongClickable(childView)&&childView.isClickable()){
+            } else {
                 initView(childView,select);
             }
         }
@@ -307,7 +307,7 @@ public class DebugViewHelper {
                 return true;
             });
         }
-        view.setLongClickable(null!=getViewTag(view));
+        view.setLongClickable(select&&null!=getViewTag(view));
     }
 
     private static void initImageView(ImageView imageView,boolean select) {
@@ -339,7 +339,7 @@ public class DebugViewHelper {
                 return true;
             });
         }
-        imageView.setLongClickable(null!=getViewTag(imageView));
+        imageView.setLongClickable(select&&null!=getViewTag(imageView));
     }
 
     private static Map<String,String> getItemFieldItems(Object item){
