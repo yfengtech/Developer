@@ -35,5 +35,5 @@ dependencies {
     compile 'com.facebook.fresco:fresco:0.13.0'
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.cz.widget:library:1.7.7'
-    compile 'com.android.support:recyclerview-v7:25.1.0'
+    compile 'com.android.support:recyclerview-v7:24.1.0'
 }

@@ -12,8 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import cz.developer.library.DeveloperManager;
-
 /**
  * Created by cz on 1/11/17.
  */
@@ -52,14 +50,14 @@ public class RecyclerListActivity extends AppCompatActivity {
             if(0==itemViewType){
                 TextView textView= (TextView) holder.itemView;
                 textView.setText(DataProvider.ITEMS[position]);
-                DeveloperManager.setViewTag(textView,DataProvider.ITEMS[position]);
+                DeveloperWrapper.setViewTag(textView,DataProvider.ITEMS[position]);
             } else if(1==itemViewType){
                 TextView textView= (TextView) holder.itemView.findViewById(R.id.text1);
                 ImageView imageView= (ImageView) holder.itemView.findViewById(R.id.iv_image);
-                DeveloperManager.setViewTag(textView,DataProvider.ITEMS[position]);
+                DeveloperWrapper.setViewTag(textView,DataProvider.ITEMS[position]);
                 textView.setText(DataProvider.ITEMS[position]);
 
-                DeveloperManager.setViewTag(imageView,DataProvider.ITEMS[position]);
+                DeveloperWrapper.setViewTag(imageView,DataProvider.ITEMS[position]);
             }
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
