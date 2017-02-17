@@ -43,7 +43,7 @@ import cz.developer.library.callback.HierarchyTreeChangeListener;
  * 难点,如何实现
  */
 public class DebugViewHelper {
-    public static final int VIEW_TAG=Math.abs(DebugViewHelper.class.hashCode());
+    public static final int VIEW_TAG=Integer.MAX_VALUE;
 
     public static void setViewHierarchyChangeListener(ViewGroup layout){
         layout.setOnHierarchyChangeListener(HierarchyTreeChangeListener.wrap(new ViewGroup.OnHierarchyChangeListener() {
