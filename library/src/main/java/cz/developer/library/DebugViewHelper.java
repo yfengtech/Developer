@@ -374,7 +374,7 @@ public class DebugViewHelper {
     public static void setViewTag(View view, Object tag){
         if(null!=view&&null!=tag){
             view.setTag(VIEW_TAG,tag);
-            view.setLongClickable(true);
+//            view.setLongClickable(true);
         }
     }
 
