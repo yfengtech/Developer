@@ -45,19 +45,15 @@ public class RecyclerListActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
             int itemViewType = getItemViewType(position);
             if(0==itemViewType){
                 TextView textView= (TextView) holder.itemView;
                 textView.setText(DataProvider.ITEMS[position]);
-                DeveloperWrapper.setViewTag(textView,DataProvider.ITEMS[position]);
             } else if(1==itemViewType){
                 TextView textView= (TextView) holder.itemView.findViewById(R.id.text1);
                 ImageView imageView= (ImageView) holder.itemView.findViewById(R.id.iv_image);
-                DeveloperWrapper.setViewTag(textView,DataProvider.ITEMS[position]);
                 textView.setText(DataProvider.ITEMS[position]);
-
-                DeveloperWrapper.setViewTag(imageView,DataProvider.ITEMS[position]);
             }
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

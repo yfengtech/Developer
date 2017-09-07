@@ -68,9 +68,9 @@ public class NetworkItemAdapter extends BaseAdapter implements Filterable {
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
+    public View getView(int i, View view, ViewGroup parent) {
         if(null==view){
-            view = inflater.inflate(R.layout.network_item, viewGroup, false);
+            view = inflater.inflate(R.layout.network_item, parent, false);
             ViewHolder holder=new ViewHolder();
             holder.actionView= (TextView) view.findViewById(R.id.tv_name);
             holder.pathView= (TextView) view.findViewById(R.id.tv_path);
@@ -79,11 +79,11 @@ public class NetworkItemAdapter extends BaseAdapter implements Filterable {
         }
         ViewHolder holder= (ViewHolder) view.getTag();
         NetItem item = getItem(i);
-        holder.actionView.setText(getString(R.string.network_desc_value,item.info));
-        holder.pathView.setText(getString(R.string.path_value,item.url));
+        holder.actionView.setText(getString(R.string.network_desc_value, item.getInfo()));
+        holder.pathView.setText(getString(R.string.path_value, item.getUrl()));
         String url = urlItems.get(i);
         if(null==url){
-            String dynamicUrl = DeveloperPrefs.getString(item.action);
+            String dynamicUrl = DeveloperPrefs.INSTANCE.getString(item.getAction());
             url=TextUtils.isEmpty(dynamicUrl)?"":dynamicUrl;
             urlItems.put(i,url);
         }
@@ -165,8 +165,8 @@ public class NetworkItemAdapter extends BaseAdapter implements Filterable {
             List<NetItem> filterItems=new ArrayList<>();
             for(int i=0;i<finalItems.size();i++){
                 NetItem entity = finalItems.get(i);
-                if((!TextUtils.isEmpty(entity.info)&&entity.info.contains(constraint))||
-                        (!TextUtils.isEmpty(entity.url)&&entity.url.contains(constraint))){
+                if((!TextUtils.isEmpty(entity.getInfo())&& entity.getInfo().contains(constraint))||
+                        (!TextUtils.isEmpty(entity.getUrl())&& entity.getUrl().contains(constraint))){
                     filterItems.add(entity);
                 }
             }

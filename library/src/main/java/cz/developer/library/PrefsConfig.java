@@ -10,6 +10,6 @@ public class PrefsConfig {
     public boolean debugList;
 
     public PrefsConfig() {
-        debugList=DeveloperPrefs.getBoolean(Constants.DEBUG_LIST);
+        debugList= DeveloperPrefs.INSTANCE.getBoolean(Constants.DEBUG_LIST);
     }
 }

@@ -14,24 +14,7 @@
         <item name="developerDarkTextColor">@color/darkTextColor</item>
         <item name="developerImageLayout">@layout/image_layout</item>
         <!-- end -->
-
         <item name="android:windowIsTranslucent">false</item>
-        <item name="titleBarBackgroundColor">@color/colorPrimary</item>
-        <item name="titleBarStyle">@style/MyTitleBar</item>
-        <item name="titleBarSize">50dp</item>
     </style>
 
-    <style name="MyTitleBar">
-        <item name="tb_titleDrawable">@mipmap/abc_material_back</item>
-        <item name="tb_titleTextColor">@android:color/white</item>
-        <item name="tb_centerTextColor">@android:color/white</item>
-        <item name="tb_centerTextSize">16sp</item>
-        <item name="tb_titleTextSize">16sp</item>
-        <item name="tb_menuTextColor">@android:color/white</item>
-        <item name="tb_menuTextSize">16sp</item>
-        <item name="tb_underDivideDrawable">@drawable/base_action_bar_shadow</item>
-        <item name="tb_underDivideSize">8dp</item>
-        <item name="tb_itemHorizontalPadding">8dp</item>
-
-    </style>
 </resources>
