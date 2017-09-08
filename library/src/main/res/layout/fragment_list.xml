@@ -2,6 +2,7 @@
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:auto="http://schemas.android.com/apk/res-auto"
     android:background="@android:color/white"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
@@ -12,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:background="?colorPrimary"
+        auto:theme="@style/AppTheme.AppBarOverlay"
         android:elevation="4dp" />
 
     <ListView
@@ -19,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:cacheColorHint="@android:color/transparent"
-        android:divider="@color/developerDivide"
+        android:divider="@color/developerDivider"
         android:dividerHeight="0.5dp"
         android:listSelector="@drawable/white_item_selector"
         android:orientation="vertical"

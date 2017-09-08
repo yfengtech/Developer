@@ -87,4 +87,6 @@
     <string name="view_tag_error">获取View-Tag失败</string>
     <string name="no_view_tag">没有配置View-Tag</string>
     <string name="view_extras">控件附加信息查看</string>
+
+    <string name="death_value">层级:%1$d</string>
 </resources>

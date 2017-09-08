@@ -2,5 +2,5 @@
 <resources>
     <item name="debug_btn" type="id"/>
     <item name="debug_image_view" type="id"/>
-    <item name="activity_container" type="id"/>
+    <item name="developerFilterContainer" type="id"/>
 </resources>

@@ -14,6 +14,8 @@ import cz.developer.library.exception.MyUncaughtExceptionHandler
 import cz.developer.library.ui.view.DebugViewExtrasFragment
 import cz.developer.library.ui.view.DebugViewInfoFragment
 import cz.developer.library.ui.view.DebugViewViewerFragment
+import cz.developer.library.ui.view.model.ViewAttribute
+import cz.developer.library.ui.view.model.ViewHierarchyItem
 
 /**
  * Created by czz on 2016/10/29.
@@ -55,10 +57,10 @@ object DeveloperManager {
                     setPositiveButton(android.R.string.cancel,{dialog, _ -> dialog.dismiss() }).show()
         } else {
             AlertDialog.Builder(activity).setTitle(context.getString(R.string.look_up_view,childView.javaClass.simpleName)).
-                    setItems(arrayOf("控件层级","控件属性集","附加数据"),{dialog, which ->
+                    setItems(arrayOf("控件层级","控件属性集","附加数据"),{_, which ->
                         when(which){
-                            0-> toDeveloperFragment(activity,DebugViewViewerFragment())
-                            1-> toDeveloperFragment(activity,DebugViewInfoFragment())
+                            0-> toDeveloperFragment(activity,DebugViewViewerFragment.newInstance(ViewHierarchyItem(childView)))
+                            1-> toDeveloperFragment(activity, DebugViewInfoFragment.newInstance(ViewAttribute(childView)))
                             2-> {
                                 var keyTags:Any?=null
                                 try{

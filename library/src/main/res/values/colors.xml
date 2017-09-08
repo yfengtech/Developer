@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="alphaGray">#BBECECEC</color>
-    <color name="developerDivide">#FFE5E5E5</color>
     <color name="developerGray">#FFE1E1E1</color>
+    <color name="developerDivider">#FFE5E5E5</color>
 
     <color name="developerReview">#2D4C6B</color>
     <color name="developerReviewItem">#3D6490</color>

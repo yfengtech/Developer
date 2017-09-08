@@ -27,8 +27,7 @@ class MainActivity : AppCompatActivity() {
         tomChild.name="baby"
         tomChild.age=2
         tomChild.parent=person
-        tomChild.attr.put("label","cute")
-        tomChild.attr.put("money","0")
+        (1..10).forEach { tomChild.attr.put("key:$it","value:$it") }
         person.child.add(tomChild)
 
         for(i in 0..2){

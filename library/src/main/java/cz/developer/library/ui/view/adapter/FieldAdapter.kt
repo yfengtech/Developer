@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.util.TypedValue
 import android.view.ViewGroup
 import android.widget.TextView
+import com.cz.recyclerlibrary.adapter.BaseViewHolder
 import com.cz.recyclerlibrary.adapter.tree.TreeAdapter
 import cz.developer.library.R
 import cz.developer.library.ui.view.model.FieldItem
@@ -15,7 +16,7 @@ import cz.developer.library.ui.view.model.FieldItem
 class FieldAdapter(context: Context, rootNode: TreeAdapter.TreeNode<FieldItem>) : TreeAdapter<FieldItem>(context, rootNode) {
     private val PADDING: Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16f, context.resources.displayMetrics).toInt()
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, node: TreeAdapter.TreeNode<FieldItem>, file: FieldItem, viewType: Int, position: Int) {
+    override fun onBindViewHolder(holder: BaseViewHolder, node: TreeAdapter.TreeNode<FieldItem>, file: FieldItem, viewType: Int, position: Int) {
         val itemView = holder.itemView
         itemView.setPadding(PADDING * node.level, itemView.paddingTop, itemView.paddingRight, itemView.paddingBottom)
         when (viewType) {
@@ -31,15 +32,15 @@ class FieldAdapter(context: Context, rootNode: TreeAdapter.TreeNode<FieldItem>) 
         }
     }
 
-    override fun onNodeExpand(node: TreeAdapter.TreeNode<FieldItem>, holder: RecyclerView.ViewHolder, expand: Boolean) {
+    override fun onNodeExpand(node: TreeAdapter.TreeNode<FieldItem>, holder:BaseViewHolder, expand: Boolean) {
         super.onNodeExpand(node, holder, expand)
         holder.itemView.findViewById(R.id.iv_flag).isSelected = expand
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return when (viewType) {
-            OBJECT_ITEM -> object :RecyclerView.ViewHolder(createView(parent, R.layout.object_item)){}
-            else -> object :RecyclerView.ViewHolder(createView(parent, R.layout.field_item)){}
+            OBJECT_ITEM -> BaseViewHolder(createView(parent, R.layout.object_item))
+            else -> BaseViewHolder(createView(parent, R.layout.field_item))
         }
     }
 
@@ -56,7 +57,7 @@ class FieldAdapter(context: Context, rootNode: TreeAdapter.TreeNode<FieldItem>) 
     companion object {
         private val OBJECT_ITEM = 0
         private val FIELD_ITEM = 1
-        val baseType= arrayOf(Byte::class.java,Int::class.java,Long::class.java,Char::class.java,
+        val baseType= arrayOf(Byte::class.java,Int::class.java,Integer::class.java,Long::class.java,Char::class.java,
                 Boolean::class.java,Short::class.java,Float::class.java,Double::class.java,
                 String::class.java)
     }

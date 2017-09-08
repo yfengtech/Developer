@@ -1,7 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<cz.developer.library.widget.FilterLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:auto="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/developerFilterContainer"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:background="@android:color/white">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="?colorPrimary"
+        auto:theme="@style/AppTheme.AppBarOverlay"
+        android:elevation="4dp" />
 
-</LinearLayout>
+    <com.cz.recyclerlibrary.PullToRefreshStickyRecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        auto:pv_listDivide="@color/developerDivider"
+        auto:pv_listDivideHeight="@dimen/developerDivideSize"
+        auto:pl_refreshMode="none">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/developerGray"
+            android:textColor="@android:color/black"
+            auto:pv_layoutStickyView="true"
+            android:textSize="14sp"
+            android:padding="12dp"/>
+
+    </com.cz.recyclerlibrary.PullToRefreshStickyRecyclerView>
+</cz.developer.library.widget.FilterLinearLayout>

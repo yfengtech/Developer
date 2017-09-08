@@ -41,7 +41,8 @@ class DeveloperLayout(context: Context?, attrs: AttributeSet?, defStyleAttr: Int
         when(ev.actionMasked){
             MotionEvent.ACTION_DOWN->{
                 val findView=findViewByPoint(this,x.toInt(),y.toInt())
-                if(null!=findView){
+                //实现了DeveloperFilter过滤接口的布局,将不再被处理
+                if(null!=findView&&findView !is DeveloperFilter){
                     touchView=findView
                     debugLog("按下:$findView ${ViewConfiguration.getLongPressTimeout()}")
                     removeCallbacks(longClickAction)
@@ -55,7 +56,7 @@ class DeveloperLayout(context: Context?, attrs: AttributeSet?, defStyleAttr: Int
             MotionEvent.ACTION_MOVE->{
                 if(null!=touchView&& null!=longClickAction&&
                         touchView!=findViewByPoint(this,x.toInt(),y.toInt())){
-                    debugLog("action:${ev.actionMasked} x:$x y:$y 越界移除")
+                    debugLog("移动x:$x y:$y 越界移除长按事件")
                     removeLongClickCallback()
                 }
             }
@@ -80,7 +81,9 @@ class DeveloperLayout(context: Context?, attrs: AttributeSet?, defStyleAttr: Int
      */
     private fun findViewByPoint(parent: View, x: Int, y: Int): View? {
         var findView: View? = null
-        if (parent is ViewGroup) {
+        if(parent is DeveloperFilter){
+            return parent
+        } else if (parent is ViewGroup) {
             //遍历的父控件
             for (i in 0..parent.childCount - 1) {
                 val child = parent.getChildAt(i)
