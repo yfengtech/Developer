@@ -1,73 +1,53 @@
-package cz.developer.library.ui
+package cz.developer.library
 
+import android.content.Context
+import android.content.Intent
+import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
-
-import cz.developer.library.DeveloperManager
-import cz.developer.library.R
 import cz.developer.library.adapter.DebugListAdapter
 import cz.developer.library.ui.appinfo.DebugAppInfoFragment
 import cz.developer.library.ui.switchs.DebugSwitchFragment
 import cz.developer.library.ui.view.DebugViewFragment
 import kotlinx.android.synthetic.main.activity_developer.*
 
-/**
- *  触发控件调试信息
- *  设计一个庞大的 各种控件信息查看模式
- *  <!--开发者模式的边距效果,以及具体大小指示-->
-<!--当前界面的层级,以及控件树展示-->
-<!--当前cpu/内存消耗时时展示状态-->
-
-select开关界面
-
-控件信息查看,大小,属性
-textView
-ImageView
-Button
-控件大小,属性调试
-界面的层级,
-
-界面级操作:
-想查看整个界面层级
-查看整个界面控件边距.
-
-控件级的操作
-控件信息查看,大小,属性
-textView
-ImageView
-Button
- */
 class DeveloperActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setTheme(R.style.AppTheme_AppBarOverlay)
         setContentView(R.layout.activity_developer)
         val id=intent.getIntExtra("id",0)
         val title = intent.getStringExtra("title")
+        toolBar.subtitle=intent.getStringExtra("desc")
         if(null==title) {
             toolBar.setTitle(R.string.app_name)
             setSupportActionBar(toolBar)
+            supportActionBar?.setDisplayHomeAsUpEnabled(false)
         } else {
             toolBar.title = title
-            toolBar.subtitle=intent.getStringExtra("desc")
             setSupportActionBar(toolBar)
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
             toolBar.setNavigationOnClickListener{ finish() }
         }
         val adapter = DebugListAdapter(this, items[id])
         list.adapter=adapter
-        list.setOnItemClickListener { _, _, position, id ->
+        list.setOnItemClickListener { _, _, position, _ ->
             val item = adapter.getItem(position)
-            val clazz=item.clazz
-            if (null!=clazz) {
-                val fragment = clazz.newInstance() as Fragment
-                fragment.arguments=Bundle().apply {
-                    putString("title", item.title)
-                    putString("desc", item.desc)
+            if(null!=items[item.id]){
+                startActivity(Intent(this,DeveloperActivity::class.java).apply {
+                    putExtra("id",item.id)
+                    putExtra("title",item.title)
+                })
+            } else {
+                val clazz=item.clazz
+                if (null!=clazz) {
+                    val fragment = clazz.newInstance() as Fragment
+                    fragment.arguments=Bundle().apply {
+                        putString("title", item.title)
+                        putString("desc", item.desc)
+                    }
+                    DeveloperManager.toDeveloperFragment(this, fragment)
                 }
-                DeveloperManager.toDeveloperFragment(this, fragment)
             }
         }
     }
@@ -78,6 +58,10 @@ class DeveloperActivity : AppCompatActivity() {
             val newItem=DeveloperItem().apply(closure)
             val items= items.getOrPut(newItem.pid){ mutableListOf<DeveloperItem>() }
             items.add(newItem)
+        }
+
+        fun startActivity(context: Context){
+            context.startActivity(Intent(context,DeveloperActivity::class.java))
         }
 
         open class DeveloperItem(var id:Int=0,

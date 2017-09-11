@@ -16,7 +16,7 @@
             android:id="@+id/tv_thumb"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/developerColorPrimary" />
+            android:background="?colorPrimary" />
     </ScrollView>
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -142,7 +142,7 @@
                     android:textColor="@android:color/white"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:background="?attr/developerColorPrimary"/>
+                    android:background="?colorPrimary"/>
 
                 <ImageView
                     android:id="@+id/iv_add_value"

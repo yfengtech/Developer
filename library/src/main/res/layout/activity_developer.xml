@@ -13,7 +13,7 @@
         android:fitsSystemWindows="true"
         android:background="@android:color/white"
         android:clickable="true"
-        tools:context=".ui.DeveloperActivity">
+        tools:context=".ui.DeveloperFragment">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolBar"

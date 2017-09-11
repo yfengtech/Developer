@@ -6,8 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.widget.TextView
 
 import com.cz.library.widget.PrivacyLockView
-
-import cz.developer.library.ui.DeveloperActivity
+import cz.developer.library.DeveloperActivity
 
 /**
  * Created by cz on 1/12/17.
@@ -22,7 +21,7 @@ class PrivacyLockActivity : AppCompatActivity() {
         val textView = findViewById(R.id.tv_info) as TextView
         lockView.setOnTextSubmitListener { editable ->
             if ("1234" == editable.toString()) {
-                startActivity(Intent(this, DeveloperActivity::class.java))
+                DeveloperActivity.startActivity(this)
                 finish()
             } else {
                 textView.setText(R.string.lock_password)

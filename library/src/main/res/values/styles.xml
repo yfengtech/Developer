@@ -1,5 +1,12 @@
 <resources>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
-
+    
+    <style name="CurveChartView">
+        <item name="cv_color">?colorPrimary</item>
+        <item name="cv_fillColor">?colorPrimaryDark</item>
+        <item name="cv_labelTextSize">12sp</item>
+        <item name="cv_partCount">7</item>
+        <item name="cv_strokeWidth">1dp</item>
+    </style>
 </resources>

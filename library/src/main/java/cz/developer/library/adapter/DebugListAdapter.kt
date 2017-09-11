@@ -6,12 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
+import cz.developer.library.DeveloperActivity
 
 
 import java.util.ArrayList
 
 import cz.developer.library.R
-import cz.developer.library.ui.DeveloperActivity
 
 
 /**

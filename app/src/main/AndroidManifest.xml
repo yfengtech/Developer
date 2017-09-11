@@ -26,8 +26,6 @@
 
         <activity android:name=".PrivacyLockActivity"/>
 
-        <activity android:name="cz.developer.library.ui.DeveloperActivity"/>
-
         <activity android:name=".WebViewActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

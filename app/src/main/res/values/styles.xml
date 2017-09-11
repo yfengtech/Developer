@@ -4,12 +4,9 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorAccent</item>
 
         <!--此处5个attr必须配置,library依赖此处5种颜色做初始化-->
-        <item name="developerColorPrimary" >@color/colorPrimary</item>
-        <item name="developerColorPrimaryDark" >@color/colorPrimaryDark</item>
-        <item name="developerColorAccent" >@color/colorPrimary</item>
         <item name="developerTextColor" >@color/textColor</item>
         <item name="developerDarkTextColor">@color/darkTextColor</item>
         <item name="developerImageLayout">@layout/image_layout</item>
