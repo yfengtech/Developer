@@ -37,8 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
-                android:layout_marginTop="12dp"
-                android:textColor="?attr/developerTextColor"/>
+                android:layout_marginTop="12dp" />
 
             <TextView
                 android:id="@+id/tv_aspect_ratio"
@@ -155,7 +154,6 @@
                 android:id="@+id/st_translation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="?attr/developerTextColor"
                 android:text="@string/set_background_transparent" />
         </LinearLayout>
     </ScrollView>

@@ -21,24 +21,25 @@
         android:fitsSystemWindows="true"
         android:clickable="true">
 
-        <LinearLayout
+        <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            auto:divider="@drawable/developer_divider_shape"
+            auto:showDividers="middle|end">
 
             <TextView
                 android:id="@+id/clearCache"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/white_item_selector"
+                android:background="@drawable/developer_white_item_selector"
+                android:padding="@dimen/developerPadding"
                 android:gravity="center_vertical"
-                android:padding="12dp"
                 android:text="@string/clear_app_cache"
-                android:textColor="?attr/developerTextColor"
-                android:textSize="15sp"
-                />
+                android:textSize="@dimen/developerLargeTextSize"
+                android:textColor="@android:color/black"/>
 
 
-        </LinearLayout>
+        </android.support.v7.widget.LinearLayoutCompat>
     </ScrollView>
 </LinearLayout>

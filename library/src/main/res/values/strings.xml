@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">调试模式</string>
-    <string name="app_info">应用信息:</string>
-    <string name="model_info">机器信息:</string>
+    <string name="app_info">应用信息</string>
+    <string name="model_info">机器信息</string>
 
     <string name="os_version_value">系统版本号:%1$s</string>
     <string name="os_api_value">系统版本值:%1$s</string>
@@ -39,7 +39,7 @@
     <string name="input_url_hint">请输入url</string>
     <string name="server_url_message">选择或编辑一个url地址赋予接口,此接口将使用这个编辑后的服务器地址.</string>
     <string name="apply_default_url">应用默认Url</string>
-    <string name="apply">应用</string>
+    <string name="applySharedPrefsChanged">应用</string>
     <string name="changed_complete">修改成功</string>
     <string name="global_change_url_info">全局修改所有url信息,第1个为默认应用url,其他为备选,并可以动态编辑并应用</string>
     <string name="restored_complete">恢复默认设置成功</string>
@@ -89,4 +89,32 @@
     <string name="view_extras">控件附加信息查看</string>
 
     <string name="death_value">层级:%1$d</string>
+    <string name="last_modify_value">最后修改时间:%1$s</string>
+    <string name="add_shared_prefs">添加配置</string>
+    <string name="prefs_type">配置类型</string>
+    <string name="insert">插入</string>
+    <string name="prefs_boolean">布尔类型:</string>
+    <string name="prefs_set">编辑Set配置项:</string>
+    <string name="edit_shared_prefs">编辑配置项</string>
+    <string name="edit_shared_prefs_value">编辑配置:%1$s</string>
+    <string name="remove_prefs_value">移除:%1$s 成功!</string>
+    <string name="update_shared_prefs_value">更改配置:%1$s</string>
+    <string name="update">更新</string>
+    <string name="update_shared_prefs_complete">更新配置项完成!</string>
+    <string name="set_prefs_value">Set配置项(以/隔开输入多个)</string>
+    <string name="input_shared_prefs_key">请输入配置项键</string>
+    <string name="input_shared_prefs_value">请输入配置项值</string>
+    <string name="add_shared_prefs_complete">添加配置项完成</string>
+    <string name="update_shared_prefs_failed">操作配置项失败</string>
+    <string name="shared_prefs_value_error">修改配置项值可能越界或不正常,修改失败!</string>
+    <string name="remove_prefs_value_fail">删除:%1$s失败,请检测</string>
+    <string name="add_shared_prefs_exists">添加:%1$s 己存在!</string>
+    <string name="exception_list">异常列表</string>
+    <string name="exception_detail">异常详情</string>
+    <string name="setting">设置</string>
+    <string name="search">搜索</string>
+    <string-array name="edit_sp_array">
+        <item>编辑条目</item>
+        <item>删除条目</item>
+    </string-array>
 </resources>

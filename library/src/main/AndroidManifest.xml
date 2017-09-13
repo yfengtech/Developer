@@ -5,7 +5,7 @@
     <application
         android:allowBackup="true"
         android:supportsRtl="true">
-        <activity android:name=".DeveloperActivity"></activity>
+        <activity android:name=".DeveloperActivity"/>
     </application>
 
 </manifest>

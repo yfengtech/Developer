@@ -40,7 +40,6 @@ public class NetworkItemAdapter extends BaseAdapter implements Filterable {
 
     public NetworkItemAdapter(Context context,List<NetItem> items,String url) {
         TypedValue typedValue = new TypedValue();
-        context.getTheme().resolveAttribute(R.attr.developerTextColor, typedValue, true);
         this.context=context;
         this.textColor=typedValue.data;
         this.inflater=LayoutInflater.from(context);

@@ -1,6 +1,5 @@
 package cz.developer.library.ui.switchs
 
-import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -10,7 +9,6 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.Switch
 
 import cz.developer.library.DeveloperManager
@@ -48,7 +46,7 @@ class DebugSwitchFragment : Fragment() {
             switchView.setTextColor(Color.DKGRAY)
             switchView.setTextSize(TypedValue.COMPLEX_UNIT_SP,16f)
             switchView.setPadding(padding, padding, padding, padding)
-            switchView.setBackgroundResource(R.drawable.white_item_selector)
+            switchView.setBackgroundResource(R.drawable.developer_white_item_selector)
             if(null!=key){
                 switchView.setOnCheckedChangeListener { _, isChecked ->
                     switchInterface.itemChecked?.invoke(key,isChecked)

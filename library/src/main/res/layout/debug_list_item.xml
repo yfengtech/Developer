@@ -13,7 +13,7 @@
         android:layout_marginBottom="2dp"
         android:layout_marginLeft="8dp"
         android:lines="1"
-        android:textColor="?attr/developerTextColor"
+        android:textColor="@android:color/black"
         android:textSize="16sp" />
 
     <TextView
@@ -22,6 +22,5 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:lines="1"
-        android:textColor="?attr/developerDarkTextColor"
         android:textSize="13sp" />
 </LinearLayout>

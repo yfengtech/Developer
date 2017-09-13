@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="developerTextColor" format="color"/>
-    <attr name="developerDarkTextColor" format="color"/>
-    <attr name="developerImageLayout" format="reference"/>
-
     <attr name="curveChartView" format="reference"/>
     <declare-styleable name="CurveChartView">
         <attr name="cv_color" format="color"/>

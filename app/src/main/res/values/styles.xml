@@ -6,10 +6,6 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
-        <!--此处5个attr必须配置,library依赖此处5种颜色做初始化-->
-        <item name="developerTextColor" >@color/textColor</item>
-        <item name="developerDarkTextColor">@color/darkTextColor</item>
-        <item name="developerImageLayout">@layout/image_layout</item>
         <!-- end -->
         <item name="android:windowIsTranslucent">false</item>
     </style>

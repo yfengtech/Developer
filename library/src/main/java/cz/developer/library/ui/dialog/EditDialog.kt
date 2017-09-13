@@ -28,7 +28,7 @@ import cz.developer.library.R
  */
 class EditDialog : DialogFragment() {
     private var listener: OnSubmitListener? = null
-    private var items: ArrayList<String>? = null
+    private var items: Array<String>? = null
     private var selectIndex: Int = 0
     private var url: String? = null
 
@@ -36,7 +36,7 @@ class EditDialog : DialogFragment() {
         super.onCreate(savedInstanceState)
         if (null != arguments) {
             selectIndex = -1
-            items = arguments.getStringArrayList("items")
+            items = arguments.getStringArray("items")
             url = arguments.getString("url")
         }
     }
@@ -104,10 +104,10 @@ class EditDialog : DialogFragment() {
          * 获得一个编辑对话框对像
          * @return
          */
-        fun newInstance(items: ArrayList<String>, url: String): EditDialog {
+        fun newInstance(items: Array<String>?, url: String?): EditDialog {
             val editDialog = EditDialog()
             val args = Bundle()
-            args.putStringArrayList("items", items)
+            args.putStringArray("items", items)
             args.putString("url", url)
             editDialog.arguments = args
             return editDialog

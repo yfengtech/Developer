@@ -10,16 +10,21 @@ import android.support.annotation.IdRes
 import android.support.annotation.StringRes
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
 import android.telephony.TelephonyManager
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 
 import cz.developer.library.DeveloperConfig
 import cz.developer.library.DeveloperManager
 import cz.developer.library.R
+import cz.developer.library.adapter.DebugPropItemAdapter
+import cz.developer.library.debugLog
+import cz.developer.library.prefs.BuildProp
 import kotlinx.android.synthetic.main.fragment_debug_app_info.*
 
 
@@ -36,27 +41,34 @@ class DebugAppInfoFragment : Fragment() {
         val activity=activity
         if(activity is AppCompatActivity){
             toolBar.title = arguments?.getString("title")
+            toolBar.subtitle=arguments?.getString("desc")
             activity.setSupportActionBar(toolBar)
             activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
             toolBar.setNavigationOnClickListener{ fragmentManager.popBackStack() }
         }
         //软件信息
-        setText(view, R.id.tv_channel, R.string.channel_value, DeveloperManager.developerConfig.channel)
-        setText(view, R.id.tv_version, R.string.app_version_value, appVersionName)
-        setText(view, R.id.tv_version_code, R.string.app_code_value, appVersionCode)
+        val propItems= mutableMapOf<String,MutableList<PropItem>>()
+        var items=propItems.getOrPut(getString(R.string.app_info)){ mutableListOf<PropItem>()}
+        items.add(PropItem(getString(R.string.channel_value,DeveloperManager.developerConfig.channel)))
+        items.add(PropItem(getString(R.string.app_version_value,appVersionName)))
+        items.add(PropItem(getString(R.string.app_code_value,appVersionCode)))
 
         //机器信息
-        setText(view, R.id.tv_os_version, R.string.os_version_value, Build.DISPLAY)
-        setText(view, R.id.tv_os_api, R.string.os_api_value, Build.VERSION.SDK_INT)
-        setText(view, R.id.tv_device_model, R.string.device_model_value, Build.MODEL)
-        setText(view, R.id.tv_device_brand, R.string.device_brand_value, Build.BRAND)
-        setText(view, R.id.tv_imei, R.string.imei_value, imeiValue)
-        setText(view, R.id.tv_android_id, R.string.android_id_value, androidId)
-    }
+        items=propItems.getOrPut(getString(R.string.model_info)){ mutableListOf<PropItem>()}
+        items.add(PropItem(getString(R.string.os_version_value,Build.DISPLAY)))
+        items.add(PropItem(getString(R.string.os_api_value,Build.VERSION.SDK_INT)))
+        items.add(PropItem(getString(R.string.device_model_value,Build.MODEL)))
+        items.add(PropItem(getString(R.string.device_brand_value,Build.BRAND)))
+        items.add(PropItem(getString(R.string.imei_value,imeiValue)))
+        items.add(PropItem(getString(R.string.android_id_value,androidId)))
 
-    fun setText(view: View, @IdRes id: Int, @StringRes res: Int, vararg params: Any?) {
-        val textView = view.findViewById(id) as TextView
-        textView.text = getString(res, *params)
+        items=propItems.getOrPut("BuildProp"){ mutableListOf<PropItem>()}
+        BuildProp.buildProperties?.forEach { items.add(PropItem("${it.key} = ${it.value}")) }
+
+        //重置分类
+        val adapterItems=propItems.flatMap { (key,item)-> item.onEach { it.group=key } }.toList()
+        recyclerView.layoutManager=LinearLayoutManager(context)
+        recyclerView.adapter= DebugPropItemAdapter(context,adapterItems)
     }
 
     /**

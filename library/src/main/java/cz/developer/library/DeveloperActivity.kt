@@ -1,15 +1,20 @@
 package cz.developer.library
 
-import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.widget.Toast
 import cz.developer.library.adapter.DebugListAdapter
 import cz.developer.library.ui.appinfo.DebugAppInfoFragment
+import cz.developer.library.ui.data.exception.ExceptionListFragment
+import cz.developer.library.ui.data.sp.SharedPrefsFragment
+import cz.developer.library.ui.network.DebugNetworkFragment
+import cz.developer.library.ui.operation.DebugOperationFragment
 import cz.developer.library.ui.switchs.DebugSwitchFragment
 import cz.developer.library.ui.view.DebugViewFragment
 import kotlinx.android.synthetic.main.activity_developer.*
+import java.net.HttpURLConnection
 
 class DeveloperActivity : AppCompatActivity() {
 
@@ -17,23 +22,16 @@ class DeveloperActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_developer)
         val id=intent.getIntExtra("id",0)
-        val title = intent.getStringExtra("title")
+        toolBar.title = intent.getStringExtra("title")
         toolBar.subtitle=intent.getStringExtra("desc")
-        if(null==title) {
-            toolBar.setTitle(R.string.app_name)
-            setSupportActionBar(toolBar)
-            supportActionBar?.setDisplayHomeAsUpEnabled(false)
-        } else {
-            toolBar.title = title
-            setSupportActionBar(toolBar)
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            toolBar.setNavigationOnClickListener{ finish() }
-        }
+        setSupportActionBar(toolBar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        toolBar.setNavigationOnClickListener{ finish() }
         val adapter = DebugListAdapter(this, items[id])
         list.adapter=adapter
         list.setOnItemClickListener { _, _, position, _ ->
             val item = adapter.getItem(position)
-            if(null!=items[item.id]){
+            if(items.any { it.key==item.id }){
                 startActivity(Intent(this,DeveloperActivity::class.java).apply {
                     putExtra("id",item.id)
                     putExtra("title",item.title)
@@ -47,6 +45,8 @@ class DeveloperActivity : AppCompatActivity() {
                         putString("desc", item.desc)
                     }
                     DeveloperManager.toDeveloperFragment(this, fragment)
+                } else {
+                    Toast.makeText(baseContext,"未配置跳转class",Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -60,11 +60,7 @@ class DeveloperActivity : AppCompatActivity() {
             items.add(newItem)
         }
 
-        fun startActivity(context: Context){
-            context.startActivity(Intent(context,DeveloperActivity::class.java))
-        }
-
-        open class DeveloperItem(var id:Int=0,
+        open class DeveloperItem(var id:Int?=null,
                                  var pid:Int=0,
                                  var title: String? = null,
                                  var desc: String? = null,
@@ -92,6 +88,7 @@ class DeveloperActivity : AppCompatActivity() {
                 id=4
                 title="网络调试"
                 desc="修改单个,所有接口的服务器,或其他信息"
+                clazz= DebugNetworkFragment::class.java
             }
             item{
                 id=5
@@ -99,23 +96,15 @@ class DeveloperActivity : AppCompatActivity() {
                 desc="查看日志,配置信息等"
                 item{
                     pid=5
-                    title="日志信息查看"
-                    desc="清空应用,本地操作"
-                }
-                item{
-                    pid=5
-                    title="网络请求日志查看"
-                    desc="清空应用,本地操作"
-                }
-                item{
-                    pid=5
                     title="崩溃日志查看"
                     desc="清空应用,本地操作"
+                    clazz= ExceptionListFragment::class.java
                 }
                 item{
                     pid=5
                     title="SharedPreference查看"
                     desc="查看编辑SharedPreference查看操作"
+                    clazz= SharedPrefsFragment::class.java
                 }
                 item{
                     pid=5
@@ -127,6 +116,7 @@ class DeveloperActivity : AppCompatActivity() {
                 id=6
                 title="其他操作"
                 desc="清空应用缓存,日志,异常,等信息"
+                clazz= DebugOperationFragment::class.java
             }
         }
     }

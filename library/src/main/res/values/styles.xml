@@ -1,7 +1,7 @@
 <resources>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
-    
+
     <style name="CurveChartView">
         <item name="cv_color">?colorPrimary</item>
         <item name="cv_fillColor">?colorPrimaryDark</item>

@@ -28,7 +28,6 @@ class DeveloperLayout(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
     private var longClickAction:Runnable?=null
     private var itemLongClickListener:((View)->Unit)?=null
     private var touchView:View?=null
-    private var isIntercept=false
     private var memoryView=MemoryView(context)
     private val debugDrawHelper= ViewDebugDrawHelper()
     private val rect = Rect()
@@ -44,19 +43,19 @@ class DeveloperLayout(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         //加入调试菜单
-        View.inflate(context,R.layout.developer_menu_layout,this)
-        toggleMenu.post {
-            eachMenuItem { view, _ -> view.translationY=toggleMenu.top- view.top*1f }
-        }
-        toggleMenu.setOnClickListener {
-            eachMenuItem { view, i ->
-                if(0f==view.translationY){
-                    view.animate().setStartDelay((i*100).toLong()).translationY(toggleMenu.top- view.top*1f)
-                } else {
-                    view.animate().setStartDelay((1*100).toLong()).translationY(0f)
-                }
-            }
-        }
+//        View.inflate(context,R.layout.developer_menu_layout,this)
+//        toggleMenu.post {
+//            eachMenuItem { view, _ -> view.translationY=toggleMenu.top- view.top*1f }
+//        }
+//        toggleMenu.setOnClickListener {
+//            eachMenuItem { view, i ->
+//                if(0f==view.translationY){
+//                    view.animate().setStartDelay((i*100).toLong()).translationY(toggleMenu.top- view.top*1f)
+//                } else {
+//                    view.animate().setStartDelay((1*100).toLong()).translationY(0f)
+//                }
+//            }
+//        }
     }
 
     private fun eachMenuItem(action:(View,Int)->Unit){
@@ -74,10 +73,9 @@ class DeveloperLayout(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
             MotionEvent.ACTION_DOWN->{
                 val findView=findViewByPoint(this,x.toInt(),y.toInt())
                 //实现了DeveloperFilter过滤接口的布局,将不再被处理
-                if(null!=findView&&findView !is DeveloperFilter){
+                if(null!=findView&&viewIsClickable(findView)){
                     touchView=findView
                     //由控件是否可以开启点击,决定是否拦截,因为不可点击控件,父类也不会纷发事件,导致up/cancel事件无法回调
-                    isIntercept=!findView.isClickable||findView.isLongClickable
                     debugLog("按下:$findView ${findView.isClickable} ${findView.isLongClickable}}")
                     removeCallbacks(longClickAction)
                     longClickAction= Runnable {
@@ -98,8 +96,11 @@ class DeveloperLayout(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
             MotionEvent.ACTION_CANCEL, MotionEvent.ACTION_UP->removeLongClickCallback()
         }
         //这里反向模仿控件长按点击
-        return isIntercept||super.dispatchTouchEvent(ev)
+        return super.dispatchTouchEvent(ev)
     }
+
+    private fun viewIsClickable(view:View)=view !is DeveloperFilter&&
+            (view.isClickable||view.isLongClickable||null!=view.tag)
 
     /**
      * 移除长按点击事件
@@ -122,6 +123,7 @@ class DeveloperLayout(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
             for (i in 0..parent.childCount - 1) {
                 val child = parent.getChildAt(i)
                 val childView = findViewByPoint(child, x, y)
+                debugLog("findViewByPoint:$child")
                 if (null != childView) {
                     return childView
                 }

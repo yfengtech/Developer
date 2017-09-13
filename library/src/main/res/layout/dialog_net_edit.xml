@@ -21,8 +21,6 @@
         android:paddingRight="8dp"
         android:paddingTop="20dp"
         android:lines="1"
-        android:textColor="?attr/developerTextColor"
-        android:textColorHint="?attr/developerDarkTextColor"
         android:textCursorDrawable="@null"
         android:textSize="15sp" />
 

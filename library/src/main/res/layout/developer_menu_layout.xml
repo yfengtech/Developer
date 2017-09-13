@@ -29,7 +29,7 @@
             android:layout_height="36dp"
             android:padding="8dp"
             android:src="@drawable/ic_bug_report"
-            android:background="@drawable/primary_oval_shape"/>
+            android:background="@drawable/developer_primary_oval_shape"/>
 
         <ImageView
             android:id="@+id/memoryButton2"
@@ -38,7 +38,7 @@
             android:padding="8dp"
             android:layout_marginTop="4dp"
             android:src="@drawable/ic_bug_report"
-            android:background="@drawable/primary_oval_shape"/>
+            android:background="@drawable/developer_primary_oval_shape"/>
 
         <ImageView
             android:id="@+id/toggleMenu"
@@ -47,7 +47,7 @@
             android:padding="8dp"
             android:layout_marginTop="4dp"
             android:src="@drawable/ic_bug_report"
-            android:background="@drawable/primary_oval_shape"/>
+            android:background="@drawable/developer_primary_oval_shape"/>
 
     </LinearLayout>
 

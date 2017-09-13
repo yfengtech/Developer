@@ -2,6 +2,8 @@ package cz.developer.library
 
 import android.app.Activity
 import android.app.Application
+import android.content.Context
+import android.content.Intent
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.support.v7.app.AlertDialog
@@ -32,10 +34,15 @@ object DeveloperManager {
         application.registerActivityLifecycleCallbacks(MyActivityLifecycleCallback())
         //处理异常,直接包装
         val uncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler()
-        Thread.setDefaultUncaughtExceptionHandler(MyUncaughtExceptionHandler(uncaughtExceptionHandler))
+        Thread.setDefaultUncaughtExceptionHandler(MyUncaughtExceptionHandler(application.cacheDir,uncaughtExceptionHandler))
     }
 
-    fun toDeveloperFragment(activity: FragmentActivity, fragment: Fragment)= toFragmentInner(activity,fragment,android.R.id.content)
+    fun startDeveloperActivity(activity: Activity){
+        activity.startActivity(Intent(activity,DeveloperActivity::class.java))
+        activity.overridePendingTransition(R.anim.pop_in,R.anim.pop_out)
+    }
+
+    internal fun toDeveloperFragment(activity: FragmentActivity, fragment: Fragment)= toFragmentInner(activity,fragment,android.R.id.content)
 
     private fun toFragmentInner(activity: FragmentActivity, fragment: Fragment,id:Int) {
         val fragmentManager = activity.supportFragmentManager

@@ -26,7 +26,6 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="?attr/developerTextColor"
             android:text="@string/debug_item"/>
         <CheckBox
             android:id="@+id/cb_show_border"
@@ -56,7 +55,6 @@
             android:id="@+id/st_translation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="?attr/developerTextColor"
             android:text="@string/set_background_transparent" />
 
     </LinearLayout>

@@ -35,11 +35,10 @@ class App : Application(), Thread.UncaughtExceptionHandler {
             }
             //网络模块
             network {
-                selectUrl= arrayOf("https://www.baidu.com",
+                serverUrl = arrayOf("https://www.baidu.com",
                         "https://www.hao123.com/",
                         "http://www.sina.com.cn/",
                         "http://www.jd.com/")
-//                networkItems=
             }
             //图片加载
             imageLoader { imageView, url -> display(imageView as SimpleDraweeView, url) }

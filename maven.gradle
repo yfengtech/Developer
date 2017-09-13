@@ -9,7 +9,7 @@ def ARTIFACT_ID="developer-library"
 //仓库描述
 def DESCRIPTION="an android kotlin refresh layout library"
 //本地maven配置
-def MAVEN_URL='http://192.168.28.126:8081/repository/credit-wallet/'
+def MAVEN_URL='http://192.168.29.8:8081/repository/credit-wallet/'
 def USER="admin"
 def PASSWORD="admin123"
 //引入本地仓库位置

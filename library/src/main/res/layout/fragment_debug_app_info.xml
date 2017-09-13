@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<cz.developer.library.widget.FilterLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:auto="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:auto="http://schemas.android.com/apk/res-auto"
+    android:background="@android:color/white"
+    android:clickable="true"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
@@ -13,175 +15,27 @@
         auto:theme="@style/AppTheme.AppBarOverlay"
         android:elevation="4dp" />
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.cz.recyclerlibrary.PullToRefreshStickyRecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
-        android:fitsSystemWindows="true"
-        android:clickable="true"
-        android:scrollbars="none">
+        auto:pv_listDivideHeight="@dimen/developerDivideSize"
+        auto:pv_listDivide="@color/developerDivider"
+        auto:pl_refreshMode="none">
 
-        <LinearLayout
-            android:id="@+id/ll_container"
+        <TextView
+            android:id="@+id/tv_header"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clickable="true"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_header1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="4dp"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:paddingTop="4dp"
-                android:text="@string/app_info"
-                android:textColor="?attr/developerTextColor"
-                android:textSize="12sp" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/developerDivideSize"
-                android:background="@color/developerDivider"/>
-
-            <TextView
-                android:id="@+id/tv_channel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:padding="12dp"
-                android:textColor="?attr/developerTextColor"
-                android:textSize="14sp" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/developerDivideSize"
-                android:background="@color/developerDivider"/>
-            <TextView
-                android:id="@+id/tv_version"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:padding="12dp"
-                android:textColor="?attr/developerTextColor"
-                android:textSize="14sp" />
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/developerDivideSize"
-                android:background="@color/developerDivider"/>
-
-            <TextView
-                android:id="@+id/tv_version_code"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:padding="12dp"
-                android:textColor="?attr/developerTextColor"
-                android:textSize="14sp" />
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/developerDivideSize"
-                android:background="@color/developerDivider"/>
-
-            <TextView
-                android:id="@+id/tv_header2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="4dp"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:paddingTop="4dp"
-                android:text="@string/model_info"
-                android:textColor="?attr/developerTextColor"
-                android:textSize="12sp" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/developerDivideSize"
-                android:background="@color/developerDivider"/>
-
-            <TextView
-                android:id="@+id/tv_os_version"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:padding="12dp"
-                android:textColor="?attr/developerTextColor"
-                android:textSize="14sp" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/developerDivideSize"
-                android:background="@color/developerDivider"/>
-
-            <TextView
-                android:id="@+id/tv_os_api"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:padding="12dp"
-                android:textColor="?attr/developerTextColor"
-                android:textSize="14sp" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/developerDivideSize"
-                android:background="@color/developerDivider"/>
-
-            <TextView
-                android:id="@+id/tv_device_model"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:padding="12dp"
-                android:textColor="?attr/developerTextColor"
-                android:textSize="14sp" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/developerDivideSize"
-                android:background="@color/developerDivider"/>
-            <TextView
-                android:id="@+id/tv_device_brand"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:padding="12dp"
-                android:textColor="?attr/developerTextColor"
-                android:textSize="14sp" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/developerDivideSize"
-                android:background="@color/developerDivider"/>
-
-            <TextView
-                android:id="@+id/tv_imei"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:padding="12dp"
-                android:textColor="?attr/developerTextColor"
-                android:textSize="14sp" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/developerDivideSize"
-                android:background="@color/developerDivider"/>
-
-            <TextView
-                android:id="@+id/tv_android_id"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:padding="12dp"
-                android:textColor="?attr/developerTextColor"
-                android:textSize="14sp" />
+            android:layout_height="wrap_content"
+            android:paddingBottom="4dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="4dp"
+            auto:pv_layoutStickyView="true"
+            android:background="@android:color/white"
+            android:textColor="@android:color/black"
+            android:textSize="12sp" />
 
 
-
-
-        </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+    </com.cz.recyclerlibrary.PullToRefreshStickyRecyclerView>
+</cz.developer.library.widget.FilterLinearLayout>

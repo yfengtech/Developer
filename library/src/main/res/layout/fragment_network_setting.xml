@@ -3,9 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="wrap_content"
     xmlns:auto="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/settingContainer"
     android:orientation="vertical"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
     android:background="@android:color/white"
     android:fitsSystemWindows="true"
     android:clickable="true">
@@ -18,40 +17,48 @@
         auto:theme="@style/AppTheme.AppBarOverlay"
         android:elevation="4dp" />
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/global_change_url_info"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp"/>
-
-    <RadioGroup
-        android:id="@+id/radioLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"/>
-
-    <EditText
-        android:id="@+id/editor"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="20dp"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:paddingTop="20dp"
-        android:lines="1"
-        android:textColor="?attr/developerTextColor"
-        android:textColorHint="?attr/developerDarkTextColor"
-        android:textCursorDrawable="@null"
-        android:textSize="15sp" />
+        android:layout_height="match_parent"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:orientation="vertical">
 
 
-    <Button
-        android:id="@+id/applyButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_marginTop="8dp"
-        android:text="@string/apply"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/global_change_url_info"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"/>
+
+        <RadioGroup
+            android:id="@+id/radioLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"/>
+
+        <EditText
+            android:id="@+id/editor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="20dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="20dp"
+            android:lines="1"
+            android:textCursorDrawable="@null"
+            android:textSize="15sp" />
+
+
+        <Button
+            android:id="@+id/applyButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginTop="8dp"
+            android:text="@string/applySharedPrefsChanged"/>
+
+    </LinearLayout>
 
 </LinearLayout>
