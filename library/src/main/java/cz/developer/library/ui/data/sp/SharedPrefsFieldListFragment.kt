@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.fragment_shared_prefs_field_list.*
 /**
  * Created by cz on 2017/9/11.
  */
-class SharedPrefsFieldListFragment: Fragment(){
+internal class SharedPrefsFieldListFragment: Fragment(){
     companion object {
         fun newInstance(name:String)=SharedPrefsFieldListFragment().apply {
             arguments=Bundle().apply {

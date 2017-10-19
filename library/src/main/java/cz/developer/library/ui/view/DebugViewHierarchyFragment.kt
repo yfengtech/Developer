@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.fragment_debug_view_hierarchy.*
 /**
  * Created by cz on 2017/9/7.
  */
-class DebugViewHierarchyFragment :Fragment(){
+internal class DebugViewHierarchyFragment :Fragment(){
     var hierarchyItem: ViewHierarchyItem?=null
     companion object {
         fun newInstance(item: ViewHierarchyItem?):Fragment= DebugViewHierarchyFragment().apply {

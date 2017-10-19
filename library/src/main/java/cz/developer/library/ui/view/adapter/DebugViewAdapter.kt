@@ -16,7 +16,7 @@ import cz.developer.library.ui.view.DebugViewFragment
 /**
  * Created by cz on 9/5/2017.
  */
-class DebugViewAdapter(context: Context, viewItems: List<DebugViewFragment.Companion.Item>?) : BaseAdapter() {
+internal class DebugViewAdapter(context: Context, viewItems: List<DebugViewFragment.Companion.Item>?) : BaseAdapter() {
     private val layoutInflater: LayoutInflater = LayoutInflater.from(context)
     private val viewItems: MutableList<DebugViewFragment.Companion.Item>
     private val selectItems: MutableList<DebugViewFragment.Companion.Item>

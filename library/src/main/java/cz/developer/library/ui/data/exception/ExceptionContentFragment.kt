@@ -16,7 +16,7 @@ import java.util.*
 /**
  * Created by cz on 2017/9/13.
  */
-class ExceptionContentFragment: Fragment(){
+internal class ExceptionContentFragment: Fragment(){
     companion object {
         fun newInstance(item:ExceptionItem)=ExceptionContentFragment().apply {
             arguments=Bundle().apply { putParcelable("content",item) }

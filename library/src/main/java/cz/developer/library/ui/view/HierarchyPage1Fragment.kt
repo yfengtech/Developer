@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.fragment_view_hierarchy1.*
 /**
  * Created by cz on 2017/9/7.
  */
-class HierarchyPage1Fragment :Fragment(){
+internal class HierarchyPage1Fragment :Fragment(){
     var hierarchyItem: ViewHierarchyItem?=null
     companion object {
         fun newInstance(item: ViewHierarchyItem?):Fragment= HierarchyPage1Fragment().apply {

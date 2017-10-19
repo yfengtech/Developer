@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="12dp"
+    android:background="@drawable/developer_white_item_selector">
+
+    <ImageView
+        android:layout_width="32dp"
+        android:layout_height="36dp"
+        android:layout_marginLeft="12dp"
+        android:src="@drawable/cache_folder" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginLeft="4dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/folderName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:textColor="@android:color/black"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/folderPath"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:singleLine="true"
+            android:gravity="right"
+            android:ellipsize="start"
+            android:textColor="@android:color/black"
+            android:textSize="13sp"/>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_chevron_right_grey600_36dp"/>
+
+</LinearLayout>

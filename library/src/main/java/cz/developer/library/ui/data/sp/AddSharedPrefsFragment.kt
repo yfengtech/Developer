@@ -24,7 +24,7 @@ import kotlinx.android.synthetic.main.shared_prefs_bool_item.*
 /**
  * Created by cz on 2017/9/11.
  */
-class AddSharedPrefsFragment: Fragment(){
+internal class AddSharedPrefsFragment: Fragment(){
     companion object {
         fun newInstance(args:Bundle)=AddSharedPrefsFragment().apply { arguments=args }
     }

@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.fragment_debug_other.*
  * Created by cz on 15/11/30.
  * debug其他设置界面
  */
-class DebugOperationFragment : Fragment() {
+internal class DebugOperationFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_debug_other, container, false)
     }

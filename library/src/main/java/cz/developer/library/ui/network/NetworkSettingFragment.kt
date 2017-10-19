@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.fragment_network_setting.*
  * Created by cz on 11/9/16.
  * 网络设置页
  */
-class NetworkSettingFragment : Fragment() {
+internal class NetworkSettingFragment : Fragment() {
 
     companion object {
         fun newInstance(selectItems: Array<String>?): Fragment {

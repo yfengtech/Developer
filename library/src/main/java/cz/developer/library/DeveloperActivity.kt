@@ -7,8 +7,11 @@ import android.support.v4.app.Fragment
 import android.widget.Toast
 import cz.developer.library.adapter.DebugListAdapter
 import cz.developer.library.ui.appinfo.DebugAppInfoFragment
+import cz.developer.library.ui.data.database.DatabaseFragment
 import cz.developer.library.ui.data.exception.ExceptionListFragment
 import cz.developer.library.ui.data.sp.SharedPrefsFragment
+import cz.developer.library.ui.filesystem.CacheFileFragment
+import cz.developer.library.ui.filesystem.adapter.CacheFileAdapter
 import cz.developer.library.ui.network.DebugNetworkFragment
 import cz.developer.library.ui.operation.DebugOperationFragment
 import cz.developer.library.ui.switchs.DebugSwitchFragment
@@ -102,6 +105,12 @@ class DeveloperActivity : AppCompatActivity() {
                 }
                 item{
                     pid=5
+                    title="Cache文件目录查看"
+                    desc="查看一些隐藏的应用目录"
+                    clazz= CacheFileFragment::class.java
+                }
+                item{
+                    pid=5
                     title="SharedPreference查看"
                     desc="查看编辑SharedPreference查看操作"
                     clazz= SharedPrefsFragment::class.java
@@ -110,6 +119,7 @@ class DeveloperActivity : AppCompatActivity() {
                     pid=5
                     title="Database查看"
                     desc="查看编辑数据库操作"
+                    clazz= DatabaseFragment::class.java
                 }
             }
             item{

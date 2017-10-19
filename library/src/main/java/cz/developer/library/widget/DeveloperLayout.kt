@@ -12,6 +12,7 @@ import android.widget.Toast
 import cz.developer.library.R
 import cz.developer.library.debugLog
 import cz.developer.library.widget.draw.ViewDebugDrawHelper
+import cz.developer.library.widget.hierarchy.HierarchyNode
 import cz.developer.library.widget.memory.MemoryView
 import kotlinx.android.synthetic.main.developer_menu_layout.view.*
 
@@ -42,20 +43,15 @@ class DeveloperLayout(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        //加入调试菜单
-//        View.inflate(context,R.layout.developer_menu_layout,this)
-//        toggleMenu.post {
-//            eachMenuItem { view, _ -> view.translationY=toggleMenu.top- view.top*1f }
-//        }
-//        toggleMenu.setOnClickListener {
-//            eachMenuItem { view, i ->
-//                if(0f==view.translationY){
-//                    view.animate().setStartDelay((i*100).toLong()).translationY(toggleMenu.top- view.top*1f)
-//                } else {
-//                    view.animate().setStartDelay((1*100).toLong()).translationY(0f)
-//                }
-//            }
-//        }
+        toggleMenu.setOnClickListener {
+            eachMenuItem { view, i ->
+                if(0f==view.translationY){
+                    view.animate().setStartDelay((i*100).toLong()).translationY(toggleMenu.top- view.top*1f)
+                } else {
+                    view.animate().setStartDelay((1*100).toLong()).translationY(0f)
+                }
+            }
+        }
     }
 
     private fun eachMenuItem(action:(View,Int)->Unit){

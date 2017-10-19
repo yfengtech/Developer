@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.fragment_list.*
 /**
  * Created by czz on 2016/10/29.
  */
-class DebugNetworkFragment : Fragment(), FragmentManager.OnBackStackChangedListener {
+internal class DebugNetworkFragment : Fragment(), FragmentManager.OnBackStackChangedListener {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_list, container, false)
     }

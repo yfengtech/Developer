@@ -1,17 +1,26 @@
 package cz.developer.sample
 
+import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
+import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
+import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.widget.Toast
+import com.cz.demo.database.Database1
+import com.cz.demo.database.Database2
 
 import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.sdk25.coroutines.onLongClick
 import org.jetbrains.anko.toast
+import org.jetbrains.anko.uiThread
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
-    val TAG="MainActivity"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -49,6 +58,78 @@ class MainActivity : AppCompatActivity() {
         btn3.setOnClickListener { startActivity(Intent(this, WebViewActivity::class.java)) }
         btn4.setOnClickListener { supportFragmentManager.beginTransaction().replace(R.id.fragment_container, ListFragment()).commit() }
         btn5.setOnClickListener { startActivity(Intent(this, PrivacyLockActivity::class.java)) }
+
+
+        //插入初始测试数据
+        val sharedPrefs=getSharedPreferences("test",Context.MODE_PRIVATE)
+        val init=sharedPrefs.getBoolean("init",false)
+        if(!init){
+            val dialog=ProgressDialog(this)
+            dialog.setMessage("正在初始测试数据...")
+            dialog.setCancelable(false)
+            dialog.show()
+            doAsync {
+                //插入5个SharedPrefs文件
+                insertSharedPrefsItems(5)
+                //为2个数据库表,插入数据
+                insertDatabase(Database1(this@MainActivity).writableDatabase,1000)
+                insertDatabase(Database2(this@MainActivity).writableDatabase,1000)
+                sharedPrefs.edit().putBoolean("init",true).commit()
+                uiThread { dialog.dismiss() }
+            }
+        }
+    }
+
+    /**
+     * 插入测试的SharedPrefs条目
+     */
+    fun insertSharedPrefsItems(count:Int){
+        //插入SharedPrefs
+        for(index in 0..count-1){
+            val preferences = getSharedPreferences("test" + (index+1), Context.MODE_PRIVATE)
+            val edit = preferences.edit()
+            for (i in 0..9) {
+                edit.putString("KI" + i, "Value" + i).commit()
+            }
+            edit.putBoolean("BOOLEAN", true).commit()
+            edit.putFloat("Float", 1f).commit()
+            edit.putInt("Integer", 250).commit()
+            edit.putLong("Long", 2134324L).commit()
+            val items = HashSet<String>()
+            items.add("a")
+            items.add("b")
+            items.add("c")
+            edit.putStringSet("items", items).commit()
+        }
+    }
+
+    fun insertDatabase(db: SQLiteDatabase, count:Int){
+        db.beginTransaction()
+        for(i in 0..count){
+            val items=(0..9).map { DataProvider.randomName() }.toTypedArray()
+            for(k in 1..5){
+                //插入数据
+                db.execSQL("insert into person$k(name1,name2,name3,name4,name5,name6,name7,name8,name9,name10,age) values(?,?,?,?,?,?,?,?,?,?,?)", arrayOf(*items, 20))
+            }
+        }
+        db.setTransactionSuccessful()
+        db.endTransaction()
+        //打印插入个数
+        for(k in 1..5){
+            //插入数据
+            var cursor: Cursor?=null
+            try{
+                cursor=db.rawQuery("select count(*) from person$k", null)
+                cursor.moveToFirst()
+                val count = cursor.getLong(0)
+                Log.e(this::class.java.simpleName,"插入表:person$k 个数:$count")
+            } catch (e:Exception){
+                e.printStackTrace()
+            } finally {
+                cursor?.close()
+            }
+        }
+        db.close()
     }
 
 
@@ -67,4 +148,5 @@ class MainActivity : AppCompatActivity() {
         var age=0
         var sex=1
     }
+
 }

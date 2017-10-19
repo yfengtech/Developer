@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.fragment_debug_view.*
  * Created by cz on 1/11/17.
  */
 
-class DebugViewFragment : Fragment() {
+internal class DebugViewFragment : Fragment() {
     private var adapter: DebugViewAdapter? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

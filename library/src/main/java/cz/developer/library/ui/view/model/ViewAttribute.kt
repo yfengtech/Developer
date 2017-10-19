@@ -17,9 +17,26 @@ import java.util.*
 class ViewAttribute(view: View){
     private val attributeItems= mutableMapOf<String,MutableList<Item>>()
     init {
+        //其他
+        var items=attributeItems.getOrPut("Info"){ mutableListOf<Item>()}
+        items.add(Item("Id",Integer.toHexString(view.id)))
+        var resourceId:String?
+        try{
+            resourceId=view.resources.getResourceEntryName(view.id)
+        } catch (e:Resources.NotFoundException){
+            resourceId="Undefined"
+        }
+        items.add(Item("ResourceId",resourceId))
+        items.add(Item("contentDescription",view.contentDescription))
+        items.add(Item("solidColor",view.solidColor))
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.JELLY_BEAN) {
+            items.add(Item("fitsSystemWindows",view.fitsSystemWindows))
+        }
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N) {
+            items.add(Item("hasOverlappingRendering",view.hasOverlappingRendering))
+        }
         //当前动画属性
-
-        var items=attributeItems.getOrPut("Animation"){ mutableListOf<Item>()}
+        items=attributeItems.getOrPut("Animation"){ mutableListOf<Item>()}
         items.add(Item("alpha",view.alpha))
         items.add(Item("rotation",view.rotation))
         items.add(Item("rotationX",view.rotationX))
@@ -165,26 +182,6 @@ class ViewAttribute(view: View){
         items.add(Item("isVerticalScrollBarEnabled",view.isVerticalScrollBarEnabled))
         items.add(Item("isVerticalFadingEdgeEnabled",view.isVerticalFadingEdgeEnabled))
 
-
-
-        //其他
-        items=attributeItems.getOrPut("Other"){ mutableListOf<Item>()}
-        items.add(Item("Id",Integer.toHexString(view.id)))
-        var resourceId:String?
-        try{
-            resourceId=view.resources.getResourceEntryName(view.id)
-        } catch (e:Resources.NotFoundException){
-            resourceId="Undefined"
-        }
-        items.add(Item("ResourceId",resourceId))
-        items.add(Item("contentDescription",view.contentDescription))
-        items.add(Item("solidColor",view.solidColor))
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.JELLY_BEAN) {
-            items.add(Item("fitsSystemWindows",view.fitsSystemWindows))
-        }
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N) {
-            items.add(Item("hasOverlappingRendering",view.hasOverlappingRendering))
-        }
     }
 
 

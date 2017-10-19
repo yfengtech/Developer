@@ -8,6 +8,7 @@
 
     <dimen name="developerTextSize">13sp</dimen>
     <dimen name="developerLargeTextSize">16sp</dimen>
+    <dimen name="developerLevelPadding">16sp</dimen>
 
     <dimen name="mem_monitor_padding">8dp</dimen>
     <dimen name="mem_monitor_text_padding">8dp</dimen>

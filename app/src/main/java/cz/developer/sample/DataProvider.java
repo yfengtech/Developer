@@ -1,9 +1,12 @@
 package cz.developer.sample;
 
+import java.util.Random;
+
 /**
  * Created by cz on 16/3/7.
  */
 public class DataProvider {
+    private static final Random random=new Random();
     public static String[] ITEMS =
             {
                     "Abbaye de Belloc", "Abbaye du Mont des Cats", "Abertam", "Abondance", "Ackawi",
@@ -137,6 +140,11 @@ public class DataProvider {
                     "Xanadu", "Xynotyro", "Yarg Cornish", "Yarra Valley Pyramid", "Yorkshire Blue",
                     "Zamorano", "Zanetti Grana Padano", "Zanetti Parmigiano Reggiano"
             };
+
+
+    public static String randomName(){
+        return ITEMS[random.nextInt(ITEMS.length)];
+    }
 
     public static String[] getItems(String info, int count) {
         String[] items = new String[count];

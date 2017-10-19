@@ -21,7 +21,7 @@ import java.util.ArrayList
 /**
  * Created by cz on 2017/9/11.
  */
-class EditSharedPrefsFragment: Fragment(){
+internal class EditSharedPrefsFragment: Fragment(){
     companion object {
         fun newInstance(item: SharedPrefsItem)=EditSharedPrefsFragment().apply {
             prefsItem=item

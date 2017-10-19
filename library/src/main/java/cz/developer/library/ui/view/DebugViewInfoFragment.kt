@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.fragment_debug_view_info.*
 /**
  * Created by cz on 2017/9/7.
  */
-class DebugViewInfoFragment:Fragment(){
+internal class DebugViewInfoFragment:Fragment(){
     var viewAttribute:ViewAttribute?=null
     companion object {
         fun newInstance(attribute:ViewAttribute):Fragment=DebugViewInfoFragment().apply {

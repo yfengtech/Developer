@@ -21,7 +21,7 @@ import java.lang.reflect.Modifier
  * Created by cz on 2017/9/7.
  * 查看指定View tag属性界面,以一个懒加载的树形控件,展示无限层级的字段属性
  */
-class DebugViewExtrasFragment:Fragment(){
+internal class DebugViewExtrasFragment:Fragment(){
     var viewTag:Any?=null
     var viewTagItems:Any?=null
     companion object {

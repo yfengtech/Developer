@@ -91,8 +91,8 @@ object DeveloperManager {
 
 }
 
-val DEBUG=true
-inline fun <reified T> T.debugLog(message:String){
+internal val DEBUG=true
+inline internal fun <reified T> T.debugLog(message:String){
     if(DEBUG){
         val item=this as Any
         Log.e(item::class.java.simpleName,message)

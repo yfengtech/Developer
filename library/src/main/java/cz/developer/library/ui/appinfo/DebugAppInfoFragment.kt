@@ -31,7 +31,7 @@ import kotlinx.android.synthetic.main.fragment_debug_app_info.*
 /**
  * Created by cz on 15/12/1.
  */
-class DebugAppInfoFragment : Fragment() {
+internal class DebugAppInfoFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_debug_app_info, container, false)
     }

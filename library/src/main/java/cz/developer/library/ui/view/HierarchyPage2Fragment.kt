@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.fragment_view_hierarchy2.*
 /**
  * Created by cz on 2017/9/7.
  */
-class HierarchyPage2Fragment :Fragment(){
+internal class HierarchyPage2Fragment :Fragment(){
     var hierarchyItem: ViewHierarchyItem?=null
     companion object {
         fun newInstance(item: ViewHierarchyItem?):Fragment= HierarchyPage2Fragment().apply {

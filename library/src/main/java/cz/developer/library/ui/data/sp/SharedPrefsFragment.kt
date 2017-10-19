@@ -3,6 +3,7 @@ package cz.developer.library.ui.data.sp
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
@@ -22,7 +23,7 @@ import java.util.ArrayList
 /**
  * Created by cz on 2017/9/11.
  */
-class SharedPrefsFragment: Fragment(){
+internal class SharedPrefsFragment: Fragment(){
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_shared_prefs,container,false)
     }
@@ -37,12 +38,20 @@ class SharedPrefsFragment: Fragment(){
             toolBar.setNavigationOnClickListener{ fragmentManager.popBackStack() }
         }
         val prefsItems = getSharedPrefsItems()
-        recyclerView.layoutManager=LinearLayoutManager(context)
-        val adapter= SharedPrefsFileAdapter(context,prefsItems)
-        recyclerView.adapter=adapter
-        recyclerView.onItemClick { _, _, adapterPosition ->
-            val item= adapter[adapterPosition]
-            DeveloperManager.toDeveloperFragment(activity,SharedPrefsFieldListFragment.newInstance(item.name))
+        if(prefsItems.isEmpty()){
+            AlertDialog.Builder(context).
+                    setTitle(R.string.no_shared_prefs).
+                    setCancelable(false).
+                    setNegativeButton(R.string.exit,
+                            {_, _ -> fragmentManager.popBackStack() }).show()
+        } else {
+            recyclerView.layoutManager=LinearLayoutManager(context)
+            val adapter= SharedPrefsFileAdapter(context,prefsItems)
+            recyclerView.adapter=adapter
+            recyclerView.onItemClick { _, _, adapterPosition ->
+                val item= adapter[adapterPosition]
+                DeveloperManager.toDeveloperFragment(activity,SharedPrefsFieldListFragment.newInstance(item.name))
+            }
         }
     }
 

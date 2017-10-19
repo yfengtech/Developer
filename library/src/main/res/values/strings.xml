@@ -113,8 +113,27 @@
     <string name="exception_detail">异常详情</string>
     <string name="setting">设置</string>
     <string name="search">搜索</string>
+    <string name="no_database">很抱歉,没有检测到数据库文件!</string>
+    <string name="exit">离开</string>
+    <string name="no_shared_prefs">很抱歉,没有检测到配置文件!</string>
+    <string name="invalid_database">无效的数据库信息</string>
+    <string name="data_operator">数据操作</string>
+    <string name="delete_data">是否删除数据?</string>
+    <string name="add_database">添加数据</string>
+    <string name="activity_hierarchy">界面视图</string>
     <string-array name="edit_sp_array">
         <item>编辑条目</item>
         <item>删除条目</item>
     </string-array>
+
+    <string-array name="edit_db_array">
+        <item>编辑数据</item>
+        <item>删除数据</item>
+    </string-array>
+
+    <string name="file_permission_hint">\t\t1:当系统版本大于等于4.4时，
+        对通过上面4个API调用得到的目录进行文件的读写操作不需要申请SD卡的读写权限，
+        所以6.0及以上系统使用时也不需要动态申请读写权限\n
+        \t\t2:二个目录分别对应 设置->应用->应用详情里面的”清除数据“与”清除缓存“选项</string>
+    <string name="no_file_found">找不到更多文件了</string>
 </resources>

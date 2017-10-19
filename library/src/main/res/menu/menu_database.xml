@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.cz.debug.MainActivity">
+    <item
+        android:id="@+id/action_add_db"
+        android:icon="@drawable/ic_note_add_white_18dp"
+        android:orderInCategory="100"
+        android:title="@string/add_database"
+        app:showAsAction="always" />
+</menu>

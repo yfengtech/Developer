@@ -18,7 +18,7 @@ import java.io.File
 /**
  * Created by cz on 2017/9/13.
  */
-class ExceptionListFragment:Fragment(){
+internal class ExceptionListFragment:Fragment(){
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_exception_list,container,false)
     }
@@ -27,7 +27,7 @@ class ExceptionListFragment:Fragment(){
         super.onActivityCreated(savedInstanceState)
         val activity=activity
         if(activity is AppCompatActivity){
-            toolBar.setTitle(R.string.exception_list)
+            toolBar.title = arguments?.getString("title")
             setHasOptionsMenu(true)
             activity.setSupportActionBar(toolBar)
             activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
