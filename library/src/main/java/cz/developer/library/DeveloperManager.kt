@@ -2,17 +2,16 @@ package cz.developer.library
 
 import android.app.Activity
 import android.app.Application
-import android.content.Context
 import android.content.Intent
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.support.v7.app.AlertDialog
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 
 import cz.developer.library.callback.MyActivityLifecycleCallback
 import cz.developer.library.exception.MyUncaughtExceptionHandler
+import cz.developer.library.log.FilePrefs
 import cz.developer.library.ui.view.DebugViewExtrasFragment
 import cz.developer.library.ui.view.DebugViewInfoFragment
 import cz.developer.library.ui.view.DebugViewHierarchyFragment
@@ -31,6 +30,9 @@ object DeveloperManager {
     fun init(application: Application, config: DeveloperConfig.()->Unit) {
         //配置
         developerConfig = DeveloperConfig().apply(config)
+        //初始化记录文件
+        FilePrefs.newRecordFile()
+        //注册
         application.registerActivityLifecycleCallbacks(MyActivityLifecycleCallback())
         //处理异常,直接包装
         val uncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler()
@@ -89,12 +91,4 @@ object DeveloperManager {
         }
     }
 
-}
-
-internal val DEBUG=true
-inline internal fun <reified T> T.debugLog(message:String){
-    if(DEBUG){
-        val item=this as Any
-        Log.e(item::class.java.simpleName,message)
-    }
 }

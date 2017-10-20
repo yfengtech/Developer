@@ -30,7 +30,7 @@
     <string name="debug_mode">调试模式</string>
     <string name="debug_list">调试功能列表</string>
     <string name="log_switch">Log日志</string>
-    <string name="network_desc_value">事件:%1$s</string>
+    <string name="network_desc_value">描述:%1$s</string>
     <string name="path_value">路径:%1$s</string>
     <string name="url_value">Url:%1$s</string>
     <string name="empty_info">信息不能为空</string>
@@ -136,4 +136,10 @@
         所以6.0及以上系统使用时也不需要动态申请读写权限\n
         \t\t2:二个目录分别对应 设置->应用->应用详情里面的”清除数据“与”清除缓存“选项</string>
     <string name="no_file_found">找不到更多文件了</string>
+    <string name="debug_switch">调试开关</string>
+    <string name="debug_memory_view">展示内存视图</string>
+    <string name="debug_view_border">显示控件边距</string>
+    <string name="debug_hierarchy_view">调试界面视图</string>
+    <string name="debug_custom_switch">自定义开关</string>
+    <string name="network_list">接口列表</string>
 </resources>

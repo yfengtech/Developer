@@ -11,13 +11,11 @@ import cz.developer.library.ui.data.database.DatabaseFragment
 import cz.developer.library.ui.data.exception.ExceptionListFragment
 import cz.developer.library.ui.data.sp.SharedPrefsFragment
 import cz.developer.library.ui.filesystem.CacheFileFragment
-import cz.developer.library.ui.filesystem.adapter.CacheFileAdapter
-import cz.developer.library.ui.network.DebugNetworkFragment
 import cz.developer.library.ui.operation.DebugOperationFragment
 import cz.developer.library.ui.switchs.DebugSwitchFragment
 import cz.developer.library.ui.view.DebugViewFragment
+import cz.developer.okhttp3.ui.DebugNetworkSettingFragment
 import kotlinx.android.synthetic.main.activity_developer.*
-import java.net.HttpURLConnection
 
 class DeveloperActivity : AppCompatActivity() {
 
@@ -91,7 +89,7 @@ class DeveloperActivity : AppCompatActivity() {
                 id=4
                 title="网络调试"
                 desc="修改单个,所有接口的服务器,或其他信息"
-                clazz= DebugNetworkFragment::class.java
+                clazz= DebugNetworkSettingFragment::class.java
             }
             item{
                 id=5

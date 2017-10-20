@@ -40,8 +40,6 @@ class App : Application(), Thread.UncaughtExceptionHandler {
                         "http://www.sina.com.cn/",
                         "http://www.jd.com/")
             }
-            //图片加载
-            imageLoader { imageView, url -> display(imageView as SimpleDraweeView, url) }
         }
 
         Fresco.initialize(applicationContext)

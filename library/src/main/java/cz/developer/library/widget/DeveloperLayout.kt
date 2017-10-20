@@ -10,7 +10,6 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.Toast
 import cz.developer.library.R
-import cz.developer.library.debugLog
 import cz.developer.library.widget.draw.ViewDebugDrawHelper
 import cz.developer.library.widget.hierarchy.HierarchyNode
 import cz.developer.library.widget.memory.MemoryView
@@ -72,7 +71,6 @@ class DeveloperLayout(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
                 if(null!=findView&&viewIsClickable(findView)){
                     touchView=findView
                     //由控件是否可以开启点击,决定是否拦截,因为不可点击控件,父类也不会纷发事件,导致up/cancel事件无法回调
-                    debugLog("按下:$findView ${findView.isClickable} ${findView.isLongClickable}}")
                     removeCallbacks(longClickAction)
                     longClickAction= Runnable {
                         itemLongClickListener?.invoke(findView)
@@ -84,7 +82,6 @@ class DeveloperLayout(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
             MotionEvent.ACTION_MOVE->{
                 if(null!=touchView&& null!=longClickAction&&
                         touchView!=findViewByPoint(this,x.toInt(),y.toInt())){
-                    debugLog("移动x:$x y:$y 越界移除长按事件")
                     removeLongClickCallback()
                 }
             }
@@ -102,7 +99,6 @@ class DeveloperLayout(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
      * 移除长按点击事件
      */
     private fun removeLongClickCallback(){
-        debugLog("释放长按事件!")
         removeCallbacks(longClickAction)
         longClickAction=null
         touchView=null
@@ -119,7 +115,6 @@ class DeveloperLayout(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
             for (i in 0..parent.childCount - 1) {
                 val child = parent.getChildAt(i)
                 val childView = findViewByPoint(child, x, y)
-                debugLog("findViewByPoint:$child")
                 if (null != childView) {
                     return childView
                 }

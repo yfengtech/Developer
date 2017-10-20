@@ -7,7 +7,6 @@ import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.View
 import cz.developer.library.R
-import cz.developer.library.debugLog
 import cz.developer.library.ui.view.model.ViewHierarchyItem
 
 /**
