@@ -25,7 +25,7 @@ class DeveloperLayout(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
     private val debugDrawHelper= ViewDebugDrawHelper()
     private val rect = Rect()
     //是否开启控件调试
-    private var isViewDebug=DeveloperPrefs.debugList
+    private var isViewDebug=DeveloperPrefs.debugView
 
     init {
         setWillNotDraw(false)

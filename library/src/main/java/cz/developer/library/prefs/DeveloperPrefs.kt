@@ -21,7 +21,7 @@ object DeveloperPrefs {
     /**
      * 调试控件信息
      */
-    var debugList : Boolean by DeveloperPreference(sharedPrefs,"debug_list",false)
+    var debugView: Boolean by DeveloperPreference(sharedPrefs,"debug_list",false)
 
     fun setString(key: Any, value: String) =sharedPrefs.edit().putString(key.toString(), value).commit()
 

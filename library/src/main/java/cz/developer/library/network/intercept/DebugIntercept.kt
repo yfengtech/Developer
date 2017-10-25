@@ -26,10 +26,15 @@ class DebugIntercept : Interceptor {
         //当请求接口不在配置名单内,不进行拦截
         val out=StringBuilder()
         val findItem=items?.find { url.contains(it.url,true) }
+        //添加请求原url信息
+        out.append("Url=$url\n")
+        //添加请求info信息
+        if(null!=findItem){
+            out.append("Info=${findItem.info}\n")
+        }
         if(serverArray?.any { url.startsWith(it) }?:false){
             var serverUrl:String?=if(!TextUtils.isEmpty(DeveloperPrefs.url))
                 DeveloperPrefs.url else serverArray?.getOrNull(0)
-            out.append("Url=$url\n")
             if(null==serverUrl){
                 out.append("Intercept=$serverUrl $findItem\n")
             } else {

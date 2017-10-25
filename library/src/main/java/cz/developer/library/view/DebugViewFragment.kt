@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 
 
-import cz.developer.library.Constants
 import cz.developer.library.DeveloperActivityManager
 import cz.developer.library.R
 import cz.developer.library.ui.view.adapter.DebugViewAdapter
@@ -37,9 +36,9 @@ internal class DebugViewFragment : Fragment() {
             activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
             toolBar.setNavigationOnClickListener{ fragmentManager.popBackStack() }
         }
-        switchView.isChecked=DeveloperPrefs.debugList
+        switchView.isChecked=DeveloperPrefs.debugView
         switchView.setOnCheckedChangeListener { _, isChecked ->
-            DeveloperPrefs.debugList=isChecked
+            DeveloperPrefs.debugView =isChecked
             //设置所有控件状态
             DeveloperActivityManager.forEach{ it.setViewDebug(isChecked) }
         }

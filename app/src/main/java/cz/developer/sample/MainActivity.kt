@@ -6,13 +6,13 @@ import android.content.Intent
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
-import android.os.Environment
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.Toast
 import com.cz.demo.database.Database1
 import com.cz.demo.database.Database2
+import cz.developer.library.prefs.DeveloperPrefs
+import cz.developer.library.widget.DeveloperLayout
 import cz.developer.sample.network.NetPrefs
 import cz.netlibrary.request
 
@@ -21,7 +21,6 @@ import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.sdk25.coroutines.onLongClick
 import org.jetbrains.anko.toast
 import org.jetbrains.anko.uiThread
-import java.io.File
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -67,6 +66,12 @@ class MainActivity : AppCompatActivity() {
         val sharedPrefs=getSharedPreferences("test",Context.MODE_PRIVATE)
         val init=sharedPrefs.getBoolean("init",false)
         if(!init){
+            //打开控件测试开关
+            DeveloperPrefs.debugView =true
+            val layout=findViewById(cz.developer.library.R.id.developerContainer)
+            if(null!=layout&&layout is DeveloperLayout){
+                layout.setViewDebug(true)
+            }
             val dialog=ProgressDialog(this)
             dialog.setMessage("正在初始测试数据...")
             dialog.setCancelable(false)
