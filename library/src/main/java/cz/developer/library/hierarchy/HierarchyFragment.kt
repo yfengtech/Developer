@@ -1,5 +1,6 @@
 package cz.developer.library.ui.hierarchy
 
+import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -8,6 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import cz.developer.library.R
+import cz.developer.library.closeDeveloperLayout
+import cz.developer.library.openDeveloperLayout
 import cz.developer.library.widget.hierarchy.HierarchyNode
 import cz.developer.library.widget.hierarchy.adapter.SimpleHierarchyAdapter
 import kotlinx.android.synthetic.main.fragment_hierarchy_view.*
@@ -39,6 +42,16 @@ internal class HierarchyFragment: Fragment() {
             toolBar.setNavigationOnClickListener{ fragmentManager.popBackStack() }
         }
         hierarchyView.setAdapter(SimpleHierarchyAdapter(context,node))
+    }
+
+    override fun onAttach(context: Context?) {
+        closeDeveloperLayout()//隐藏调试视图
+        super.onAttach(context)
+    }
+
+    override fun onDetach() {
+        openDeveloperLayout()//打开调试视图
+        super.onDetach()
     }
 
 }

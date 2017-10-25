@@ -1,25 +1,27 @@
 package cz.developer.library.widget.memory
 
-import android.app.ActivityManager
 import android.content.Context
 import android.util.AttributeSet
-import java.util.*
+import android.view.View
 
 /**
  * Created by cz on 2017/9/11.
  */
 class MemoryView(context: Context,attrs: AttributeSet? = null) : CurveChartView(context, attrs){
-    private val DURATION: Long = 600
-    private var timer: Timer=Timer()
-
-    fun start() {
-        var timerTask=HeapTimerTask()
-        timer.scheduleAtFixedRate(timerTask, 0, DURATION)
+    private val DURATION: Long = 800
+    private var action= object :Runnable {
+        override fun run() {
+            val dalvikHeapMem = getApplicationDalvikHeapMem()
+            addData(dalvikHeapMem.allocated *1f / 1024)
+            postDelayed(this,DURATION)
+        }
     }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        start()
+        if(View.VISIBLE==visibility){
+            start()
+        }
     }
 
     override fun onDetachedFromWindow() {
@@ -27,58 +29,31 @@ class MemoryView(context: Context,attrs: AttributeSet? = null) : CurveChartView(
         stop()
     }
 
-
-    inner class PssTimerTask : MemoryTimerTask() {
-        override val value: Float
-            get() {
-                val pid = android.os.Process.myPid()
-                val pssInfo = getApplicationPssInfo(pid)
-                return pssInfo.totalPss as Float / 1024
-            }
-    }
-
-    inner class HeapTimerTask : MemoryTimerTask() {
-
-        override val value: Float
-            get() {
-                val dalvikHeapMem = getApplicationDalvikHeapMem()
-                return dalvikHeapMem.allocated *1f / 1024
-            }
-    }
-
-    inner abstract class MemoryTimerTask : TimerTask() {
-
-        abstract val value: Float
-
-        override fun run() {
-            addData(value)
-//            post{ memoryView.setText(value) }
+    override fun onVisibilityChanged(changedView: View?, visibility: Int) {
+        super.onVisibilityChanged(changedView, visibility)
+        if(View.VISIBLE==visibility){
+            start()
+        } else {
+            stop()
         }
     }
 
-
-    fun stop() {
-        timer.cancel()
+    override fun onWindowFocusChanged(hasWindowFocus: Boolean) {
+        super.onWindowFocusChanged(hasWindowFocus)
+        if(hasWindowFocus&&View.VISIBLE==visibility){
+            start()
+        } else if(!hasWindowFocus){
+            stop()
+        }
     }
 
-    /**
-     * 获取应用实际占用内存
+    fun start() {
+        removeCallbacks(action)
+        post(action)
+    }
 
-     * @param context
-     * *
-     * @param pid
-     * *
-     * @return 应用pss信息KB
-     */
-    fun getApplicationPssInfo(pid: Int): PssInfo {
-        val am = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        val memoryInfo = am.getProcessMemoryInfo(intArrayOf(pid))[0]
-        val pssInfo = PssInfo()
-        pssInfo.totalPss = memoryInfo.totalPss
-        pssInfo.dalvikPss = memoryInfo.dalvikPss
-        pssInfo.nativePss = memoryInfo.nativePss
-        pssInfo.otherPss = memoryInfo.otherPss
-        return pssInfo
+    fun stop() {
+        removeCallbacks(action)
     }
 
     /**
@@ -101,15 +76,5 @@ class MemoryView(context: Context,attrs: AttributeSet? = null) : CurveChartView(
         var freeMem: Long = 0
         var maxMem: Long = 0
         var allocated: Long = 0
-    }
-
-    /**
-     * 应用实际占用内存（共享按比例分配）
-     */
-    class PssInfo {
-        var totalPss: Int = 0
-        var dalvikPss: Int = 0
-        var nativePss: Int = 0
-        var otherPss: Int = 0
     }
 }

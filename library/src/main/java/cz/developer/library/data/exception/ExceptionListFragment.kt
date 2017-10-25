@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import com.cz.recyclerlibrary.onItemClick
 import cz.developer.library.DeveloperManager
 import cz.developer.library.R
+import cz.developer.library.log.FilePrefs
 import cz.developer.library.ui.data.adapter.ExceptionAdapter
 import cz.developer.library.ui.data.model.ExceptionItem
 import kotlinx.android.synthetic.main.fragment_exception_list.*
@@ -34,7 +35,7 @@ internal class ExceptionListFragment:Fragment(){
             toolBar.setNavigationOnClickListener{ fragmentManager.popBackStack() }
         }
 
-        val dir= File(context.cacheDir,"error")
+        val dir= FilePrefs.exceptionFolder
         val items= mutableListOf<ExceptionItem>()
         dir.listFiles().forEach {
             var index=0

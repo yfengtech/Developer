@@ -6,18 +6,22 @@ import android.content.Intent
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
+import android.os.Environment
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.Toast
 import com.cz.demo.database.Database1
 import com.cz.demo.database.Database2
+import cz.developer.sample.network.NetPrefs
+import cz.netlibrary.request
 
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.sdk25.coroutines.onLongClick
 import org.jetbrains.anko.toast
 import org.jetbrains.anko.uiThread
+import java.io.File
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -29,7 +33,6 @@ class MainActivity : AppCompatActivity() {
             toast("Long Click Layout!")
             true
         }
-
         val person=Person()
         person.name="Tom"
         val tomChild= Child()
@@ -76,6 +79,18 @@ class MainActivity : AppCompatActivity() {
                 insertDatabase(Database2(this@MainActivity).writableDatabase,1000)
                 sharedPrefs.edit().putBoolean("init",true).commit()
                 uiThread { dialog.dismiss() }
+            }
+        }
+
+        //横拟请求
+        request<String>(NetPrefs.WHITE_CREDIT_TEMPLATE_LIST) {
+            params= arrayOf(1,10)
+            map{it}
+            success {
+
+            }
+            failed {
+
             }
         }
     }

@@ -142,4 +142,26 @@
     <string name="debug_hierarchy_view">调试界面视图</string>
     <string name="debug_custom_switch">自定义开关</string>
     <string name="network_list">接口列表</string>
+    <string name="delete_file_item">是否删除本文件</string>
+    <string name="show_memory">内存信息</string>
+    <string name="show_hierarchy">显示视图</string>
+    <string name="view_developer">界面调试</string>
+    <string name="response_result">响应结果:</string>
+    <string name="request_params">请求参数</string>
+    <string name="request_headers">请求头</string>
+    <string name="request_entity">请求实体</string>
+    <string name="shared_file">分享文件</string>
+    <string name="shared_file_hint">分享文本过大,建议直接分享文件.</string>
+
+    <string-array name="debug_array">
+        <item>界面视图</item>
+        <item>内存视图</item>
+        <item>显示边界</item>
+    </string-array>
+
+    <string-array name="shard_request_data">
+        <item>请求体</item>
+        <item>响应体</item>
+        <item>响应结果</item>
+    </string-array>
 </resources>

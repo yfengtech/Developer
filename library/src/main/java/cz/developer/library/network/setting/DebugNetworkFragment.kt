@@ -10,7 +10,7 @@ import android.view.*
 import cz.developer.library.DeveloperManager
 import cz.developer.library.R
 import cz.developer.library.prefs.DeveloperPrefs
-import cz.developer.library.ui.dialog.EditDialog
+import cz.developer.library.ui.dialog.NetworkEditDialog
 import android.support.v7.widget.SearchView
 import cz.developer.library.network.adapter.NetworkItemAdapter
 import cz.developer.okhttp3.adapter.NetworkAdapter
@@ -60,8 +60,8 @@ internal class DebugNetworkFragment : Fragment(), FragmentManager.OnBackStackCha
             val item = adapter.getItem(i)
             val key=System.identityHashCode(item.url).toString()
             val url = DeveloperPrefs.getString(key)
-            val editDialog = EditDialog.newInstance(networkAdapter.serverUrl,serverUrls?.first())
-            editDialog.setOnSubmitListener(object :EditDialog.OnSubmitListener{
+            val editDialog = NetworkEditDialog.newInstance(networkAdapter.serverUrl,serverUrls?.first())
+            editDialog.setOnSubmitListener(object : NetworkEditDialog.OnSubmitListener{
                 override fun onSubmit(text: String) {
                     if (text != url) {
                         DeveloperPrefs.setString(key, text)

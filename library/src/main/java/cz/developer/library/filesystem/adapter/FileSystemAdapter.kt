@@ -1,6 +1,7 @@
 package cz.developer.library.ui.filesystem.adapter
 
 import android.content.Context
+import android.support.v7.app.AlertDialog
 import android.view.View
 import android.view.ViewGroup
 import com.cz.recyclerlibrary.adapter.BaseViewAdapter
@@ -11,7 +12,7 @@ import java.io.File
 /**
  * Created by cz on 2017/10/19.
  */
-class FileSystemAdapter(context: Context, items: List<File>?) : BaseViewAdapter<File>(context, items) {
+class FileSystemAdapter(val context: Context, items: List<File>?) : BaseViewAdapter<File>(context, items) {
     companion object {
         val FILE_TYPE=0
         val FOLDER_TYPE=1
@@ -38,6 +39,19 @@ class FileSystemAdapter(context: Context, items: List<File>?) : BaseViewAdapter<
                 val childCount=item.listFiles()?.size?:0
                 holder.view(R.id.imageRight).visibility=if(0<childCount) View.VISIBLE else View.INVISIBLE
             }
+        }
+        holder.itemView.setOnLongClickListener {
+            AlertDialog.Builder(context).
+                    setTitle(R.string.delete_file_item).
+                    setPositiveButton(android.R.string.ok,{_, _ ->
+                        if(item.isDirectory){
+                            item.deleteRecursively()
+                        } else {
+                            item.delete()
+                        }
+                        removeNotify(item)
+            }).setNegativeButton(android.R.string.cancel,{dialog, _ -> dialog.dismiss() }).show()
+            true
         }
     }
 

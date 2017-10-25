@@ -1,5 +1,6 @@
 package cz.developer.library
 
+import android.os.Build
 import cz.developer.okhttp3.adapter.NetworkAdapter
 import cz.developer.okhttp3.intercept.DebugIntercept
 
@@ -16,10 +17,6 @@ class DeveloperConfig {
     //网络配置
     fun network(action:NetworkAdapter.()->Unit){
         network =NetworkAdapter().apply(action)
-        //添加网络拦截器
-        network?.client?.forEach {
-            it?.interceptors()?.add(DebugIntercept(network))
-        }
     }
     //状态切换配置
     fun switch(config:SwitchItem.()->Unit){

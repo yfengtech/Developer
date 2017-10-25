@@ -1,6 +1,7 @@
 package cz.developer.library.widget.memory
 
 import android.content.Context
+import android.content.res.TypedArray
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -30,25 +31,32 @@ open class CurveChartView @JvmOverloads constructor(context: Context, attrs: Att
         get() = (width-paddingTop-paddingBottom) / (this.config.dataSize - 1).toFloat()
 
     init {
-        context.obtainStyledAttributes(attrs, R.styleable.CurveChartView,R.attr.curveChartView,R.style.CurveChartView).apply {
-            setColor(getColor(R.styleable.CurveChartView_cv_color,0))
-            setFillColor(getColor(R.styleable.CurveChartView_cv_fillColor,0))
-            setLabelTextSize(getDimensionPixelSize(R.styleable.CurveChartView_cv_labelTextSize,0))
-            setStrokeWidth(getDimension(R.styleable.CurveChartView_cv_strokeWidth,0f))
-            setPartCount(getInteger(R.styleable.CurveChartView_cv_partCount,0))
-            recycle()
+        val typedArray: TypedArray
+        val a = context.obtainStyledAttributes(android.support.v7.appcompat.R.styleable.AppCompatTheme)
+        if (a.hasValue(android.support.v7.appcompat.R.styleable.AppCompatTheme_windowActionBar)) {
+            typedArray = context.obtainStyledAttributes(attrs, R.styleable.CurveChartView, R.attr.curveChartView, R.style.CurveChartViewCompat)
+        } else {
+            typedArray = context.obtainStyledAttributes(attrs, R.styleable.CurveChartView, R.attr.curveChartView, R.style.CurveChartView)
         }
+        a.recycle()
+        setColor(typedArray.getColor(R.styleable.CurveChartView_cv_color,0))
+        setFillColor(typedArray.getColor(R.styleable.CurveChartView_cv_fillColor,0))
+        setLabelTextSize(typedArray.getDimensionPixelSize(R.styleable.CurveChartView_cv_labelTextSize,0))
+        setStrokeWidth(typedArray.getDimension(R.styleable.CurveChartView_cv_strokeWidth,0f))
+        setPartCount(typedArray.getInteger(R.styleable.CurveChartView_cv_partCount,0))
+        typedArray.recycle()
     }
 
 
     private fun setColor(color: Int) {
+        val color=Color.argb(0x44,Color.red(color),Color.green(color),Color.blue(color))
         linePaint.color = color
         graduatedLinePaint.color = color
         textPaint.color = color
     }
 
     private fun setFillColor(color: Int) {
-        fillPaint.color = Color.argb(0xCC,Color.red(color),Color.green(color),Color.blue(color))
+        fillPaint.color = Color.argb(0x22,Color.red(color),Color.green(color),Color.blue(color))
     }
 
     private fun setLabelTextSize(textSize: Int) {
@@ -78,7 +86,9 @@ open class CurveChartView @JvmOverloads constructor(context: Context, attrs: Att
         super.onDraw(canvas)
         this.drawXY(canvas)
         this.drawScaleLabel(canvas)
-        this.drawLine(canvas, dataItem.size)
+        if(!dataItem.isEmpty()){
+            this.drawLine(canvas, dataItem.size)
+        }
     }
 
     private fun drawXY(canvas: Canvas) {

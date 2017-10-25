@@ -16,22 +16,8 @@
         app:theme="@style/AppTheme.AppBarOverlay"
         android:elevation="4dp" />
 
-    <com.cz.recyclerlibrary.PullToRefreshRecyclerView
-        android:id="@+id/recyclerView"
+    <FrameLayout
+        android:id="@+id/fileFragmentContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:pv_listDivide="@color/developerDivider"
-        app:pv_listDivideHeight="@dimen/developerDivideSize"
-        app:pl_refreshMode="none">
-
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="12dp"
-            android:textSize="15sp"
-            android:textColor="@android:color/black"
-            android:text="@string/file_permission_hint"/>
-
-    </com.cz.recyclerlibrary.PullToRefreshRecyclerView>
+        android:layout_height="match_parent"/>
 </LinearLayout>

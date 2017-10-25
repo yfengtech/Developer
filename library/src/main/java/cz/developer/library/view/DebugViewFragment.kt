@@ -13,6 +13,7 @@ import cz.developer.library.DeveloperActivityManager
 import cz.developer.library.R
 import cz.developer.library.ui.view.adapter.DebugViewAdapter
 import cz.developer.library.prefs.DeveloperPrefs
+import cz.developer.library.setViewDebug
 import kotlinx.android.synthetic.main.fragment_debug_view.*
 
 /**
@@ -36,22 +37,14 @@ internal class DebugViewFragment : Fragment() {
             activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
             toolBar.setNavigationOnClickListener{ fragmentManager.popBackStack() }
         }
+        switchView.isChecked=DeveloperPrefs.debugList
         switchView.setOnCheckedChangeListener { _, isChecked ->
-            DeveloperPrefs.setBoolean(Constants.DEBUG_LIST, isChecked)
+            DeveloperPrefs.debugList=isChecked
             //设置所有控件状态
-            DeveloperActivityManager.forEach{ activity ->
-                val decorView = activity.window.decorView
-                if (null != decorView) {
-                    val contentView = decorView.findViewById(android.R.id.content)
-                    if (null != contentView && contentView is ViewGroup) {
-
-                    }
-                }
-            }
+            DeveloperActivityManager.forEach{ it.setViewDebug(isChecked) }
         }
         //AbsListView/RecyclerView/ImageView
         listView.adapter = DebugViewAdapter(context, items)
-        listView.setOnItemClickListener { _, _, position, _ -> adapter!!.selectItem(position) }
     }
 
 
@@ -63,29 +56,21 @@ internal class DebugViewFragment : Fragment() {
         }
 
         init {
-            item{
-                title="View常规信息"
-                desc="包括信息类型,可见所有属性等"
+            item {
+                title = "控件视图"
+                desc = "控件所处层级,以及基本视图,可见所有属性等"
             }
-            item{
-                title="AbsListView"
-                desc="长按查看Item所有信息"
+            item {
+                title = "控件属性集"
+                desc = "控件常规属性信息"
             }
-            item{
-                title="RecyclerView"
-                desc="长按查看Item所有信息"
+            item {
+                title = "控件Tag信息"
+                desc = "可用于查看一些关键信息"
             }
-            item{
-                title="ImageView"
-                desc="查看Tag以及ScaleType,和一些其他信息"
-            }
-            item{
-                title="WebView"
-                desc="查看一些其他信息"
-            }
-            item{
-                title="View"
-                desc="查看Tab以及其他信息"
+            item {
+                title = "其他"
+                desc = "未来考虑支持WebView,以及其他定制信息"
             }
         }
     }

@@ -52,20 +52,20 @@ internal class DatabaseDetailFragment : Fragment(){
             val tableItem = getTableItems(name, tableName)
             progressBar.visibility=View.GONE
             if(null!=tableItem){
-                tableView.adapter=DatabaseDetailAdapter(context,tableItem.columnNames,tableItem.values)
-                tableView.onItemClick { view, i ->
-                    AlertDialog.Builder(context).
-                            setTitle(R.string.delete_data).
-                            setPositiveButton(android.R.string.ok,{dialog, which ->  }).
-                            setNegativeButton(android.R.string.cancel,{dialog, which -> }).show()
+                val adapter=DatabaseDetailAdapter(context,tableItem.columnNames,tableItem.values)
+                tableView.adapter=adapter
+                tableView.onItemClick { _, i ->
+                    val array=adapter.getItem(i)
+                    DeveloperManager.toDeveloperFragment(activity,
+                            EditDatabaseFragment.newInstance(tableItem.columnNames,array))
                 }
-                tableView.onItemLongClick { view, i ->
-                    AlertDialog.Builder(context).
-                            setTitle(R.string.delete_data).
-                            setPositiveButton(android.R.string.ok,{dialog, which ->  }).
-                            setNegativeButton(android.R.string.cancel,{dialog, which -> }).show()
-                    true
-                }
+//                tableView.onItemLongClick { view, i ->
+//                    AlertDialog.Builder(context).
+//                            setTitle(R.string.delete_data).
+//                            setPositiveButton(android.R.string.ok,{dialog, which ->  }).
+//                            setNegativeButton(android.R.string.cancel,{dialog, which -> }).show()
+//                    true
+//                }
             }
         }
     }
@@ -105,14 +105,14 @@ internal class DatabaseDetailFragment : Fragment(){
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {
         menu?.clear()
-        inflater.inflate(R.menu.menu_database,menu)
+//        inflater.inflate(R.menu.menu_database,menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(R.id.action_add_db==item.itemId){
-            val fragment=AddDatabaseItemFragment.newInstance(arguments)
-            DeveloperManager.toDeveloperFragment(activity,fragment)
-        }
+//        if(R.id.action_add_db==item.itemId){
+//            val fragment=AddDatabaseItemFragment.newInstance(arguments)
+//            DeveloperManager.toDeveloperFragment(activity,fragment)
+//        }
         return super.onOptionsItemSelected(item)
     }
 }

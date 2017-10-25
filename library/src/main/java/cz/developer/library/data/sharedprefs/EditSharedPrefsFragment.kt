@@ -49,7 +49,11 @@ internal class EditSharedPrefsFragment: Fragment(){
 
     private fun addSharedPrefsFieldItem(layoutInflater: LayoutInflater, item:SharedPrefsItem) {
         when (item.type) {
-            PrefsType.BOOLEAN -> boolViewStub?.inflate()
+            PrefsType.BOOLEAN -> {
+                boolViewStub?.inflate()
+                boolLayout.check(if(item.value as Boolean)
+                    R.id.boolTrue else R.id.boolFalse)
+            }
             PrefsType.SET -> {
                 val valueArray = item.value as Set<String>
                 valueArray.forEach {
@@ -89,8 +93,8 @@ internal class EditSharedPrefsFragment: Fragment(){
             if(newItem != prefsItem){
                 //发生变化
                 callback?.invoke(newItem)
-                fragmentManager.popBackStack()
             }
+            fragmentManager.popBackStack()
         })
     }
 

@@ -2,9 +2,22 @@
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
-    <style name="CurveChartView">
+    <style name="DeveloperAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/developerColorPrimary</item>
+        <item name="colorPrimaryDark">@color/developerColorPrimaryDark</item>
+        <item name="colorAccent">@color/developerColorAccent</item>
+    </style>
+
+    <style name="CurveChartViewCompat">
         <item name="cv_color">?colorPrimary</item>
         <item name="cv_fillColor">?colorPrimaryDark</item>
+        <item name="cv_labelTextSize">12sp</item>
+        <item name="cv_partCount">7</item>
+        <item name="cv_strokeWidth">1dp</item>
+    </style>
+    <style name="CurveChartView">
+        <item name="cv_color">@color/developerColorPrimary</item>
+        <item name="cv_fillColor">@color/developerColorPrimaryDark</item>
         <item name="cv_labelTextSize">12sp</item>
         <item name="cv_partCount">7</item>
         <item name="cv_strokeWidth">1dp</item>

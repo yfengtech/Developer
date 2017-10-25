@@ -1,6 +1,8 @@
 package cz.developer.library.exception
 
+import cz.developer.library.log.FilePrefs
 import java.io.File
+import java.io.FilePermission
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.text.SimpleDateFormat
@@ -31,11 +33,7 @@ class MyUncaughtExceptionHandler(val cacheDir: File, val handler:Thread.Uncaught
         out.append("$methodName($lineNumber)\n")
         out.append("$stackTrace\n")
 
-        val exceptionDir=File(cacheDir,"error")
-        if(!exceptionDir.exists()){
-            exceptionDir.mkdir()
-        }
-        val file=File(exceptionDir, SimpleDateFormat("yy-MM-dd-HH:mm:ss").format(Date())+".txt")
+        val file=File(FilePrefs.exceptionFolder, SimpleDateFormat("yy-MM-dd-HH:mm:ss").format(Date())+".txt")
         file.outputStream().write(out.toString().toByteArray())
         android.os.Process.killProcess(android.os.Process.myPid())
     }

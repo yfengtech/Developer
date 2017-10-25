@@ -3,17 +3,11 @@ package cz.developer.library.widget
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
-import android.util.TypedValue
 import android.view.*
-import android.widget.AdapterView
 import android.widget.FrameLayout
-import android.widget.LinearLayout
-import android.widget.Toast
 import cz.developer.library.R
+import cz.developer.library.prefs.DeveloperPrefs
 import cz.developer.library.widget.draw.ViewDebugDrawHelper
-import cz.developer.library.widget.hierarchy.HierarchyNode
-import cz.developer.library.widget.memory.MemoryView
-import kotlinx.android.synthetic.main.developer_menu_layout.view.*
 
 /**
  * Created by cz on 2017/9/5.
@@ -28,68 +22,52 @@ class DeveloperLayout(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
     private var longClickAction:Runnable?=null
     private var itemLongClickListener:((View)->Unit)?=null
     private var touchView:View?=null
-    private var memoryView=MemoryView(context)
     private val debugDrawHelper= ViewDebugDrawHelper()
     private val rect = Rect()
+    //是否开启控件调试
+    private var isViewDebug=DeveloperPrefs.debugList
 
     init {
         setWillNotDraw(false)
-        //此处注释控件树绘图监听,子控件变化时,直接刷新主控件,确保边距效果的一致性
-//        viewTreeObserver.addOnPreDrawListener {
-//            true
-//        }
-    }
-
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        toggleMenu.setOnClickListener {
-            eachMenuItem { view, i ->
-                if(0f==view.translationY){
-                    view.animate().setStartDelay((i*100).toLong()).translationY(toggleMenu.top- view.top*1f)
-                } else {
-                    view.animate().setStartDelay((1*100).toLong()).translationY(0f)
-                }
-            }
-        }
-    }
-
-    private fun eachMenuItem(action:(View,Int)->Unit){
-        (0..debugMenuLayout.childCount-1)
-                .map { debugMenuLayout.getChildAt(it) }
-                .filter { it !=toggleMenu }
-                .forEachIndexed { index, view -> action(view,index) }
+        id=R.id.developerContainer
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        //模拟控件点击
+        if(isViewDebug){
+            debugViewEvent(ev)
+        }
+        //这里反向模仿控件长按点击
+        return super.dispatchTouchEvent(ev)
+    }
+
+    private fun debugViewEvent(ev: MotionEvent) {
         val x=ev.x
         val y=ev.y
-//        debugLog("dispatchTouchEvent:${ev.action}")
-        when(ev.actionMasked){
-            MotionEvent.ACTION_DOWN->{
-                val findView=findViewByPoint(this,x.toInt(),y.toInt())
+        when (ev.actionMasked) {
+            MotionEvent.ACTION_DOWN -> {
+                val findView = findViewByPoint(this, x.toInt(), y.toInt())
                 //实现了DeveloperFilter过滤接口的布局,将不再被处理
-                if(null!=findView&&viewIsClickable(findView)){
-                    touchView=findView
+                if (null != findView && viewIsClickable(findView)) {
+                    touchView = findView
                     //由控件是否可以开启点击,决定是否拦截,因为不可点击控件,父类也不会纷发事件,导致up/cancel事件无法回调
                     removeCallbacks(longClickAction)
-                    longClickAction= Runnable {
+                    longClickAction = Runnable {
                         itemLongClickListener?.invoke(findView)
                         removeLongClickCallback()
                     }
                     postDelayed(longClickAction, ViewConfiguration.getLongPressTimeout().toLong())
                 }
             }
-            MotionEvent.ACTION_MOVE->{
-                if(null!=touchView&& null!=longClickAction&&
-                        touchView!=findViewByPoint(this,x.toInt(),y.toInt())){
+            MotionEvent.ACTION_MOVE -> {
+                if (null != touchView && null != longClickAction &&
+                        touchView != findViewByPoint(this, x.toInt(), y.toInt())) {
                     removeLongClickCallback()
                 }
             }
-            //长按有两种情况不触发,一种为短暂点击,一种为滑动
-            MotionEvent.ACTION_CANCEL, MotionEvent.ACTION_UP->removeLongClickCallback()
+        //长按有两种情况不触发,一种为短暂点击,一种为滑动
+            MotionEvent.ACTION_CANCEL, MotionEvent.ACTION_UP -> removeLongClickCallback()
         }
-        //这里反向模仿控件长按点击
-        return super.dispatchTouchEvent(ev)
     }
 
     private fun viewIsClickable(view:View)=view !is DeveloperFilter&&
@@ -142,7 +120,46 @@ class DeveloperLayout(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
     override fun dispatchDraw(canvas: Canvas) {
         super.dispatchDraw(canvas)
         //绘制所有控件边界
-//        debugDrawHelper.draw(canvas,this)
+        debugDrawHelper.draw(canvas,this)
     }
 
+    /**
+     * 设置调试面板开关
+     */
+    fun toggleMemoryView(){
+        val memoryView=findViewById(R.id.memoryView)
+        if(null!=memoryView){
+            memoryView.visibility=if(memoryView.isShown) View.GONE else View.VISIBLE
+        }
+    }
+
+    /**
+     * 开启边界绘制
+     */
+    fun toggleViewBorder(){
+        debugDrawHelper.toggle()
+        invalidate()
+    }
+
+    fun showViewBorder()=debugDrawHelper.isEnabled()
+
+    fun isViewDebug()=isViewDebug
+
+    fun setViewDebug(debug:Boolean){
+        this.isViewDebug=debug
+    }
+
+    fun openDeveloperLayout(){
+        val layout=findViewById(R.id.developerLayout)
+        if(null!=layout){
+            layout.visibility=View.VISIBLE
+        }
+    }
+
+    fun closeDeveloperLayout(){
+        val layout=findViewById(R.id.developerLayout)
+        if(null!=layout){
+            layout.visibility=View.GONE
+        }
+    }
 }

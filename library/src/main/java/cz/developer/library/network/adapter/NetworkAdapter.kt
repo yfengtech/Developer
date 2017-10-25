@@ -12,6 +12,4 @@ class NetworkAdapter {
     var serverUrl: Array<String>?=null
     //获取当前使用接口信息集
     var networkItems: List<NetItem>?=null
-    //okhttp请求客户端
-    var client:Array<OkHttpClient?>?=null
 }

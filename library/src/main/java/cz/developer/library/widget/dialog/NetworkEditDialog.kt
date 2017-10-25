@@ -6,18 +6,16 @@ import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
-import android.text.Editable
 import android.text.TextUtils
 import android.view.LayoutInflater
-import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RadioGroup
-
-import java.util.ArrayList
+import cz.developer.library.DeveloperManager
 
 import cz.developer.library.R
+import cz.developer.library.prefs.DeveloperPrefs
 
 
 /**
@@ -26,7 +24,7 @@ import cz.developer.library.R
  * *
  * @date 2015/8/3
  */
-class EditDialog : DialogFragment() {
+internal class NetworkEditDialog : DialogFragment() {
     private var listener: OnSubmitListener? = null
     private var items: Array<String>? = null
     private var selectIndex: Int = 0
@@ -49,14 +47,20 @@ class EditDialog : DialogFragment() {
         val view = inflater.inflate(R.layout.dialog_net_edit, null)
         builder.setView(view)
         val layout = view.findViewById(R.id.rg_layout) as RadioGroup
+        val items=items
         if (null != items) {
-            for (i in items!!.indices) {
+            val url=DeveloperPrefs.url
+            for (i in items.indices) {
                 val button = RadioButton(context)
-                button.text = items!![i]
+                button.id=i
+                button.text = items[i]
                 layout.addView(button)
+                if(url==items[i]){
+                    layout.check(i)
+                }
             }
         }
-        layout.setOnCheckedChangeListener { radioGroup, id -> selectIndex = layout.indexOfChild(layout.findViewById(id)) }
+        layout.setOnCheckedChangeListener { _, id -> selectIndex = layout.indexOfChild(layout.findViewById(id)) }
         val editText = view.findViewById(R.id.et_editor) as EditText
         editText.setHint(R.string.input_url_hint)
         if (!TextUtils.isEmpty(url)) {
@@ -67,7 +71,7 @@ class EditDialog : DialogFragment() {
             val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS)
         }
-        builder.setPositiveButton(R.string.changed) { dialog: DialogInterface, which: Int ->
+        builder.setPositiveButton(R.string.changed) { _: DialogInterface, _: Int ->
             if (null != listener) {
                 val text = editText.text
                 if (!TextUtils.isEmpty(text) && !TextUtils.isEmpty(text.toString().trim { it <= ' ' }) && text.toString() != url) {
@@ -86,7 +90,7 @@ class EditDialog : DialogFragment() {
 
      * @param listener
      */
-    fun setOnSubmitListener(listener: OnSubmitListener): EditDialog {
+    fun setOnSubmitListener(listener: OnSubmitListener): NetworkEditDialog {
         this.listener = listener
         return this
     }
@@ -104,8 +108,8 @@ class EditDialog : DialogFragment() {
          * 获得一个编辑对话框对像
          * @return
          */
-        fun newInstance(items: Array<String>?, url: String?): EditDialog {
-            val editDialog = EditDialog()
+        fun newInstance(items: Array<String>?, url: String?): NetworkEditDialog {
+            val editDialog = NetworkEditDialog()
             val args = Bundle()
             args.putStringArray("items", items)
             args.putString("url", url)

@@ -37,11 +37,21 @@ class ViewDebugDrawHelper {
         }
     }
 
+    private var isEnable=false
+
+    fun isEnabled()=isEnable
+
+    fun toggle(){
+        this.isEnable=!isEnable
+    }
+
     /**
      * 子控件绘制
      */
     open fun draw(canvas: Canvas,childView: View){
-        drawChildBorder(canvas,childView)
+        if(isEnable){
+            drawChildBorder(canvas,childView)
+        }
     }
 
     /**

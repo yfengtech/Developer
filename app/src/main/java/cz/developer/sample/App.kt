@@ -14,6 +14,14 @@ import java.io.PrintWriter
 import java.io.StringWriter
 
 import cz.developer.library.DeveloperManager
+import cz.developer.library.DeveloperManager.developer
+import cz.developer.library.network.model.NetItem
+import cz.developer.okhttp3.intercept.DebugIntercept
+import cz.developer.sample.network.NetPrefs
+import cz.netlibrary.init
+import cz.netlibrary.model.Configuration
+import cz.netlibrary.model.NetPrefsItem
+import okhttp3.OkHttpClient
 
 /**
  * Created by Administrator on 2016/11/7.
@@ -23,7 +31,15 @@ class App : Application(), Thread.UncaughtExceptionHandler {
     override fun onCreate() {
         super.onCreate()
         Thread.setDefaultUncaughtExceptionHandler(this)
-        DeveloperManager.init(this){
+        init {
+            url="http://192.168.4.72:7018/"
+            writeTimeout=10*1000
+            readTimeout=10*1000
+            httpLog=true
+            interceptItems= arrayOf(DebugIntercept())
+        }
+        NetPrefs::javaClass
+        developer(this){
             //配置渠道
             channel="Channel"
             //数据切换
@@ -35,10 +51,10 @@ class App : Application(), Thread.UncaughtExceptionHandler {
             }
             //网络模块
             network {
-                serverUrl = arrayOf("https://www.baidu.com",
-                        "https://www.hao123.com/",
-                        "http://www.sina.com.cn/",
-                        "http://www.jd.com/")
+                serverUrl = arrayOf("http://192.1.4.72:7018/",
+                        "http://192.1.4.12:7018/",
+                        "http://192.1.4.105:7018/")
+                networkItems=Configuration.requestItems.map { NetItem(it.info,it.url) }
             }
         }
 

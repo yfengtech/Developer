@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    android:clickable="true">
+
+    <com.cz.recyclerlibrary.PullToRefreshRecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:pv_listDivide="@color/developerDivider"
+        app:pv_listDivideHeight="@dimen/developerDivideSize"
+        app:pl_refreshMode="none">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:textSize="15sp"
+            android:textColor="@android:color/black"
+            android:text="@string/file_permission_hint"/>
+    </com.cz.recyclerlibrary.PullToRefreshRecyclerView>
+
+</LinearLayout>

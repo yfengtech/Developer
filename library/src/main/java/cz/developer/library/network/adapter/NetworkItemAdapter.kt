@@ -77,15 +77,18 @@ class NetworkItemAdapter(private val context: Context, items: List<NetItem>?, pr
         holder.pathView.text = getString(R.string.path_value, item.url)
         var url: String? = urlItems.get(i)
         if (null == url) {
-            val key=System.identityHashCode(item.url).toString()
-            val dynamicUrl = DeveloperPrefs.getString(key)
-            url = if (TextUtils.isEmpty(dynamicUrl)) "" else dynamicUrl
+            //取单个配置
+            val dynamicUrl = DeveloperPrefs.getString(item.url.hashCode())
+            if (TextUtils.isEmpty(dynamicUrl)){
+                //取通用配置
+                url=DeveloperPrefs.url
+            }
             urlItems.put(i, url)
         }
         holder.urlView.setTextColor(if (TextUtils.isEmpty(url)) textColor else Color.RED)
         val serverUrl=serverUrl
         if(null!=serverUrl){
-            holder.urlView.text = getString(R.string.url_value, if (TextUtils.isEmpty(url)) serverUrl else url)
+            holder.urlView.text = getString(R.string.url_value, if (TextUtils.isEmpty(url)) serverUrl else url!!)
         }
         setColorSpan(holder.actionView, Color.GREEN, filterText)
         setColorSpan(holder.pathView, Color.GREEN, filterText)

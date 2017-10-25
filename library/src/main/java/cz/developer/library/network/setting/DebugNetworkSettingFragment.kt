@@ -11,6 +11,7 @@ import android.widget.Toast
 import cz.developer.library.DeveloperManager
 
 import cz.developer.library.R
+import cz.developer.library.prefs.DeveloperPrefs
 import kotlinx.android.synthetic.main.fragment_network_setting.*
 
 /**
@@ -40,10 +41,12 @@ internal class DebugNetworkSettingFragment : Fragment() {
         if(null==networkAdapter){
             Snackbar.make(settingContainer,"未配置网络数据适配器",Snackbar.LENGTH_SHORT).show()
         } else {
+            val serverUrl=DeveloperPrefs.url
             val selectItems=networkAdapter.serverUrl
             if (null != selectItems) {
                 for (i in selectItems.indices) {
                     val button = RadioButton(context)
+                    button.id=i
                     button.text = selectItems[i]
                     if (0 == i) {
                         button.setTextColor(Color.GREEN)
@@ -51,6 +54,10 @@ internal class DebugNetworkSettingFragment : Fragment() {
                         editor.setSelection(selectItems[i].length)
                     }
                     radioLayout.addView(button)
+                    //选中己配置的
+                    if(serverUrl==selectItems[i]){
+                        radioLayout.check(i)
+                    }
                 }
                 radioLayout.setOnCheckedChangeListener { radioGroup, id ->
                     val i = radioGroup.indexOfChild(radioGroup.findViewById(id))
@@ -65,8 +72,8 @@ internal class DebugNetworkSettingFragment : Fragment() {
                         Snackbar.make(settingContainer,"修改失败,配置服务器地址不能空!",Snackbar.LENGTH_SHORT).show()
                     } else {
                         //应用设置
+                        DeveloperPrefs.url=text.toString()
                         Toast.makeText(context, R.string.changed_complete, Toast.LENGTH_SHORT).show()
-                        fragmentManager.popBackStack()
                     }
                 }
             }

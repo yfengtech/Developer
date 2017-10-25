@@ -27,11 +27,9 @@ import cz.developer.library.ui.view.model.ViewHierarchyItem
 object DeveloperManager {
     internal lateinit var developerConfig: DeveloperConfig
 
-    fun init(application: Application, config: DeveloperConfig.()->Unit) {
+    fun Application.developer(application: Application, config: DeveloperConfig.()->Unit) {
         //配置
         developerConfig = DeveloperConfig().apply(config)
-        //初始化记录文件
-        FilePrefs.newRecordFile()
         //注册
         application.registerActivityLifecycleCallbacks(MyActivityLifecycleCallback())
         //处理异常,直接包装

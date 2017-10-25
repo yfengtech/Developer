@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.widget.Toast
 import cz.developer.library.adapter.DebugListAdapter
+import cz.developer.library.network.view.DebugRequestListFragment
 import cz.developer.library.ui.appinfo.DebugAppInfoFragment
 import cz.developer.library.ui.data.database.DatabaseFragment
 import cz.developer.library.ui.data.exception.ExceptionListFragment
@@ -100,6 +101,12 @@ class DeveloperActivity : AppCompatActivity() {
                     title="崩溃日志查看"
                     desc="清空应用,本地操作"
                     clazz= ExceptionListFragment::class.java
+                }
+                item{
+                    pid=5
+                    title="网络请求缓存文件"
+                    desc="查看当前几次打开的请求缓存文件,网络框架限定为:OKhttp3,且需要配置DebugIntercept"
+                    clazz= DebugRequestListFragment::class.java
                 }
                 item{
                     pid=5
