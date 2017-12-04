@@ -9,6 +9,7 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.ShareActionProvider
+import android.text.TextUtils
 import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -105,7 +106,12 @@ internal class DebugRequestContentFragment: Fragment(){
 
         //格式化json信息
         val out = StringBuilder()
-        formatJson(out, data.response.result)
+        val result=data.response.result
+        if(TextUtils.isEmpty(result)){
+            out.append("无数据")
+        } else {
+            formatJson(out, result)
+        }
         items.put("Result:", listOf(out.toString()))
 
         recyclerView.layoutManager = LinearLayoutManager(context)

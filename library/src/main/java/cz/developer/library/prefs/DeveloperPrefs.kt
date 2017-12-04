@@ -2,7 +2,6 @@ package cz.developer.library.prefs
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.financial.quantgroup.v2.preference.DeveloperPreference
 import cz.developer.library.Developer
 
 /**
@@ -14,6 +13,7 @@ import cz.developer.library.Developer
 object DeveloperPrefs {
 
     val DEFAULT_STRING =""
+    val HIERARCHY_KEY="hierarchy"//视图调试
     val sharedPrefs: SharedPreferences= Developer.applicationContext.getSharedPreferences("developer", Context.MODE_PRIVATE)
 
     var url : String by DeveloperPreference(sharedPrefs,"url",DEFAULT_STRING)
@@ -23,7 +23,15 @@ object DeveloperPrefs {
      */
     var debugView: Boolean by DeveloperPreference(sharedPrefs,"debug_list",false)
 
+    var initConfig: Boolean by DeveloperPreference(sharedPrefs,"init_config",false)
+
+    var prefsItems: HashSet<String> by DeveloperPreference(sharedPrefs,"net_items",HashSet<String>())
+
     fun setString(key: Any, value: String) =sharedPrefs.edit().putString(key.toString(), value).commit()
 
     fun getString(key: Any): String? =sharedPrefs.getString(key.toString(), null)
+
+    fun setBoolean(key: Any, value: Boolean) =sharedPrefs.edit().putBoolean(key.toString(), value).commit()
+
+    fun getBoolean(key: Any): Boolean =sharedPrefs.getBoolean(key.toString(), false)
 }

@@ -51,9 +51,9 @@ class App : Application(), Thread.UncaughtExceptionHandler {
             }
             //网络模块
             network {
-                serverUrl = arrayOf("http://192.1.4.72:7018/",
-                        "http://192.1.4.12:7018/",
-                        "http://192.1.4.105:7018/")
+                serverUrl = arrayOf("http://192.168.4.72:7018/",
+                        "http://192.168.4.12:7018/",
+                        "http://192.168.4.105:7018/")
                 networkItems=Configuration.requestItems.map { NetItem(it.info,it.url) }
             }
         }

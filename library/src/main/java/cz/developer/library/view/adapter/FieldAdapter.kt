@@ -1,4 +1,4 @@
-package com.cz.sample.adapter
+package cz.developer.library.view.adapter
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView

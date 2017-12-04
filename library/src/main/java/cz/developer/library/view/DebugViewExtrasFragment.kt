@@ -11,9 +11,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.cz.recyclerlibrary.adapter.tree.TreeAdapter
-import com.cz.sample.adapter.FieldAdapter
 import cz.developer.library.R
 import cz.developer.library.ui.view.model.FieldItem
+import cz.developer.library.view.adapter.FieldAdapter
 import kotlinx.android.synthetic.main.fragment_debug_view_extras_info.*
 import java.lang.reflect.Modifier
 
@@ -64,7 +64,7 @@ internal class DebugViewExtrasFragment:Fragment(){
             }
         }
         recyclerView.layoutManager=LinearLayoutManager(context)
-        val fieldAdapter=FieldAdapter(context,rootNode)
+        val fieldAdapter= FieldAdapter(context,rootNode)
         //展开时,加载数据
         fieldAdapter.setOnNodeLoadCallback {
             val nodeItems=getNodeItemsFromItem(it,it.e)

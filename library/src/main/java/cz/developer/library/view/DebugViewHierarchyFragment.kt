@@ -3,13 +3,12 @@ package cz.developer.library.ui.view
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.financial.quantgroup.v2.adapter.DeveloperFragmentPagerAdapter
 import cz.developer.library.R
 import cz.developer.library.ui.view.model.ViewHierarchyItem
+import cz.developer.library.view.adapter.DeveloperFragmentPagerAdapter
 import kotlinx.android.synthetic.main.fragment_debug_view_hierarchy.*
 
 /**

@@ -12,6 +12,7 @@ import android.widget.Toast
 import cz.developer.library.callback.MyActivityLifecycleCallback
 import cz.developer.library.exception.MyUncaughtExceptionHandler
 import cz.developer.library.log.FilePrefs
+import cz.developer.library.prefs.DeveloperPrefs
 import cz.developer.library.ui.view.DebugViewExtrasFragment
 import cz.developer.library.ui.view.DebugViewInfoFragment
 import cz.developer.library.ui.view.DebugViewHierarchyFragment
@@ -30,6 +31,12 @@ object DeveloperManager {
     fun Application.developer(application: Application, config: DeveloperConfig.()->Unit) {
         //配置
         developerConfig = DeveloperConfig().apply(config)
+        //首次初始化
+        if(!DeveloperPrefs.initConfig){
+            DeveloperPrefs.initConfig=true
+            //设置初始调试视图
+            DeveloperPrefs.setBoolean(DeveloperPrefs.HIERARCHY_KEY,developerConfig.hierarchy)
+        }
         //注册
         application.registerActivityLifecycleCallbacks(MyActivityLifecycleCallback())
         //处理异常,直接包装

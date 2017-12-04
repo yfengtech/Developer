@@ -9,6 +9,8 @@ import cz.developer.okhttp3.intercept.DebugIntercept
  */
 
 class DeveloperConfig {
+    //启用视图
+    var hierarchy=false
     //配置渠道
     var channel: String?=null
     //切换控制条目

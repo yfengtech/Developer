@@ -91,13 +91,8 @@ class MainActivity : AppCompatActivity() {
         request<String>(NetPrefs.WHITE_CREDIT_TEMPLATE_LIST) {
             params= arrayOf(1,10)
             map{it}
-            success {
-
-            }
-            failed {
-
-            }
         }
+
     }
 
     /**

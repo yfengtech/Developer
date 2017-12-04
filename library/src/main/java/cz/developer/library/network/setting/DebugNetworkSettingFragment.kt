@@ -12,7 +12,10 @@ import cz.developer.library.DeveloperManager
 
 import cz.developer.library.R
 import cz.developer.library.prefs.DeveloperPrefs
+import cz.developer.library.ui.dialog.AddNetworkPrefsDialog
+import cz.developer.library.ui.dialog.NetworkEditDialog
 import kotlinx.android.synthetic.main.fragment_network_setting.*
+import kotlinx.android.synthetic.main.table_field_item.view.*
 
 /**
  * Created by cz on 11/9/16.
@@ -43,29 +46,20 @@ internal class DebugNetworkSettingFragment : Fragment() {
         } else {
             val serverUrl=DeveloperPrefs.url
             val selectItems=networkAdapter.serverUrl
-            if (null != selectItems) {
-                for (i in selectItems.indices) {
-                    val button = RadioButton(context)
-                    button.id=i
-                    button.text = selectItems[i]
-                    if (0 == i) {
-                        button.setTextColor(Color.GREEN)
-                        editor.setText(selectItems[i])
-                        editor.setSelection(selectItems[i].length)
-                    }
-                    radioLayout.addView(button)
-                    //选中己配置的
-                    if(serverUrl==selectItems[i]){
-                        radioLayout.check(i)
-                    }
-                }
-                radioLayout.setOnCheckedChangeListener { radioGroup, id ->
-                    val i = radioGroup.indexOfChild(radioGroup.findViewById(id))
-                    editor.setText(selectItems[i])
-                    editor.setSelection(selectItems[i].length)
-                }
+            selectItems?.forEach { text->
+                addRadioButton(text, serverUrl)
             }
-            applyButton.setOnClickListener { _ ->
+            //动态配置项
+            DeveloperPrefs.prefsItems.forEach { text->
+                addRadioButton(text, serverUrl)
+            }
+            radioLayout.setOnCheckedChangeListener { radioGroup, id ->
+                val radioButton = radioGroup.findViewById(id) as RadioButton
+                val text=radioButton.text
+                editor.setText(text)
+                editor.setSelection(text.length)
+            }
+            applyButton.setOnClickListener {
                 if (null != selectItems) {
                     val text = editor.text
                     if (TextUtils.isEmpty(text)) {
@@ -74,11 +68,38 @@ internal class DebugNetworkSettingFragment : Fragment() {
                         //应用设置
                         DeveloperPrefs.url=text.toString()
                         Toast.makeText(context, R.string.changed_complete, Toast.LENGTH_SHORT).show()
+                        fragmentManager.popBackStack()
                     }
                 }
             }
         }
 
+    }
+
+    /**
+     * 添加单选button对象
+     */
+    private fun addRadioButton(text: String, serverUrl: String) {
+        val i = radioLayout.childCount
+        radioLayout.addView(getRadioButton(i, text))
+        //选中己配置的
+        if (serverUrl == text) {
+            radioLayout.check(i)
+            editor.setText(text)
+            editor.setSelection(text.length)
+        }
+    }
+
+    private fun getRadioButton(i: Int, text:String): RadioButton {
+        val button = RadioButton(context)
+        button.id = i
+        button.text = text
+        if (0 == i) {
+            button.setTextColor(Color.GREEN)
+            editor.setText(text)
+            editor.setSelection(text.length)
+        }
+        return button
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -89,6 +110,21 @@ internal class DebugNetworkSettingFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if(item.itemId==R.id.ab_setting){
             DeveloperManager.toDeveloperFragment(activity, DebugNetworkFragment.newInstance(arguments))
+        } else if(item.itemId==R.id.ab_add){
+            //弹出编辑框,添加域名
+            val dialog = AddNetworkPrefsDialog()
+            dialog.setOnSubmitListener(object :AddNetworkPrefsDialog.OnSubmitListener{
+                override fun onSubmit(text: String) {
+                    //添加新的配置项
+                    val prefsItems = DeveloperPrefs.prefsItems
+                    prefsItems.add(text)
+                    //更新配置项
+                    DeveloperPrefs.prefsItems=prefsItems
+                    //添加新的控件
+                    radioLayout.addView(getRadioButton(radioLayout.childCount,text))
+                }
+            })
+            dialog.show(fragmentManager,null)
         }
         return super.onOptionsItemSelected(item)
     }

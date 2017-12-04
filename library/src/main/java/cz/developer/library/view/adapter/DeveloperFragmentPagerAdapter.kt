@@ -1,4 +1,4 @@
-package com.financial.quantgroup.v2.adapter
+package cz.developer.library.view.adapter
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager

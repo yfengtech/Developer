@@ -9,12 +9,9 @@ import android.support.v4.app.FragmentActivity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import cz.developer.library.DeveloperActivity
+import cz.developer.library.*
 
 
-import cz.developer.library.DeveloperActivityManager
-import cz.developer.library.DeveloperManager
-import cz.developer.library.R
 import cz.developer.library.log.FilePrefs
 import cz.developer.library.ui.hierarchy.HierarchyFragment
 import cz.developer.library.widget.DeveloperLayout
@@ -41,8 +38,11 @@ class MyActivityLifecycleCallback : Application.ActivityLifecycleCallbacks {
             }
             //添加并操作activity
             DeveloperActivityManager.add(activity)
-            //屏蔽掉调试界面
-            if(activityName!=DeveloperActivity::class.java.name){
+            //屏蔽掉调试界面,检测activity是否使用了appCompat style
+            val a = activity.obtainStyledAttributes(android.support.v7.appcompat.R.styleable.AppCompatTheme)
+            if(activityName!=DeveloperActivity::class.java.name&&
+                    a.hasValue(android.support.v7.appcompat.R.styleable.AppCompatTheme_windowActionBar)){
+                a.recycle()
                 injectLayout(activity)
             }
         }
@@ -67,7 +67,7 @@ class MyActivityLifecycleCallback : Application.ActivityLifecycleCallbacks {
                 val layout = DeveloperLayout(activity)
                 layout.addView(childView, FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
                 decorView.addView(layout, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-
+                val developerConfig=DeveloperManager.developerConfig
                 //初始化调试信息
                 View.inflate(activity,R.layout.developer_menu_layout,layout)
                 //回调长按监听
@@ -78,6 +78,10 @@ class MyActivityLifecycleCallback : Application.ActivityLifecycleCallbacks {
                     if(activity is FragmentActivity){
                         DeveloperDialog().show(activity.supportFragmentManager,null)
                     }
+                }
+                //关闭布局
+                if(null==developerConfig||!developerConfig.hierarchy){
+                    activity.closeDeveloperLayout()
                 }
             }
         }

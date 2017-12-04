@@ -1,6 +1,7 @@
 package cz.developer.okhttp3.intercept
 
 import android.text.TextUtils
+import android.util.Log
 import cz.developer.library.DeveloperManager
 import cz.developer.library.log.FilePrefs
 import cz.developer.library.prefs.DeveloperPrefs
@@ -8,6 +9,7 @@ import cz.developer.okhttp3.adapter.NetworkAdapter
 import okhttp3.*
 import okio.Buffer
 import okio.BufferedSink
+import java.io.IOException
 import java.util.regex.Pattern
 
 /**
@@ -40,15 +42,19 @@ class DebugIntercept : Interceptor {
             } else {
                 //单独修改
                 if(null!=findItem){
-                    serverUrl=DeveloperPrefs.getString(findItem.url.hashCode())?:serverUrl
+                    val key=System.identityHashCode(findItem.url)
+                    serverUrl=DeveloperPrefs.getString(key)?:serverUrl
                     out.append("Info=${findItem.info}\n")
                 }
                 //拦截请求
                 url=url.replace("https?://[^/]+/".toRegex(),serverUrl)
                 out.append("Intercept=$url\n")
+                Log.i("HttpLog","拦截后:$url")
                 //替换url后重新请求
                 request=request.newBuilder().url(url).build()
             }
+        } else {
+            Log.i("HttpLog","未拦截不在配置Url集内:$url")
         }
         //收集信息
         val method=request.method().toUpperCase()
@@ -64,7 +70,6 @@ class DebugIntercept : Interceptor {
         //header
         appendHeaders(out, request.headers())
         var requestBody=request.body()
-        request.body()
         if(null!=requestBody){
             if(requestBody is FormBody){
                 appendFormBody(out, requestBody)
@@ -84,7 +89,13 @@ class DebugIntercept : Interceptor {
         out.delete(0,out.length)
 
         //请求成功
-        val response = chain.proceed(request)
+        var response:Response
+        try{
+            response = chain.proceed(request)
+        } catch (e:IOException){
+            //error,记录异常
+            throw e
+        }
         //记录
         out.append("Code=${response.code()}\n")
         out.append("OK=${response.isSuccessful}\n")
@@ -92,11 +103,18 @@ class DebugIntercept : Interceptor {
         out.append("Time=${response.receivedResponseAtMillis()-response.sentRequestAtMillis()}\n")
         appendHeaders(out,response.headers())
         //记录结果
-        val body=response.peekBody(response.body().contentLength())
+        var body:ResponseBody?=null
+        val contentLength = response.body().contentLength()
+        if(0<contentLength){
+            body=response.peekBody(response.body().contentLength())
+        }
         if(null!=body){
             out.append("Content-Type=${body.contentType()}\n")
             out.append("Content-Length=${body.contentLength()}\n")
             out.append("Result=${body.string()}")
+        } else {
+            out.append("Content-Length=-1\n")
+            out.append("Result=无结果")
         }
         //记录响应结果
         FilePrefs.log(requestFile,out.toString())

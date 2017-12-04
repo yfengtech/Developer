@@ -1,8 +1,6 @@
-package com.financial.quantgroup.v2.preference
+package cz.developer.library.prefs
 
-import android.content.Context
 import android.content.SharedPreferences
-import java.util.concurrent.ConcurrentHashMap
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
@@ -35,6 +33,7 @@ internal class DeveloperPreference<T>(val sharedPrefs: SharedPreferences, val na
             is Int -> getInt(name, default)
             is Boolean -> getBoolean(name, default)
             is Float -> getFloat(name, default)
+            is HashSet<*> -> getStringSet(name,HashSet<String>())
             else -> getString(name, default as String)
         }
         res as T
@@ -47,6 +46,7 @@ internal class DeveloperPreference<T>(val sharedPrefs: SharedPreferences, val na
             is Int -> putInt(name, value)
             is Boolean -> putBoolean(name, value)
             is Float -> putFloat(name, value)
+            is HashSet<*> -> putStringSet(name,value as HashSet<String>)
             else -> putString(name, value.toString())
         }.apply()
     }

@@ -118,9 +118,13 @@ class DeveloperLayout(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
     }
 
     override fun dispatchDraw(canvas: Canvas) {
-        super.dispatchDraw(canvas)
-        //绘制所有控件边界
-        debugDrawHelper.draw(canvas,this)
+        try{
+            super.dispatchDraw(canvas)
+            //绘制所有控件边界
+            debugDrawHelper.draw(canvas,this)
+        } catch (e:Exception){
+            invalidate()
+        }
     }
 
     /**

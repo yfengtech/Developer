@@ -5,9 +5,17 @@
     tools:context=".MainActivity" >
 
     <item
+        android:id="@+id/ab_add"
+        android:orderInCategory="60"
+        android:title="@string/network_list"
+        android:icon="@drawable/ic_note_add_white_18dp"
+        app:showAsAction="always"/>
+
+    <item
         android:id="@+id/ab_setting"
         android:orderInCategory="60"
         android:title="@string/network_list"
         android:icon="@drawable/ic_dns_white_36dp"
         app:showAsAction="always"/>
+
 </menu>
