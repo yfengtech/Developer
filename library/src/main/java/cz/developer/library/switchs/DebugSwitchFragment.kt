@@ -48,7 +48,7 @@ internal class DebugSwitchFragment : Fragment() {
             //是否选中
             val switchView = Switch(context)
             switchView.text = item.desc
-            switchView.isChecked=DeveloperPrefs.getBoolean(key)
+            switchView.isChecked=DeveloperPrefs.getBoolean(context,key)
             switchView.setTextColor(Color.BLACK)
             switchView.setTextSize(TypedValue.COMPLEX_UNIT_SP,16f)
             switchView.setPadding(padding, padding, padding, padding)
@@ -58,7 +58,7 @@ internal class DebugSwitchFragment : Fragment() {
                     switchInterface?.itemChecked?.invoke(key,isChecked)
                 } else {
                     //开启/关闭视图调试
-                    DeveloperPrefs.setBoolean(key,isChecked)
+                    DeveloperPrefs.setBoolean(context,key,isChecked)
                     DeveloperActivityManager.forEach {
                         if(isChecked){
                             it.openDeveloperLayout()

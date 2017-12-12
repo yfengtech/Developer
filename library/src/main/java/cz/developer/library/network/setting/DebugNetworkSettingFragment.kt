@@ -44,13 +44,14 @@ internal class DebugNetworkSettingFragment : Fragment() {
         if(null==networkAdapter){
             Snackbar.make(settingContainer,"未配置网络数据适配器",Snackbar.LENGTH_SHORT).show()
         } else {
-            val serverUrl=DeveloperPrefs.url
+            val serverUrl=DeveloperPrefs.getString(context,DeveloperPrefs.URL)
             val selectItems=networkAdapter.serverUrl
             selectItems?.forEach { text->
                 addRadioButton(text, serverUrl)
             }
             //动态配置项
-            DeveloperPrefs.prefsItems.forEach { text->
+            val prefsItems = DeveloperPrefs.getSet(context,DeveloperPrefs.NET_ITEMS)
+            prefsItems?.forEach { text->
                 addRadioButton(text, serverUrl)
             }
             radioLayout.setOnCheckedChangeListener { radioGroup, id ->
@@ -66,7 +67,7 @@ internal class DebugNetworkSettingFragment : Fragment() {
                         Snackbar.make(settingContainer,"修改失败,配置服务器地址不能空!",Snackbar.LENGTH_SHORT).show()
                     } else {
                         //应用设置
-                        DeveloperPrefs.url=text.toString()
+                        DeveloperPrefs.setString(context,DeveloperPrefs.URL,text.toString())
                         Toast.makeText(context, R.string.changed_complete, Toast.LENGTH_SHORT).show()
                         fragmentManager.popBackStack()
                     }
@@ -79,7 +80,7 @@ internal class DebugNetworkSettingFragment : Fragment() {
     /**
      * 添加单选button对象
      */
-    private fun addRadioButton(text: String, serverUrl: String) {
+    private fun addRadioButton(text: String, serverUrl: String?) {
         val i = radioLayout.childCount
         radioLayout.addView(getRadioButton(i, text))
         //选中己配置的
@@ -116,12 +117,14 @@ internal class DebugNetworkSettingFragment : Fragment() {
             dialog.setOnSubmitListener(object :AddNetworkPrefsDialog.OnSubmitListener{
                 override fun onSubmit(text: String) {
                     //添加新的配置项
-                    val prefsItems = DeveloperPrefs.prefsItems
-                    prefsItems.add(text)
-                    //更新配置项
-                    DeveloperPrefs.prefsItems=prefsItems
-                    //添加新的控件
-                    radioLayout.addView(getRadioButton(radioLayout.childCount,text))
+                    val prefsItems = DeveloperPrefs.getSet(context,DeveloperPrefs.NET_ITEMS)
+                    if(null!=prefsItems){
+                        prefsItems.add(text)
+                        //更新配置项
+                        DeveloperPrefs.setSet(context,DeveloperPrefs.NET_ITEMS,prefsItems)
+                        //添加新的控件
+                        radioLayout.addView(getRadioButton(radioLayout.childCount,text))
+                    }
                 }
             })
             dialog.show(fragmentManager,null)

@@ -1,5 +1,6 @@
 package cz.developer.okhttp3.intercept
 
+import android.content.Context
 import android.text.TextUtils
 import android.util.Log
 import cz.developer.library.DeveloperManager
@@ -15,7 +16,7 @@ import java.util.regex.Pattern
 /**
  * Created by cz on 2017/10/20.
  */
-class DebugIntercept : Interceptor {
+class DebugIntercept(private val context: Context) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val config=DeveloperManager.developerConfig
@@ -35,15 +36,15 @@ class DebugIntercept : Interceptor {
             out.append("Info=${findItem.info}\n")
         }
         if(serverArray?.any { url.startsWith(it) }?:false){
-            var serverUrl:String?=if(!TextUtils.isEmpty(DeveloperPrefs.url))
-                DeveloperPrefs.url else serverArray?.getOrNull(0)
+            val prefsUrl=DeveloperPrefs.getString(context,DeveloperPrefs.URL)
+            var serverUrl:String?=if(!TextUtils.isEmpty(prefsUrl)) prefsUrl else serverArray?.getOrNull(0)
             if(null==serverUrl){
                 out.append("Intercept=$serverUrl $findItem\n")
             } else {
                 //单独修改
                 if(null!=findItem){
                     val key=System.identityHashCode(findItem.url)
-                    serverUrl=DeveloperPrefs.getString(key)?:serverUrl
+                    serverUrl=DeveloperPrefs.getString(context,key)?:serverUrl
                     out.append("Info=${findItem.info}\n")
                 }
                 //拦截请求

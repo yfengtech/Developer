@@ -49,7 +49,7 @@ internal class NetworkEditDialog : DialogFragment() {
         val layout = view.findViewById(R.id.rg_layout) as RadioGroup
         val items=items
         if (null != items) {
-            val url=DeveloperPrefs.url
+            val url=DeveloperPrefs.getString(context,DeveloperPrefs.URL)
             for (i in items.indices) {
                 val button = RadioButton(context)
                 button.id=i

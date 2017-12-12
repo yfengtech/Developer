@@ -59,12 +59,12 @@ internal class DebugNetworkFragment : Fragment(), FragmentManager.OnBackStackCha
         listView.setOnItemClickListener { _, _, i, _ ->
             val item = adapter.getItem(i)
             val key=System.identityHashCode(item.url).toString()
-            val url = DeveloperPrefs.getString(key)
+            val url = DeveloperPrefs.getString(context,key)
             val editDialog = NetworkEditDialog.newInstance(networkAdapter.serverUrl,serverUrls?.first())
             editDialog.setOnSubmitListener(object : NetworkEditDialog.OnSubmitListener{
                 override fun onSubmit(text: String) {
                     if (text != url) {
-                        DeveloperPrefs.setString(key, text)
+                        DeveloperPrefs.setString(context,key, text)
                         adapter.removeUrlItem(i)
                         adapter.notifyDataSetChanged()
                     }

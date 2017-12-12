@@ -11,27 +11,46 @@ import cz.developer.library.Developer
  * 2:增加配置与对象处理,如首页tab配置,需要json转为对象,简化主类工作
  */
 object DeveloperPrefs {
-
-    val DEFAULT_STRING =""
     val HIERARCHY_KEY="hierarchy"//视图调试
-    lateinit var sharedPrefs: SharedPreferences
+    val URL="url"//视图调试
+    val DEBUG_LIST="debug_list"//视图调试
+    val INIT_CONFIG="init_config"//视图调试
+    val NET_ITEMS="net_items"//视图调试
 
-    var url : String by DeveloperPreference(sharedPrefs,"url",DEFAULT_STRING)
+    private fun getSharedPrefs(context:Context)=context.getSharedPreferences("developer", Context.MODE_PRIVATE)
 
-    /**
-     * 调试控件信息
-     */
-    var debugView: Boolean by DeveloperPreference(sharedPrefs,"debug_list",false)
+    fun setSet(context:Context,key:Any,item:Set<String>){
+        val sharedPrefs=getSharedPrefs(context)
+        sharedPrefs.edit().putStringSet(key.toString(),item).commit()
+    }
 
-    var initConfig: Boolean by DeveloperPreference(sharedPrefs,"init_config",false)
+    fun getSet(context:Context,key:Any):MutableSet<String>?{
+        var stringSet:MutableSet<String>?=null
+        val sharedPrefs=getSharedPrefs(context)
+        if(null!= sharedPrefs){
+            stringSet = sharedPrefs.getStringSet(key.toString(), mutableSetOf())
+        }
+        return stringSet
+    }
 
-    var prefsItems: HashSet<String> by DeveloperPreference(sharedPrefs,"net_items",HashSet<String>())
+    fun setString(context:Context,key: Any, value: String) {
+        val sharedPrefs = getSharedPrefs(context)
+        sharedPrefs.edit().putString(key.toString(), value).commit()
+    }
 
-    fun setString(key: Any, value: String) =sharedPrefs.edit().putString(key.toString(), value).commit()
+    fun getString(context:Context,key: Any): String?{
+        val sharedPrefs = getSharedPrefs(context)
+        return sharedPrefs?.getString(key.toString(), null)
+    }
 
-    fun getString(key: Any): String? =sharedPrefs.getString(key.toString(), null)
+    fun setBoolean(context:Context,key: Any, value: Boolean){
+        val sharedPrefs = getSharedPrefs(context)
+        sharedPrefs?.edit()?.putBoolean(key.toString(), value)?.commit()
+    }
 
-    fun setBoolean(key: Any, value: Boolean) =sharedPrefs.edit().putBoolean(key.toString(), value).commit()
+    fun getBoolean(context:Context,key: Any): Boolean {
+        val sharedPrefs = getSharedPrefs(context)
+        return sharedPrefs.getBoolean(key.toString(), false)
+    }
 
-    fun getBoolean(key: Any): Boolean =sharedPrefs.getBoolean(key.toString(), false)
 }

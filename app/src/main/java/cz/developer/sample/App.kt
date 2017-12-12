@@ -35,7 +35,7 @@ class App : Application(), Thread.UncaughtExceptionHandler {
             writeTimeout=10*1000
             readTimeout=10*1000
             httpLog=true
-            interceptItems= arrayOf(DebugIntercept())
+            interceptItems= arrayOf(DebugIntercept(applicationContext))
         }
         NetPrefs::javaClass
         developer(this){

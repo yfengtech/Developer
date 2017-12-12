@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
         val init=sharedPrefs.getBoolean("init",false)
         if(!init){
             //打开控件测试开关
-            DeveloperPrefs.debugView =true
+            DeveloperPrefs.setBoolean(this,DeveloperPrefs.DEBUG_LIST,true)
             val layout=findViewById(cz.developer.library.R.id.developerContainer)
             if(null!=layout&&layout is DeveloperLayout){
                 layout.setViewDebug(true)

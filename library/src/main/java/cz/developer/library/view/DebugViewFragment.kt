@@ -36,9 +36,9 @@ internal class DebugViewFragment : Fragment() {
             activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
             toolBar.setNavigationOnClickListener{ fragmentManager.popBackStack() }
         }
-        switchView.isChecked=DeveloperPrefs.debugView
+        switchView.isChecked=DeveloperPrefs.getBoolean(context,DeveloperPrefs.DEBUG_LIST)
         switchView.setOnCheckedChangeListener { _, isChecked ->
-            DeveloperPrefs.debugView =isChecked
+            DeveloperPrefs.setBoolean(context,DeveloperPrefs.DEBUG_LIST,isChecked)
             //设置所有控件状态
             DeveloperActivityManager.forEach{ it.setViewDebug(isChecked) }
         }

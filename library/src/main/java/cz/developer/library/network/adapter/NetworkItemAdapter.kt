@@ -78,10 +78,10 @@ class NetworkItemAdapter(private val context: Context, items: List<NetItem>?, pr
         var url: String? = urlItems.get(i)
         if (null == url) {
             //取单个配置
-            val dynamicUrl = DeveloperPrefs.getString(item.url.hashCode())
+            val dynamicUrl = DeveloperPrefs.getString(context,item.url.hashCode())
             if (TextUtils.isEmpty(dynamicUrl)){
                 //取通用配置
-                url=DeveloperPrefs.url
+                url=DeveloperPrefs.getString(context,DeveloperPrefs.URL)
             }
             urlItems.put(i, url)
         }

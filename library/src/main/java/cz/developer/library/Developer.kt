@@ -52,15 +52,15 @@ fun Application.developer(application: Application, config: DeveloperConfig.()->
     //配置
     DeveloperManager.developerConfig = DeveloperConfig().apply(config)
     //首次初始化
-    if(!DeveloperPrefs.initConfig){
-        DeveloperPrefs.initConfig=true
+    val applicationContext = application.applicationContext
+    val initConfig = DeveloperPrefs.getBoolean(applicationContext,DeveloperPrefs.INIT_CONFIG)
+    if(!initConfig){
+        DeveloperPrefs.setBoolean(applicationContext,DeveloperPrefs.INIT_CONFIG,true)
         //设置初始调试视图
-        DeveloperPrefs.setBoolean(DeveloperPrefs.HIERARCHY_KEY, DeveloperManager.developerConfig.hierarchy)
+        DeveloperPrefs.setBoolean(applicationContext,DeveloperPrefs.HIERARCHY_KEY, DeveloperManager.developerConfig.hierarchy)
     }
     //先记录
-    Developer.applicationContext=application.applicationContext
-    //初始化sharedPrefs
-    DeveloperPrefs.sharedPrefs= application.applicationContext.getSharedPreferences("developer", Context.MODE_PRIVATE)
+    Developer.applicationContext=applicationContext
     //注册
     application.registerActivityLifecycleCallbacks(MyActivityLifecycleCallback())
     //处理异常,直接包装
