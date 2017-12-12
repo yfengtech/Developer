@@ -14,7 +14,7 @@ object DeveloperPrefs {
 
     val DEFAULT_STRING =""
     val HIERARCHY_KEY="hierarchy"//视图调试
-    val sharedPrefs: SharedPreferences= Developer.applicationContext.getSharedPreferences("developer", Context.MODE_PRIVATE)
+    lateinit var sharedPrefs: SharedPreferences
 
     var url : String by DeveloperPreference(sharedPrefs,"url",DEFAULT_STRING)
 

@@ -5,6 +5,9 @@ import android.app.Application
 import android.content.Context
 import android.content.res.Resources
 import android.support.v4.app.Fragment
+import cz.developer.library.callback.MyActivityLifecycleCallback
+import cz.developer.library.exception.MyUncaughtExceptionHandler
+import cz.developer.library.prefs.DeveloperPrefs
 import cz.developer.library.widget.DeveloperLayout
 
 /**
@@ -45,30 +48,44 @@ internal fun Activity.setViewDebug(debug:Boolean){
     }
 }
 
+fun Application.developer(application: Application, config: DeveloperConfig.()->Unit) {
+    //配置
+    DeveloperManager.developerConfig = DeveloperConfig().apply(config)
+    //首次初始化
+    if(!DeveloperPrefs.initConfig){
+        DeveloperPrefs.initConfig=true
+        //设置初始调试视图
+        DeveloperPrefs.setBoolean(DeveloperPrefs.HIERARCHY_KEY, DeveloperManager.developerConfig.hierarchy)
+    }
+    //先记录
+    Developer.applicationContext=application.applicationContext
+    //初始化sharedPrefs
+    DeveloperPrefs.sharedPrefs= application.applicationContext.getSharedPreferences("developer", Context.MODE_PRIVATE)
+    //注册
+    application.registerActivityLifecycleCallbacks(MyActivityLifecycleCallback())
+    //处理异常,直接包装
+    val uncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler()
+    Thread.setDefaultUncaughtExceptionHandler(MyUncaughtExceptionHandler(application.cacheDir,uncaughtExceptionHandler))
+}
+
 internal object Developer{
-    val applicationContext: Context
+    var applicationContext: Context?=null
         get() {
-            //部分5.0以下手机,在子线程内,利用反射取Context,会报空.所以这里如果是子线程,且小于5.0,直接post到子线程执行,外围通过while(判断是否取到数据
-            val application = Class.forName("android.app.ActivityThread").getMethod("currentApplication").invoke(null) as Application
-            return application.applicationContext
+            //部分5.0以下手机,在子线程内,利用反射取Context,会报空.所以这里如果是子线程,且小于5.0
+            if(null==field){
+                val application = Class.forName("android.app.ActivityThread")?.getMethod("currentApplication")?.invoke(null) as? Application
+                field=application?.applicationContext
+            }
+            return field
         }
 
-    val resources: Resources
+    val packageName:String?
         get() {
             var appContext: Context? = null
-            while (null == appContext) {
+            if (null == appContext) {
                 appContext = applicationContext
             }
-            return appContext.resources
-        }
-
-    val packageName:String
-        get() {
-            var appContext: Context? = null
-            while (null == appContext) {
-                appContext = applicationContext
-            }
-            return appContext.packageName
+            return appContext?.packageName
         }
 
 }

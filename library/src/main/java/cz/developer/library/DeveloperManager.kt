@@ -28,22 +28,6 @@ import cz.developer.library.ui.view.model.ViewHierarchyItem
 object DeveloperManager {
     internal lateinit var developerConfig: DeveloperConfig
 
-    fun Application.developer(application: Application, config: DeveloperConfig.()->Unit) {
-        //配置
-        developerConfig = DeveloperConfig().apply(config)
-        //首次初始化
-        if(!DeveloperPrefs.initConfig){
-            DeveloperPrefs.initConfig=true
-            //设置初始调试视图
-            DeveloperPrefs.setBoolean(DeveloperPrefs.HIERARCHY_KEY,developerConfig.hierarchy)
-        }
-        //注册
-        application.registerActivityLifecycleCallbacks(MyActivityLifecycleCallback())
-        //处理异常,直接包装
-        val uncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler()
-        Thread.setDefaultUncaughtExceptionHandler(MyUncaughtExceptionHandler(application.cacheDir,uncaughtExceptionHandler))
-    }
-
     fun startDeveloperActivity(activity: Activity){
         activity.startActivity(Intent(activity,DeveloperActivity::class.java))
         activity.overridePendingTransition(R.anim.pop_in,R.anim.pop_out)

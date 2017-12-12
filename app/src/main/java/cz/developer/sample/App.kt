@@ -9,12 +9,11 @@ import com.facebook.drawee.backends.pipeline.Fresco
 import com.facebook.drawee.controller.ControllerListener
 import com.facebook.drawee.view.SimpleDraweeView
 import com.facebook.imagepipeline.image.ImageInfo
+import cz.developer.library.developer
 
 import java.io.PrintWriter
 import java.io.StringWriter
 
-import cz.developer.library.DeveloperManager
-import cz.developer.library.DeveloperManager.developer
 import cz.developer.library.network.model.NetItem
 import cz.developer.okhttp3.intercept.DebugIntercept
 import cz.developer.sample.network.NetPrefs
