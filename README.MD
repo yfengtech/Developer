@@ -38,19 +38,19 @@ dependencies {
 Sample[下载](https://github.com/momodae/Developer/blob/master/apk/app-debug.apk?raw=true)
 
 ## Sample Picture
+![](https://github.com/momodae/Developer/blob/master/image/image6.jpg?raw=true)
+![](https://github.com/momodae/Developer/blob/master/image/image7.jpg?raw=true)
 ![](https://github.com/momodae/Developer/blob/master/image/image1.jpg?raw=true)
 ![](https://github.com/momodae/Developer/blob/master/image/image2.jpg?raw=true)
 ![](https://github.com/momodae/Developer/blob/master/image/image3.jpg?raw=true)
 ![](https://github.com/momodae/Developer/blob/master/image/image4.jpg?raw=true)
 ![](https://github.com/momodae/Developer/blob/master/image/image5.jpg?raw=true)
-![](https://github.com/momodae/Developer/blob/master/image/image6.jpg?raw=true)
-![](https://github.com/momodae/Developer/blob/master/image/image7.jpg?raw=true)
 
 ## Built With
 * org.jetbrains.kotlin:kotlin-stdlib:1.3.21
 
 ## About developer 
-> 可以以BuildConfig作动态配置，是否在线上版本放开此功能，或者直接以testImplement编译，保证不影响线上版本
+> 可以以BuildConfig作动态配置，是否在线上版本放开此功能，或者直接以testImplementation编译，保证不影响线上版本
 ## Authors
 
 * **CZ** - [MyWebsite](http://www.momoda.pro)
