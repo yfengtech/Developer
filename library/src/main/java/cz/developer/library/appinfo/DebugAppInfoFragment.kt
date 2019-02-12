@@ -18,6 +18,7 @@ import cz.developer.library.R
 import cz.developer.library.appinfo.DebugPropItemAdapter
 import cz.developer.library.appinfo.BuildProp
 import kotlinx.android.synthetic.main.fragment_debug_app_info.*
+import java.io.FileNotFoundException
 
 
 /**
@@ -30,13 +31,14 @@ internal class DebugAppInfoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val context =context?:return
         val activity=activity
         if(activity is AppCompatActivity){
             toolBar.title = arguments?.getString("title")
             toolBar.subtitle=arguments?.getString("desc")
             activity.setSupportActionBar(toolBar)
             activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            toolBar.setNavigationOnClickListener{ fragmentManager.popBackStack() }
+            toolBar.setNavigationOnClickListener{ fragmentManager?.popBackStack() }
         }
         //软件信息
         val propItems= mutableMapOf<String,MutableList<PropItem>>()
@@ -54,9 +56,12 @@ internal class DebugAppInfoFragment : Fragment() {
         items.add(PropItem(getString(R.string.imei_value,imeiValue)))
         items.add(PropItem(getString(R.string.android_id_value,androidId)))
 
-        items=propItems.getOrPut("BuildProp"){ mutableListOf<PropItem>()}
-        BuildProp.buildProperties?.forEach { items.add(PropItem("${it.key} = ${it.value}")) }
-
+//        items=propItems.getOrPut("BuildProp"){ mutableListOf()}
+//        try {
+//            BuildProp.buildProperties?.forEach { items.add(PropItem("${it.key} = ${it.value}")) }
+//        } catch (e: Exception){
+//            e.printStackTrace()
+//        }
         //重置分类
         val adapterItems=propItems.flatMap { (key,item)-> item.onEach { it.group=key } }.toList()
         recyclerView.layoutManager=LinearLayoutManager(context)
@@ -72,8 +77,7 @@ internal class DebugAppInfoFragment : Fragment() {
         get() {
             var appVersion: String? = null
             try {
-                val context = context
-                appVersion = context.packageManager.getPackageInfo(context.packageName, 0).versionName
+                appVersion = context?.packageManager?.getPackageInfo(context?.packageName, 0)?.versionName
             } catch (e: PackageManager.NameNotFoundException) {
                 e.printStackTrace()
             }
@@ -91,7 +95,7 @@ internal class DebugAppInfoFragment : Fragment() {
             var appCode=0
             try {
                 val context = context
-                appCode = context.packageManager.getPackageInfo(context.packageName, 0).versionCode
+                appCode = context?.packageManager?.getPackageInfo(context?.packageName, 0)?.versionCode?:-1
             } catch (e: PackageManager.NameNotFoundException) {
                 appCode = -1
             }
@@ -111,7 +115,7 @@ internal class DebugAppInfoFragment : Fragment() {
             var value: String?
             try {
                 val appContext = context
-                value = Settings.Secure.getString(appContext.contentResolver, Settings.Secure.ANDROID_ID)
+                value = Settings.Secure.getString(appContext?.contentResolver, Settings.Secure.ANDROID_ID)
             } catch (e: Exception) {
                 e.printStackTrace()
                 value = "Android Id 获取失败!"
@@ -127,7 +131,7 @@ internal class DebugAppInfoFragment : Fragment() {
             var value: String
             if (hasPermission("android.permission.READ_PHONE_STATE")) {
                 try {
-                    value = (context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).deviceId
+                    value = (context?.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).deviceId
                 } catch (e: Exception) {
                     value = "获取imei码失败了~"
                 }
@@ -148,8 +152,8 @@ internal class DebugAppInfoFragment : Fragment() {
         var result = false
         try {
             val context = context
-            val pm = context.packageManager
-            result = PackageManager.PERMISSION_GRANTED == pm.checkPermission(permissionName, context.packageName)
+            val pm = context?.packageManager
+            result = PackageManager.PERMISSION_GRANTED == pm?.checkPermission(permissionName, context?.packageName)
         } catch (e: Exception) {
             e.printStackTrace()
         }

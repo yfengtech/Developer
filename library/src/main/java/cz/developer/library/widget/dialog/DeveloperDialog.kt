@@ -13,6 +13,7 @@ import cz.developer.library.R
 import cz.developer.library.ui.hierarchy.HierarchyFragment
 import cz.developer.library.widget.DeveloperLayout
 import cz.developer.library.widget.hierarchy.HierarchyNode
+import java.lang.NullPointerException
 
 /**
  * Created by cz on 2017/10/24.
@@ -20,28 +21,29 @@ import cz.developer.library.widget.hierarchy.HierarchyNode
 class DeveloperDialog : AppCompatDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val layout=activity.findViewById(R.id.developerContainer) as? DeveloperLayout
-        if(null==layout){
-            return super.onCreateDialog(savedInstanceState)
-        } else {
-            return AlertDialog.Builder(context).
+        val activity=activity
+        val layout=activity?.findViewById(R.id.developerContainer) as? DeveloperLayout
+        return when {
+            null==layout -> super.onCreateDialog(savedInstanceState)
+            null!=activity -> AlertDialog.Builder(activity).
                     setTitle(R.string.view_developer).
-                    setItems(resources.getStringArray(R.array.debug_array),{_, which ->
-                when(which){
-                    0->showHierarchyFragment()
-                    1->layout.toggleMemoryView()
-                    2->layout.toggleViewBorder()
-                }
-            }).create()
+                    setItems(resources.getStringArray(R.array.debug_array)) { _, which ->
+                        when(which){
+                            0->showHierarchyFragment()
+                            1->layout.toggleMemoryView()
+                            2->layout.toggleViewBorder()
+                        }
+                    }.create()
+            else -> throw NullPointerException("activity is null!")
         }
     }
 
     private fun showHierarchyFragment() {
-        val activity=activity
+        val activity=activity?:return
         val decorView=activity.window.decorView
         val root= HierarchyNode(0,decorView::class.java.simpleName)
         if(decorView is ViewGroup){
-            (0..decorView.childCount-1).
+            (0 until decorView.childCount).
                     map { decorView.getChildAt(it) }.
                     forEach { hierarchyViewer(it,root,1) }
         }

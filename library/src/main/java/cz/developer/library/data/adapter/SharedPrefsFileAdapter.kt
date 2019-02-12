@@ -16,7 +16,7 @@ class SharedPrefsFileAdapter(val context: Context, items: List<SharedPrefsFileIt
     companion object {
         val formatter=SimpleDateFormat("MM/dd HH:mm")
     }
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BaseViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return BaseViewHolder(inflateView(parent, R.layout.shared_prefs_item))
 
     }

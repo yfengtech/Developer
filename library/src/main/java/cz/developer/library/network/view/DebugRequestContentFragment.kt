@@ -1,5 +1,6 @@
 package cz.developer.library.network.view
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -45,13 +46,13 @@ internal class DebugRequestContentFragment: Fragment(){
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val activity = activity
+        val activity = activity?:return
         if (activity is AppCompatActivity) {
             toolBar.title = file.name
             setHasOptionsMenu(true)
             activity.setSupportActionBar(toolBar)
             activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            toolBar.setNavigationOnClickListener { fragmentManager.popBackStack() }
+            toolBar.setNavigationOnClickListener { fragmentManager?.popBackStack() }
         }
         //解析请求文件
         val data = parserText(file.readLines())
@@ -59,7 +60,7 @@ internal class DebugRequestContentFragment: Fragment(){
         //初始化选择列表
         initSpinner(data)
         //初始化数据
-        initRequestData(data)
+        initRequestData(activity, data)
     }
 
     private fun initSpinner(data:RequestData) {
@@ -83,7 +84,7 @@ internal class DebugRequestContentFragment: Fragment(){
     /**
      * 初始化请求数据体
      */
-    private fun initRequestData(data:RequestData) {
+    private fun initRequestData(context : Context, data:RequestData) {
         val items = LinkedHashMap<String, List<String?>>()
         items.put("请求描述:", listOf(data.request.info))
         items.put("请求Url:", listOf(data.request.url))

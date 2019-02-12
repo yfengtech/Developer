@@ -28,6 +28,7 @@ internal class HierarchyPage1Fragment :Fragment(){
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        val context = context ?:return
         recyclerView.layoutManager=LinearLayoutManager(context)
         val rootNode=TreeAdapter.TreeNode(ViewHierarchyItem.Item())
         wrapperTreeNode(rootNode,hierarchyItem)

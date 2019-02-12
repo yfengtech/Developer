@@ -3,6 +3,7 @@ package cz.developer.library.view.adapter
 import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.util.TypedValue
+import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.cz.recyclerlibrary.adapter.BaseViewHolder
@@ -27,14 +28,14 @@ class FieldAdapter(context: Context, rootNode: TreeAdapter.TreeNode<FieldItem>) 
             OBJECT_ITEM -> {
                 (holder.itemView.findViewById(R.id.tv_simple_name) as TextView).text = file.type.simpleName
                 (holder.itemView.findViewById(R.id.tv_name) as TextView).text = file.name
-                holder.itemView.findViewById(R.id.iv_flag).isSelected = node.expand
+                holder.itemView.findViewById<View>(R.id.iv_flag).isSelected = node.expand
             }
         }
     }
 
     override fun onNodeExpand(node: TreeAdapter.TreeNode<FieldItem>, holder:BaseViewHolder, expand: Boolean) {
         super.onNodeExpand(node, holder, expand)
-        holder.itemView.findViewById(R.id.iv_flag).isSelected = expand
+        holder.itemView.findViewById<View>(R.id.iv_flag).isSelected = expand
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {

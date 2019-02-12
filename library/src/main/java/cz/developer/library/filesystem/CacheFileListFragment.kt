@@ -37,9 +37,10 @@ internal class CacheFileListFragment: Fragment(){
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val file=arguments.getSerializable("file") as File
+        val activity=activity?:return
+        val file=arguments?.getSerializable("file") as File
         recyclerView.layoutManager=LinearLayoutManager(context)
-        val adapter=FileSystemAdapter(context,file.listFiles()?.reversed())
+        val adapter=FileSystemAdapter(activity,file.listFiles()?.reversed())
         recyclerView.adapter=adapter
         recyclerView.onItemClick { _, _, position ->
             val activity=activity
@@ -193,11 +194,14 @@ internal class CacheFileListFragment: Fragment(){
 //        intent.setDataAndType(Uri.fromFile(File(param)), "text/plain")
 //        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
 //        startActivity(intent)
-        DeveloperManager.toDeveloperFragment(activity,CacheFileContentFragment.newInstance(File(param)))
+        val activity=activity
+        if(null!=activity){
+            DeveloperManager.toDeveloperFragment(activity,CacheFileContentFragment.newInstance(File(param)))
+        }
     }
 
     //Android获取一个用于打开PDF文件的intent
-    fun startPdfFileIntent(param: String) {
+    private fun startPdfFileIntent(param: String) {
         val intent = Intent("android.intent.action.VIEW")
         intent.addCategory("android.intent.category.DEFAULT")
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

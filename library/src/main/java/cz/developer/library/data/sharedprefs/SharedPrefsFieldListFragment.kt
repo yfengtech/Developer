@@ -34,17 +34,17 @@ internal class SharedPrefsFieldListFragment: Fragment(){
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val activity=activity
-        val name=arguments.getString("name")
+        val activity=activity?:return
+        val name=arguments?.getString("name")
         if(activity is AppCompatActivity){
             toolBar.title = name
             setHasOptionsMenu(true)
             activity.setSupportActionBar(toolBar)
             activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            toolBar.setNavigationOnClickListener{ fragmentManager.popBackStack() }
+            toolBar.setNavigationOnClickListener{ fragmentManager?.popBackStack() }
         }
-        val sharedPrefs=context.getSharedPreferences(name,Context.MODE_PRIVATE)
-        val items=sharedPrefs.all?.map { (key,value)->
+        val sharedPrefs=activity.getSharedPreferences(name,Context.MODE_PRIVATE)
+        val items=sharedPrefs?.all?.map { (key,value)->
             val item= SharedPrefsItem()
             item.name=key
             item.value=value
@@ -59,32 +59,32 @@ internal class SharedPrefsFieldListFragment: Fragment(){
             item
         }
         recyclerView.layoutManager=LinearLayoutManager(context)
-        val adapter=SharedPrefsAdapter(context,items)
+        val adapter=SharedPrefsAdapter(activity,items)
         recyclerView.adapter=adapter
-        recyclerView.onItemClick { v, _, adapterPosition ->
+        recyclerView.onItemClick { _, _, adapterPosition ->
             val item=adapter[adapterPosition]
-            AlertDialog.Builder(context).
+            AlertDialog.Builder(activity).
                     setTitle(R.string.edit_shared_prefs).
-                    setItems(resources.getStringArray(R.array.edit_sp_array),{ _, which->
-                when(which){
-                    0->{
-                        //跳转到编辑条目
-                        val fragment=EditSharedPrefsFragment.newInstance(item)
-                        //操作回调,此处不必计较通信方式
-                        fragment.onChangedSharedPrefs {commitPrefsItem(sharedPrefs,it,adapterPosition) }
-                        DeveloperManager.toDeveloperFragment(activity,fragment)
-                    }
-                    1->{
-                        //移除条目
-                        if(sharedPrefs.edit().remove(item.name).commit()){
-                            adapter.removeNotify(item)
-                            Snackbar.make(recyclerView,getString(R.string.remove_prefs_value,item.name),Snackbar.LENGTH_SHORT).show()
-                        } else {
-                            Snackbar.make(recyclerView,getString(R.string.remove_prefs_value_fail,item.name),Snackbar.LENGTH_SHORT).show()
+                    setItems(resources.getStringArray(R.array.edit_sp_array)) { _, which->
+                        when(which){
+                            0->{
+                                //跳转到编辑条目
+                                val fragment=EditSharedPrefsFragment.newInstance(item)
+                                //操作回调,此处不必计较通信方式
+                                fragment.onChangedSharedPrefs {commitPrefsItem(sharedPrefs,it,adapterPosition) }
+                                DeveloperManager.toDeveloperFragment(activity,fragment)
+                            }
+                            1->{
+                                //移除条目
+                                if(sharedPrefs.edit().remove(item.name).commit()){
+                                    adapter.removeNotify(item)
+                                    Snackbar.make(recyclerView,getString(R.string.remove_prefs_value,item.name),Snackbar.LENGTH_SHORT).show()
+                                } else {
+                                    Snackbar.make(recyclerView,getString(R.string.remove_prefs_value_fail,item.name),Snackbar.LENGTH_SHORT).show()
+                                }
+                            }
                         }
-                    }
-                }
-            }).show()
+                    }.show()
         }
     }
 
@@ -139,11 +139,12 @@ internal class SharedPrefsFieldListFragment: Fragment(){
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val activity=activity?:return false
         if(R.id.action_add_prefs==item.itemId){
             val fragment=AddSharedPrefsFragment.newInstance(arguments)
             fragment.onChangedSharedPrefs {
-                val name=arguments.getString("name")
-                commitPrefsItem(context.getSharedPreferences(name,Context.MODE_PRIVATE),it)
+                val name=arguments?.getString("name")
+                commitPrefsItem(activity.getSharedPreferences(name,Context.MODE_PRIVATE),it)
             }
             DeveloperManager.toDeveloperFragment(activity,fragment)
         }

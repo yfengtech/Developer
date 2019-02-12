@@ -15,7 +15,6 @@ import cz.developer.library.ui.filesystem.CacheFileFragment
 import cz.developer.library.ui.operation.DebugOperationFragment
 import cz.developer.library.ui.switchs.DebugSwitchFragment
 import cz.developer.library.ui.view.DebugViewFragment
-import cz.developer.okhttp3.ui.DebugNetworkSettingFragment
 import kotlinx.android.synthetic.main.activity_developer.*
 
 class DeveloperActivity : AppCompatActivity() {
@@ -87,12 +86,6 @@ class DeveloperActivity : AppCompatActivity() {
                 clazz= DebugViewFragment::class.java
             }
             item{
-                id=4
-                title="网络调试"
-                desc="修改单个,所有接口的服务器,或其他信息"
-                clazz= DebugNetworkSettingFragment::class.java
-            }
-            item{
                 id=5
                 title="信息查看"
                 desc="查看日志,配置信息等"
@@ -101,12 +94,6 @@ class DeveloperActivity : AppCompatActivity() {
                     title="崩溃日志查看"
                     desc="清空应用,本地操作"
                     clazz= ExceptionListFragment::class.java
-                }
-                item{
-                    pid=5
-                    title="网络请求缓存文件"
-                    desc="查看当前几次打开的请求缓存文件,网络框架限定为:OKhttp3,且需要配置DebugIntercept"
-                    clazz= DebugRequestListFragment::class.java
                 }
                 item{
                     pid=5

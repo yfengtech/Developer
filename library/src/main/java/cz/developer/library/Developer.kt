@@ -5,6 +5,7 @@ import android.app.Application
 import android.content.Context
 import android.content.res.Resources
 import android.support.v4.app.Fragment
+import android.view.View
 import cz.developer.library.callback.MyActivityLifecycleCallback
 import cz.developer.library.exception.MyUncaughtExceptionHandler
 import cz.developer.library.prefs.DeveloperPrefs
@@ -21,7 +22,7 @@ internal fun Fragment.openDeveloperLayout(){
 }
 
 internal fun Activity.openDeveloperLayout(){
-    val layout=findViewById(R.id.developerContainer)
+    val layout=findViewById<View>(R.id.developerContainer)
     if(null!=layout&&layout is DeveloperLayout){
         layout.openDeveloperLayout()
     }
@@ -35,14 +36,14 @@ internal fun Fragment.closeDeveloperLayout(){
 }
 
 internal fun Activity.closeDeveloperLayout(){
-    val layout=findViewById(R.id.developerContainer)
+    val layout=findViewById<View>(R.id.developerContainer)
     if(null!=layout&&layout is DeveloperLayout){
         layout.closeDeveloperLayout()
     }
 }
 
 internal fun Activity.setViewDebug(debug:Boolean){
-    val layout=findViewById(R.id.developerContainer)
+    val layout=findViewById<View>(R.id.developerContainer)
     if(null!=layout&&layout is DeveloperLayout){
         layout.setViewDebug(debug)
     }

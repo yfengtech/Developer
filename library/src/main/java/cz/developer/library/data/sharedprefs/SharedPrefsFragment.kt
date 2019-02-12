@@ -29,23 +29,23 @@ internal class SharedPrefsFragment: Fragment(){
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val activity=activity
+        val activity=activity?:return
         if(activity is AppCompatActivity){
             toolBar.title = arguments?.getString("title")
             activity.setSupportActionBar(toolBar)
             activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            toolBar.setNavigationOnClickListener{ fragmentManager.popBackStack() }
+            toolBar.setNavigationOnClickListener{ fragmentManager?.popBackStack() }
         }
         val prefsItems = getSharedPrefsItems()
         if(prefsItems.isEmpty()){
-            AlertDialog.Builder(context).
+            AlertDialog.Builder(activity).
                     setTitle(R.string.no_shared_prefs).
                     setCancelable(false).
-                    setNegativeButton(R.string.exit,
-                            {_, _ -> fragmentManager.popBackStack() }).show()
+                    setNegativeButton(R.string.exit
+                    ) { _, _ -> fragmentManager?.popBackStack() }.show()
         } else {
             recyclerView.layoutManager=LinearLayoutManager(context)
-            val adapter= SharedPrefsFileAdapter(context,prefsItems)
+            val adapter= SharedPrefsFileAdapter(activity,prefsItems)
             recyclerView.adapter=adapter
             recyclerView.onItemClick { _, _, adapterPosition ->
                 val item= adapter[adapterPosition]
@@ -56,7 +56,7 @@ internal class SharedPrefsFragment: Fragment(){
 
     fun getSharedPrefsItems(): List<SharedPrefsFileItem> {
         val prefsItems = ArrayList<SharedPrefsFileItem>()
-        val sharedPrefs = File("/data/data/" + context.packageName + "/shared_prefs")
+        val sharedPrefs = File("/data/data/" + context?.packageName + "/shared_prefs")
         if (sharedPrefs.exists()) {
             val files = sharedPrefs.listFiles()
             if (null != files) {

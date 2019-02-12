@@ -26,13 +26,13 @@ internal class ExceptionListFragment:Fragment(){
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val activity=activity
+        val activity=activity?:return
         if(activity is AppCompatActivity){
             toolBar.title = arguments?.getString("title")
             setHasOptionsMenu(true)
             activity.setSupportActionBar(toolBar)
             activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            toolBar.setNavigationOnClickListener{ fragmentManager.popBackStack() }
+            toolBar.setNavigationOnClickListener{ fragmentManager?.popBackStack() }
         }
 
         val dir= FilePrefs.exceptionFolder
@@ -54,7 +54,7 @@ internal class ExceptionListFragment:Fragment(){
             }
         }
         recyclerView.layoutManager=LinearLayoutManager(context)
-        val adapter=ExceptionAdapter(context,items)
+        val adapter=ExceptionAdapter(activity,items)
         recyclerView.adapter=adapter
         recyclerView.onItemClick { _, _, adapterPosition ->
             DeveloperManager.toDeveloperFragment(activity,ExceptionContentFragment.newInstance(adapter[adapterPosition]))

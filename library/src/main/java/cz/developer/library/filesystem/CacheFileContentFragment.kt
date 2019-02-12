@@ -43,7 +43,7 @@ internal class CacheFileContentFragment: Fragment(){
             setHasOptionsMenu(true)
             activity.setSupportActionBar(toolBar)
             activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            toolBar.setNavigationOnClickListener{ fragmentManager.popBackStack() }
+            toolBar.setNavigationOnClickListener{ fragmentManager?.popBackStack() }
         }
         textContent.text=file.readText()
     }

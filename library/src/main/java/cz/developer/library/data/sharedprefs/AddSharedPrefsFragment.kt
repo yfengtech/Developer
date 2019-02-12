@@ -3,6 +3,7 @@ package cz.developer.library.ui.data.sp
 import android.animation.LayoutTransition
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
@@ -26,7 +27,7 @@ import kotlinx.android.synthetic.main.shared_prefs_bool_item.*
  */
 internal class AddSharedPrefsFragment: Fragment(){
     companion object {
-        fun newInstance(args:Bundle)=AddSharedPrefsFragment().apply { arguments=args }
+        fun newInstance(args:Bundle?)=AddSharedPrefsFragment().apply { arguments=args }
     }
     private var lastTypeView:View?=null
     private var callback:((SharedPrefsItem)->Unit)?=null
@@ -42,7 +43,7 @@ internal class AddSharedPrefsFragment: Fragment(){
             setHasOptionsMenu(true)
             activity.setSupportActionBar(toolBar)
             activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            toolBar.setNavigationOnClickListener{ fragmentManager.popBackStack() }
+            toolBar.setNavigationOnClickListener{ fragmentManager?.popBackStack() }
         }
         fieldName.requestFocus()
         lastTypeView=valueViewStub.inflate()
@@ -111,13 +112,13 @@ internal class AddSharedPrefsFragment: Fragment(){
         addEditor.onFocusChangeListener = focusChangeListener
         setDefaultViewTranslation(valueEditLayout)
         //添加布局
-        val layoutInflater = getLayoutInflater(savedInstanceState)
+        val layoutInflater = LayoutInflater.from(context)
         addEditButton.setOnClickListener {
             val view = layoutInflater.inflate(R.layout.add_edit_from_item, valueEditLayout, false)
             val editor = view.findViewById(R.id.addEditor) as EditText
             editor.onFocusChangeListener = focusChangeListener
             //设置移除事件
-            view.findViewById(R.id.deleteView).setOnClickListener {
+            view.findViewById<View>(R.id.deleteView).setOnClickListener {
                 valueEditLayout.removeView(view)
                 scrollView.fullScroll(ScrollView.FOCUS_DOWN)
                 //设置为最后一个获得焦点
@@ -154,7 +155,7 @@ internal class AddSharedPrefsFragment: Fragment(){
             //给定取值
             newItem.value=when(typeLayout.checkedRadioButtonId){
                 R.id.boolButton->boolLayout.checkedRadioButtonId==R.id.boolTrue
-                R.id.setButton->(0..valueEditLayout.childCount-1).map {
+                R.id.setButton->(0 until valueEditLayout.childCount).map {
                     val child=valueEditLayout.getChildAt(it)
                     val editor=child.findViewById(R.id.addEditor) as EditText
                     editor.text.toString()
@@ -163,12 +164,13 @@ internal class AddSharedPrefsFragment: Fragment(){
             }
             callback?.invoke(newItem)
             //弹出当前界面
-            fragmentManager.popBackStack()
+            fragmentManager?.popBackStack()
         }
     }
 
 
-    fun setDefaultViewTranslation(view: ViewGroup) {
+    @SuppressLint("ObjectAnimatorBinding")
+    private fun setDefaultViewTranslation(view: ViewGroup) {
         val layoutTransition = LayoutTransition()
         //view出现时 view自身的动画效果
         val animator1 = ObjectAnimator.ofFloat(null, "alpha", 0f, 1f).setDuration(layoutTransition.getDuration(LayoutTransition.APPEARING))

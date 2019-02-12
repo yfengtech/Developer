@@ -13,8 +13,8 @@ import java.util.*
  * Created by cz on 2017/9/13.
  */
 class ExceptionAdapter(context: Context, items: List<ExceptionItem>?) : BaseViewAdapter<ExceptionItem>(context, items) {
-    val formatter=SimpleDateFormat("yy-MM-dd HH:mm")
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BaseViewHolder {
+    private val formatter=SimpleDateFormat("yy-MM-dd HH:mm")
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return BaseViewHolder(inflateView(parent, R.layout.exception_item))
     }
 

@@ -25,13 +25,13 @@ internal class DebugRequestListFragment: Fragment(){
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val activity = activity
+        val activity = activity?:return
         if (activity is AppCompatActivity) {
-            toolBar.title = arguments.getString("title")
+            toolBar.title = arguments?.getString("title")
             setHasOptionsMenu(true)
             activity.setSupportActionBar(toolBar)
             activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            toolBar.setNavigationOnClickListener { fragmentManager.popBackStack() }
+            toolBar.setNavigationOnClickListener { fragmentManager?.popBackStack() }
         }
 
         recyclerView.layoutManager=LinearLayoutManager(context)
@@ -40,7 +40,7 @@ internal class DebugRequestListFragment: Fragment(){
         networkFolder.listFiles()?.reversed()?.forEach {
             items.put(it,it.listFiles().toList())
         }
-        val adapter= NetworkRequestFileAdapter(context,items,true)
+        val adapter= NetworkRequestFileAdapter(activity,items,true)
         recyclerView.adapter=adapter
         recyclerView.onExpandItemClick { _, group, position ->
             val item=adapter.getChild(group,position)

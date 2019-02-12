@@ -13,12 +13,12 @@ import cz.developer.library.ui.view.model.ViewHierarchyItem
  * Created by cz on 2017/9/8.
  * 展示单层级视图
  */
-class HierarchyView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : View(context, attrs, defStyleAttr){
+class HierarchyView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : View(context, attrs, defStyleAttr){
     private val decorPaint= Paint(Paint.ANTI_ALIAS_FLAG)
     private val paint= Paint(Paint.ANTI_ALIAS_FLAG)
 
-    constructor(context: Context?):this(context,null,0)
-    constructor(context: Context?, attrs: AttributeSet?):this(context,attrs,0)
+    constructor(context: Context):this(context,null,0)
+    constructor(context: Context, attrs: AttributeSet?):this(context,attrs,0)
 
     init {
         decorPaint.style=Paint.Style.FILL

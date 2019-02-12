@@ -41,9 +41,9 @@ internal class EditSharedPrefsFragment: Fragment(){
             setHasOptionsMenu(true)
             activity.setSupportActionBar(toolBar)
             activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            toolBar.setNavigationOnClickListener{ fragmentManager.popBackStack() }
+            toolBar.setNavigationOnClickListener{ fragmentManager?.popBackStack() }
         }
-        addSharedPrefsFieldItem(getLayoutInflater(savedInstanceState), prefsItem)
+        addSharedPrefsFieldItem(LayoutInflater.from(context), prefsItem)
         applySharedPrefsChanged()
     }
 
@@ -88,14 +88,14 @@ internal class EditSharedPrefsFragment: Fragment(){
 
 
     private fun applySharedPrefsChanged() {
-        applyButton.setOnClickListener({ _ ->
+        applyButton.setOnClickListener {
             val newItem = getChangedItem()
             if(newItem != prefsItem){
                 //发生变化
                 callback?.invoke(newItem)
             }
-            fragmentManager.popBackStack()
-        })
+            fragmentManager?.popBackStack()
+        }
     }
 
     /**
@@ -105,7 +105,7 @@ internal class EditSharedPrefsFragment: Fragment(){
         val newItem=SharedPrefsItem(type=prefsItem.type,name = prefsItem.name)
         newItem.value=when (newItem.type) {
             PrefsType.SET -> {
-                (1..layout.childCount - 1).map {
+                (1 until layout.childCount).map {
                     val childView=layout.getChildAt(it)
                     val editor = childView.findViewById(R.id.et_editor) as EditText
                     editor.text.toString()

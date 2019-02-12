@@ -26,24 +26,24 @@ internal class DebugViewFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_debug_view, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val activity=activity
+        val activity=activity?:return
         if(activity is AppCompatActivity){
             toolBar.title = arguments?.getString("title")
             toolBar.subtitle=arguments?.getString("desc")
             activity.setSupportActionBar(toolBar)
             activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            toolBar.setNavigationOnClickListener{ fragmentManager.popBackStack() }
+            toolBar.setNavigationOnClickListener{ fragmentManager?.popBackStack() }
         }
-        switchView.isChecked=DeveloperPrefs.getBoolean(context,DeveloperPrefs.DEBUG_LIST)
+        switchView.isChecked=DeveloperPrefs.getBoolean(activity,DeveloperPrefs.DEBUG_LIST)
         switchView.setOnCheckedChangeListener { _, isChecked ->
-            DeveloperPrefs.setBoolean(context,DeveloperPrefs.DEBUG_LIST,isChecked)
+            DeveloperPrefs.setBoolean(activity,DeveloperPrefs.DEBUG_LIST,isChecked)
             //设置所有控件状态
             DeveloperActivityManager.forEach{ it.setViewDebug(isChecked) }
         }
         //AbsListView/RecyclerView/ImageView
-        listView.adapter = DebugViewAdapter(context, items)
+        listView.adapter = DebugViewAdapter(activity, items)
     }
 
 

@@ -33,15 +33,15 @@ internal class HierarchyFragment: Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val activity=activity
+        val activity=activity?:return
         if(activity is AppCompatActivity){
             toolBar.title = getString(R.string.activity_hierarchy)
             setHasOptionsMenu(true)
             activity.setSupportActionBar(toolBar)
             activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            toolBar.setNavigationOnClickListener{ fragmentManager.popBackStack() }
+            toolBar.setNavigationOnClickListener{ fragmentManager?.popBackStack() }
         }
-        hierarchyView.setAdapter(SimpleHierarchyAdapter(context,node))
+        hierarchyView.setAdapter(SimpleHierarchyAdapter(activity,node))
     }
 
     override fun onAttach(context: Context?) {

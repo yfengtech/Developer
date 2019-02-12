@@ -31,16 +31,16 @@ internal class DebugViewInfoFragment:Fragment(){
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val activity=activity
+        val activity=activity?:return
         if(activity is AppCompatActivity){
             toolBar.setTitle(R.string.view_extras)
             activity.setSupportActionBar(toolBar)
             activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            toolBar.setNavigationOnClickListener{ fragmentManager.popBackStack() }
+            toolBar.setNavigationOnClickListener{ fragmentManager?.popBackStack() }
         }
 
         recyclerView.layoutManager=LinearLayoutManager(context)
         val items=viewAttribute?.getAttributes()
-        recyclerView.adapter=ViewAttributeAdapter(context,items)
+        recyclerView.adapter=ViewAttributeAdapter(activity,items)
     }
 }

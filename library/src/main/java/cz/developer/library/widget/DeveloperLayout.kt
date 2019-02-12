@@ -131,7 +131,7 @@ class DeveloperLayout(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
      * 设置调试面板开关
      */
     fun toggleMemoryView(){
-        val memoryView=findViewById(R.id.memoryView)
+        val memoryView=findViewById<View>(R.id.memoryView)
         if(null!=memoryView){
             memoryView.visibility=if(memoryView.isShown) View.GONE else View.VISIBLE
         }
@@ -154,14 +154,14 @@ class DeveloperLayout(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
     }
 
     fun openDeveloperLayout(){
-        val layout=findViewById(R.id.developerLayout)
+        val layout=findViewById<View>(R.id.developerLayout)
         if(null!=layout){
             layout.visibility=View.VISIBLE
         }
     }
 
     fun closeDeveloperLayout(){
-        val layout=findViewById(R.id.developerLayout)
+        val layout=findViewById<View>(R.id.developerLayout)
         if(null!=layout){
             layout.visibility=View.GONE
         }

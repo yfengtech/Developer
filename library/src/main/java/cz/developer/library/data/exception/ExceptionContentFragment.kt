@@ -34,16 +34,18 @@ internal class ExceptionContentFragment: Fragment(){
             setHasOptionsMenu(true)
             activity.setSupportActionBar(toolBar)
             activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            toolBar.setNavigationOnClickListener{ fragmentManager.popBackStack() }
+            toolBar.setNavigationOnClickListener{ fragmentManager?.popBackStack() }
         }
-        val item:ExceptionItem=arguments.getParcelable("content")
-        val formatter=SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-        val text="崩溃日期:${formatter.format(Date(item.lastModified))}\n" +
-                "崩溃方法:${item.methodName}\n" +
-                "崩溃线程:${item.threadName}\n" +
-                "崩溃异常:\n${item.className}\n" +
-                "异常堆栈:\n${item.desc}"
-        content.text=text
+        val item:ExceptionItem?=arguments?.getParcelable("content")
+        if(null!=item){
+            val formatter=SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+            val text="崩溃日期:${formatter.format(Date(item.lastModified))}\n" +
+                    "崩溃方法:${item.methodName}\n" +
+                    "崩溃线程:${item.threadName}\n" +
+                    "崩溃异常:\n${item.className}\n" +
+                    "异常堆栈:\n${item.desc}"
+            content.text=text
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

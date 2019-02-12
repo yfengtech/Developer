@@ -29,13 +29,14 @@ internal class AddDatabaseItemFragment: Fragment(){
             setHasOptionsMenu(true)
             activity.setSupportActionBar(toolBar)
             activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            toolBar.setNavigationOnClickListener{ fragmentManager.popBackStack() }
+            toolBar.setNavigationOnClickListener{ fragmentManager?.popBackStack() }
         }
 
-        val name=arguments.getString("name")
-        val tableName=arguments.getString("table")
-        getTableItems(name,tableName)
-
+        val name=arguments?.getString("name")
+        val tableName=arguments?.getString("table")
+        if(null!=name && null!=tableName){
+            getTableItems(name,tableName)
+        }
     }
 
 
@@ -48,6 +49,7 @@ internal class AddDatabaseItemFragment: Fragment(){
      * @return
      */
     fun getTableItems(name: String, tableName: String) {
+        val context=context?:return
         val db = context.openOrCreateDatabase(name, Context.MODE_PRIVATE, null)
         val cursor=db.rawQuery("select sql from sqlite_master where tbl_name = '$tableName' and type='table'",null)
         try{

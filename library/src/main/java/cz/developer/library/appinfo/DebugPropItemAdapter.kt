@@ -17,7 +17,7 @@ import cz.developer.library.ui.appinfo.PropItem
 class DebugPropItemAdapter(context: Context, items: List<PropItem>?) : BaseViewAdapter<PropItem>(context, items),StickyCallback<PropItem>{
     val strategy=GroupingStrategy.of(this).reduce { p1, p2 -> p1.group!=p2.group }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BaseViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return BaseViewHolder(inflateView(parent,R.layout.debug_prop_item))
     }
 

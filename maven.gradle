@@ -1,18 +1,6 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-apply plugin: 'com.github.dcendents.android-maven'
-//当前仓库版本
-def VERSION='1.2.6'
-//组
-def GROUP_ID="cz.developer.library"
-
-def ARTIFACT_ID="developer-library"
-//仓库描述
-def DESCRIPTION="an android kotlin refresh layout library"
-//本地maven配置
-def MAVEN_URL='http://192.168.29.8:8081/repository/credit-wallet/'
-def USER="admin"
-def PASSWORD="admin123"
-//引入本地仓库位置
+apply plugin: 'maven'
+def MAVEN_URL=rootProject.ext.maven_url
 allprojects {
     repositories {
         maven{
@@ -20,7 +8,13 @@ allprojects {
         }
     }
 }
-
+tasks.withType(Javadoc) {
+    options{
+        encoding "UTF-8"
+        charSet 'UTF-8'
+        links "http://docs.oracle.com/javase/7/docs/api"
+    }
+}
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
     classifier = 'sources'
@@ -49,19 +43,21 @@ artifacts {
     archives sourcesJar
 }
 //------------------------------
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
 uploadArchives {
     configuration = configurations.archives
     repositories {
         mavenDeployer {
             repository(url: MAVEN_URL) {
-                authentication(userName: USER, password: PASSWORD)
+                authentication(userName: rootProject.ext.user, password: properties.getProperty("maven.password"))
             }
             pom.project {
-                version VERSION
-                artifactId ARTIFACT_ID
-                groupId GROUP_ID
+                version rootProject.ext.version
+                artifactId rootProject.ext.artifact_id
+                groupId rootProject.ext.group_id
+                description rootProject.ext.description
                 packaging "aar"
-                description DESCRIPTION
             }
         }
     }

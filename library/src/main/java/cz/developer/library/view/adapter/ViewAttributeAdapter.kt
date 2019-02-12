@@ -16,7 +16,7 @@ import cz.developer.library.ui.view.model.ViewAttribute
  */
 class ViewAttributeAdapter(context: Context, items: List<ViewAttribute.Item>?) : BaseViewAdapter<ViewAttribute.Item>(context, items),StickyCallback<ViewAttribute.Item> {
     val strategy=GroupingStrategy.of(this).reduce { item1,item2-> item1.group!=item2.group }
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BaseViewHolder =BaseViewHolder(inflateView(parent, R.layout.view_attribute_item))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder =BaseViewHolder(inflateView(parent, R.layout.view_attribute_item))
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         val item=getItem(position)

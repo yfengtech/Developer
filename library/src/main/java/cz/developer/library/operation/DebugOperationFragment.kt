@@ -21,10 +21,10 @@ internal class DebugOperationFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_debug_other, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        clearCache.setOnClickListener { _ ->
-            val appPackage = context.packageName
+        clearCache.setOnClickListener {
+            val appPackage = context?.packageName
             val cmd = "pm clear $appPackage HERE"
             val runtime = Runtime.getRuntime()
             try {
@@ -42,7 +42,7 @@ internal class DebugOperationFragment : Fragment() {
             toolBar.subtitle=arguments?.getString("desc")
             activity.setSupportActionBar(toolBar)
             activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            toolBar.setNavigationOnClickListener{ fragmentManager.popBackStack() }
+            toolBar.setNavigationOnClickListener{ fragmentManager?.popBackStack() }
         }
     }
 }

@@ -18,8 +18,8 @@ class PrivacyLockActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_privacy_lock)
-        val lockView = findViewById(R.id.lock_view) as PrivacyLockView
-        val textView = findViewById(R.id.tv_info) as TextView
+        val lockView = findViewById<PrivacyLockView>(R.id.lock_view)
+        val textView = findViewById<TextView>(R.id.tv_info)
         lockView.setOnTextSubmitListener { editable ->
             if ("1234" == editable.toString()) {
                 DeveloperManager.startDeveloperActivity(this)

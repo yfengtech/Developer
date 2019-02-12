@@ -1,7 +1,6 @@
 package cz.developer.okhttp3.adapter
 
 import cz.developer.library.network.model.NetItem
-import okhttp3.OkHttpClient
 
 /**
  * Created by cz on 11/8/16.

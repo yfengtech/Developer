@@ -26,24 +26,24 @@ internal class DatabaseFragment: Fragment(){
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val activity=activity
+        val activity=activity?:return
         if(activity is AppCompatActivity){
             toolBar.title = arguments?.getString("title")
             setHasOptionsMenu(true)
             activity.setSupportActionBar(toolBar)
             activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            toolBar.setNavigationOnClickListener{ fragmentManager.popBackStack() }
+            toolBar.setNavigationOnClickListener{ fragmentManager?.popBackStack() }
         }
         val items = getDatabaseItems()
         if(0==items.size){
-            AlertDialog.Builder(context).
+            AlertDialog.Builder(activity).
                     setTitle(R.string.no_database).
                     setCancelable(false).
-                    setNegativeButton(R.string.exit,
-                            {_, _ -> fragmentManager.popBackStack() }).show()
+                    setNegativeButton(R.string.exit
+                    ) { _, _ -> fragmentManager?.popBackStack() }.show()
         } else {
             databaseRecyclerView.layoutManager=LinearLayoutManager(context)
-            val adapter = DatabaseAdapter(context, items, true)
+            val adapter = DatabaseAdapter(activity, items, true)
             databaseRecyclerView.adapter=adapter
             databaseRecyclerView.onExpandItemClick { _, groupPosition, position ->
                 val name=adapter.getGroup(groupPosition)
@@ -58,7 +58,7 @@ internal class DatabaseFragment: Fragment(){
      */
     fun getDatabaseItems(): java.util.LinkedHashMap<String,List<String>> {
         val tables=java.util.LinkedHashMap<String,List<String>>()
-        val databaseFile = File("/data/data/${context.packageName}/databases")
+        val databaseFile = File("/data/data/${context?.packageName}/databases")
         if (databaseFile.exists()) {
             val files = databaseFile.listFiles()
             if (null != files) {
@@ -67,8 +67,8 @@ internal class DatabaseFragment: Fragment(){
                     val name = file.name
                     //表异常信息数据
                     if (!name.endsWith("-journal")) {
-                        val db = context.openOrCreateDatabase(name, Context.MODE_PRIVATE, null)
-                        val cursor = db.rawQuery("select name from sqlite_master where type='table' order by name", null)
+                        val db = context?.openOrCreateDatabase(name, Context.MODE_PRIVATE, null)
+                        val cursor = db?.rawQuery("select name from sqlite_master where type='table' order by name", null)
                         while (null != cursor&&cursor.moveToNext()) {
                             //遍历出表名
                             val items=tables.getOrPut(name){ ArrayList<String>()}

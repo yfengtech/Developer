@@ -12,7 +12,7 @@ import cz.developer.library.ui.filesystem.model.FileItem
  */
 class CacheFileAdapter(context: Context, items: List<FileItem>?) : BaseViewAdapter<FileItem>(context, items) {
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BaseViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return BaseViewHolder(inflateView(parent, R.layout.cache_file_item))
     }
 

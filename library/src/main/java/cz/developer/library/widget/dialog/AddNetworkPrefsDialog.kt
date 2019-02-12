@@ -40,7 +40,7 @@ internal class AddNetworkPrefsDialog : DialogFragment() {
         editText.setText(text)
         editText.setSelection(text.length)
         editText.post {
-            val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS)
         }
         builder.setPositiveButton(R.string.add_net_url) { _: DialogInterface, _: Int ->

@@ -34,8 +34,8 @@ internal class NetworkEditDialog : DialogFragment() {
         super.onCreate(savedInstanceState)
         if (null != arguments) {
             selectIndex = -1
-            items = arguments.getStringArray("items")
-            url = arguments.getString("url")
+            items = arguments?.getStringArray("items")
+            url = arguments?.getString("url")
         }
     }
 
@@ -48,7 +48,8 @@ internal class NetworkEditDialog : DialogFragment() {
         builder.setView(view)
         val layout = view.findViewById(R.id.rg_layout) as RadioGroup
         val items=items
-        if (null != items) {
+        val context=context
+        if (null != items && null!=context) {
             val url=DeveloperPrefs.getString(context,DeveloperPrefs.URL)
             for (i in items.indices) {
                 val button = RadioButton(context)
@@ -68,7 +69,7 @@ internal class NetworkEditDialog : DialogFragment() {
             editText.setSelection(url!!.length)
         }
         editText.post {
-            val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS)
         }
         builder.setPositiveButton(R.string.changed) { _: DialogInterface, _: Int ->

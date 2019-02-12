@@ -38,12 +38,12 @@ internal class DebugViewExtrasFragment:Fragment(){
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val activity=activity
+        val activity=activity?:return
         if(activity is AppCompatActivity){
             toolBar.setTitle(R.string.view_extras)
             activity.setSupportActionBar(toolBar)
             activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            toolBar.setNavigationOnClickListener{ fragmentManager.popBackStack() }
+            toolBar.setNavigationOnClickListener{ fragmentManager?.popBackStack() }
         }
 
         val rootNode = TreeAdapter.TreeNode(FieldItem(Any::class.java,"root",null))
@@ -55,7 +55,7 @@ internal class DebugViewExtrasFragment:Fragment(){
         }
         val viewTagItems=viewTagItems
         if(null!=viewTagItems&&viewTagItems is SparseArray<*>){
-            for(i in 0..viewTagItems.size()-1){
+            for(i in 0 until viewTagItems.size()){
                 val key=viewTagItems.keyAt(i)
                 val value=viewTagItems.valueAt(i)
                 val clazz=value::class.java
@@ -64,7 +64,7 @@ internal class DebugViewExtrasFragment:Fragment(){
             }
         }
         recyclerView.layoutManager=LinearLayoutManager(context)
-        val fieldAdapter= FieldAdapter(context,rootNode)
+        val fieldAdapter= FieldAdapter(activity,rootNode)
         //展开时,加载数据
         fieldAdapter.setOnNodeLoadCallback {
             val nodeItems=getNodeItemsFromItem(it,it.e)
@@ -72,7 +72,7 @@ internal class DebugViewExtrasFragment:Fragment(){
                 it.child.addAll(nodeItems)
             }
         }
-        fieldAdapter.onNodeItemClick { treeNode, view, i ->
+        fieldAdapter.onNodeItemClick { _, _, _ ->
             //TODO 点击子条目
         }
         recyclerView.adapter=fieldAdapter

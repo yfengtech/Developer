@@ -30,29 +30,29 @@ internal class DatabaseDetailFragment : Fragment(){
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val activity=activity
+        val activity=activity?:return
         if(activity is AppCompatActivity){
             toolBar.title = arguments?.getString("title")
             setHasOptionsMenu(true)
             activity.setSupportActionBar(toolBar)
             activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            toolBar.setNavigationOnClickListener{ fragmentManager.popBackStack() }
+            toolBar.setNavigationOnClickListener{ fragmentManager?.popBackStack() }
         }
 
-        val name=arguments.getString("name")
-        val tableName=arguments.getString("table")
+        val name=arguments?.getString("name")
+        val tableName=arguments?.getString("table")
         if(null==name||null==tableName){
-            AlertDialog.Builder(context).
+            AlertDialog.Builder(activity).
                     setTitle(R.string.invalid_database).
                     setCancelable(false).
-                    setNegativeButton(R.string.exit,
-                            {_, _ -> fragmentManager.popBackStack() }).show()
+                    setNegativeButton(R.string.exit
+                    ) { _, _ -> fragmentManager?.popBackStack() }.show()
         } else {
             //todo 此处改为子线程加载
             val tableItem = getTableItems(name, tableName)
             progressBar.visibility=View.GONE
             if(null!=tableItem){
-                val adapter=DatabaseDetailAdapter(context,tableItem.columnNames,tableItem.values)
+                val adapter=DatabaseDetailAdapter(activity,tableItem.columnNames,tableItem.values)
                 tableView.adapter=adapter
                 tableView.onItemClick { _, i ->
                     val array=adapter.getItem(i)
@@ -87,14 +87,15 @@ internal class DatabaseDetailFragment : Fragment(){
             //                cursor = db.rawQuery("select * from " + tableName + " limit 0  offset " + DB_MAX_COUNT, null);
             //            } else {
 //            val sql = "select count(*) from info"
+        var context = context?:return null
         var tableItem:TableItem?=null
-        val db = context.openOrCreateDatabase(name, Context.MODE_PRIVATE, null)
+        val db = context?.openOrCreateDatabase(name, Context.MODE_PRIVATE, null)
         var cursor = db.rawQuery("select * from $tableName", null)
         try{
             if(null!=cursor){
                 tableItem=TableItem(tableName,cursor.columnNames)
                 while (cursor.moveToNext()) {
-                    tableItem.values.add((0..cursor.columnCount - 1).map { cursor.getString(it) }.toTypedArray())
+                    tableItem.values.add((0 until cursor.columnCount).map { cursor.getString(it) }.toTypedArray())
                 }
             }
         } finally {

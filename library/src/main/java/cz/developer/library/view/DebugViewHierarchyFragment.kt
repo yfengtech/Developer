@@ -32,7 +32,7 @@ internal class DebugViewHierarchyFragment :Fragment(){
             toolBar.setTitle(R.string.view_extras)
             activity.setSupportActionBar(toolBar)
             activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            toolBar.setNavigationOnClickListener{ fragmentManager.popBackStack() }
+            toolBar.setNavigationOnClickListener{ fragmentManager?.popBackStack() }
         }
         viewPager.adapter= DeveloperFragmentPagerAdapter(childFragmentManager,
                 arrayOf(HierarchyPage1Fragment.newInstance(hierarchyItem),HierarchyPage2Fragment.newInstance(hierarchyItem)))

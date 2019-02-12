@@ -1,22 +1,18 @@
 package cz.developer.library.callback
 
+
 import android.app.Activity
 import android.app.Application
 import android.content.Context
-import android.graphics.Rect
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import cz.developer.library.*
-
-
 import cz.developer.library.log.FilePrefs
-import cz.developer.library.ui.hierarchy.HierarchyFragment
 import cz.developer.library.widget.DeveloperLayout
 import cz.developer.library.widget.dialog.DeveloperDialog
-import cz.developer.library.widget.hierarchy.HierarchyNode
 
 
 /**
@@ -73,7 +69,7 @@ class MyActivityLifecycleCallback : Application.ActivityLifecycleCallbacks {
                 //回调长按监听
                 layout.onItemLongClickListener{ DeveloperManager.onItemLongClick(activity,it) }
 //                //打开界面视图
-                layout.findViewById(R.id.developerMenu).setOnClickListener {
+                layout.findViewById<View>(R.id.developerMenu).setOnClickListener {
                     //将当前界面所有控件节点信息扫描出来
                     if(activity is FragmentActivity){
                         DeveloperDialog().show(activity.supportFragmentManager,null)

@@ -8,17 +8,17 @@ import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import com.cz.demo.database.Database1
 import com.cz.demo.database.Database2
+import cz.developer.library.DeveloperManager
 import cz.developer.library.prefs.DeveloperPrefs
 import cz.developer.library.widget.DeveloperLayout
-import cz.developer.sample.network.NetPrefs
-import cz.netlibrary.request
 
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.sdk25.coroutines.onLongClick
+import org.jetbrains.anko.sdk27.coroutines.onLongClick
 import org.jetbrains.anko.toast
 import org.jetbrains.anko.uiThread
 import java.util.*
@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         btn2.setOnClickListener { startActivity(Intent(this, RecyclerListActivity::class.java)) }
         btn3.setOnClickListener { startActivity(Intent(this, WebViewActivity::class.java)) }
         btn4.setOnClickListener { supportFragmentManager.beginTransaction().replace(R.id.fragment_container, ListFragment()).commit() }
-        btn5.setOnClickListener { startActivity(Intent(this, PrivacyLockActivity::class.java)) }
+        btn5.setOnClickListener { DeveloperManager.startDeveloperActivity(this) }
 
 
         //插入初始测试数据
@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity() {
         if(!init){
             //打开控件测试开关
             DeveloperPrefs.setBoolean(this,DeveloperPrefs.DEBUG_LIST,true)
-            val layout=findViewById(cz.developer.library.R.id.developerContainer)
+            val layout=findViewById<View>(cz.developer.library.R.id.developerContainer)
             if(null!=layout&&layout is DeveloperLayout){
                 layout.setViewDebug(true)
             }
@@ -85,12 +85,6 @@ class MainActivity : AppCompatActivity() {
                 sharedPrefs.edit().putBoolean("init",true).commit()
                 uiThread { dialog.dismiss() }
             }
-        }
-
-        //横拟请求
-        request<String>(NetPrefs.WHITE_CREDIT_TEMPLATE_LIST) {
-            params= arrayOf(1,10)
-            map{it}
         }
 
     }

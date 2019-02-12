@@ -4,7 +4,7 @@
     <string name="model_info">机器信息</string>
 
     <string name="os_version_value">系统版本号:%1$s</string>
-    <string name="os_api_value">系统版本值:%1$s</string>
+    <string name="os_api_value">系统版本值:%1$d</string>
     <string name="device_model_value">手机型号:%1$s</string>
     <string name="iid_value">IID:%1$s</string>
     <string name="line_devide_value">线上DeviceID:%1$s</string>
@@ -26,7 +26,7 @@
 
     <string name="channel_value">渠道号:%1$s</string>
     <string name="app_version_value">应用版本:%1$s</string>
-    <string name="app_code_value">应用版本号:%1$s</string>
+    <string name="app_code_value">应用版本号:%1$d</string>
     <string name="debug_mode">调试模式</string>
     <string name="debug_list">调试功能列表</string>
     <string name="log_switch">Log日志</string>

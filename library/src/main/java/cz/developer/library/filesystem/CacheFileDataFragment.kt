@@ -29,14 +29,15 @@ internal class CacheFileDataFragment: Fragment(){
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        val activity=activity?:return
         val fileItems= mutableListOf<FileItem>()
-        fileItems.add(FileItem(File(Environment.getDataDirectory(),"/data/${context.packageName}/"),"Data目录","/data/data/app_package_name目录"))
-        fileItems.add(FileItem(context.cacheDir,"内存缓存","/data/data/app_package_name/cache目录"))
-        fileItems.add(FileItem(context.filesDir,"内存文件缓存","/data/data/app_package_name/files目录,"))
-        fileItems.add(FileItem(context.externalCacheDir,"外部内存卡缓存目录","需要外部读写权限"))
-        fileItems.add(FileItem(context.obbDir,"应用程序的OBB文件目录","应用程序的OBB文件目录,如果没有任何OBB文件，这个目录是不存在的"))
+        fileItems.add(FileItem(File(Environment.getDataDirectory(),"/data/${activity.packageName}/"),"Data目录","/data/data/app_package_name目录"))
+        fileItems.add(FileItem(activity.cacheDir,"内存缓存","/data/data/app_package_name/cache目录"))
+        fileItems.add(FileItem(activity.filesDir,"内存文件缓存","/data/data/app_package_name/files目录,"))
+        fileItems.add(FileItem(activity.externalCacheDir,"外部内存卡缓存目录","需要外部读写权限"))
+        fileItems.add(FileItem(activity.obbDir,"应用程序的OBB文件目录","应用程序的OBB文件目录,如果没有任何OBB文件，这个目录是不存在的"))
         recyclerView.layoutManager=LinearLayoutManager(context)
-        val adapter=CacheFileAdapter(context,fileItems)
+        val adapter=CacheFileAdapter(activity,fileItems)
         recyclerView.adapter=adapter
 
         recyclerView.onItemClick { _, _, position ->

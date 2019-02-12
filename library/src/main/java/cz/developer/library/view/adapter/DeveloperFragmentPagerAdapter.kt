@@ -33,7 +33,7 @@ class DeveloperFragmentPagerAdapter constructor(fm: FragmentManager, fragments: 
 
     override fun getCount(): Int =fragments.size
 
-    override fun finishUpdate(container: ViewGroup?) {
+    override fun finishUpdate(container: ViewGroup) {
         try {
             super.finishUpdate(container)
         } catch (e: Exception) {
