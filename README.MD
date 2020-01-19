@@ -21,7 +21,10 @@ allprojects {
 dependencies {
     implementation 'cz.developer:developer-library:1.0.0'
 }
-//配置在app类中
+
+
+//配置在application类中
+
  developer(this){
     //配置渠道
     channel="Channel"
